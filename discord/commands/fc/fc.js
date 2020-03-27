@@ -17,7 +17,7 @@ module.exports = {
 			if (message.mentions.members.first()) {
 				person = message.mentions.members.first().id;
 				username = message.guild.members.cache.get(person).user.username;
-				name = `${username}#${message.guild.members.get(person).user.discriminator}`;
+				name = `${username}#${message.guild.members.cache.get(person).user.discriminator}`;
 			}
 		}
 
