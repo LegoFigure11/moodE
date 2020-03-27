@@ -1,0 +1,10 @@
+{
+  "token" : "",
+  "owner": "123456789012345678",
+  "commandCharacter": "\\",
+  "admin": ["123456789012345678"],
+  "elevated": [],
+  "defaultGen": 8,
+  "successEmoji": "<:greentick:123456789012345678>",
+  "failureEmoji": "<:redcross:123456789012345678>"
+}
