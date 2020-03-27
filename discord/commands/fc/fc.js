@@ -16,7 +16,7 @@ module.exports = {
 		if (message.channel.type !== "dm") {
 			if (message.mentions.members.first()) {
 				person = message.mentions.members.first().id;
-				username = message.guild.members.get(person).user.username;
+				username = message.guild.members.cache.get(person).user.username;
 				name = `${username}#${message.guild.members.get(person).user.discriminator}`;
 			}
 		}
