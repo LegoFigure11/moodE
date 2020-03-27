@@ -114,7 +114,7 @@ Storage.importDatabases();
 		console.log(`${showdownText}Pull completed!`);
 	}
 
-	if (firstRun || needsBuild) {
+	if (firstRun || needsBuild || needsClone) {
 		console.log(`${showdownText}Commencing build script...`);
 		await exec("node build").catch(e => console.log(e));
 		console.log(`${showdownText}Built!`);

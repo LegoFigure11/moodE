@@ -9,7 +9,7 @@ client.on("ready", (async () => {
 	const guilds = client.guilds.cache.map(g => g.id);
 	for (const id of guilds) {
 		const name = client.guilds.cache.get(id).name;
-		utilities.checkForDb(id, `{"name":"${name}", "config":{}}`, name);
+		await utilities.checkForDb(id, `{"name":"${name}", "config":{}}`, name);
 		const db = Storage.getDatabase(id);
 		if (!db.config.botRanks) {
 			utilities.buildDb(id, name);
