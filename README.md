@@ -1,4 +1,5 @@
 # moodE
+![https://github.com/LegoFigure11/moodE/actions](https://github.com/LegoFigure11/moodE/workflows/Node.js%20CI/badge.svg)
 
 ## About
 
