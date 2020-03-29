@@ -92,23 +92,23 @@ client.on("messageDelete", async (message) => {
 client.on("raw", async (event) => {
 	if (!listen) return;
 	if (!["MESSAGE_REACTION_ADD", "MESSAGE_REACTION_REMOVE"].includes(event.t)) return;
-	const channel = client.channels.get(event.d.channel_id);
-	channel.fetchMessage(event.d.message_id).then(msg => {
-		const user = msg.guild.members.get(event.d.user_id);
+	const channel = client.channels.cache.get(event.d.channel_id);
+	channel.messages.fetch(event.d.message_id).then(msg => {
+		const user = msg.guild.members.cache.get(event.d.user_id);
 
 		if (msg.author.id === client.user.id) {
 			const regex = `\\*\\*"(.+)?(?="\\*\\*)`;
 			const role = msg.content.match(regex)[1];
 
 			if (user.id !== client.user.id) {
-				const roleObj = msg.guild.roles.find(r => r.name === role);
-				const memberObj = msg.guild.members.get(user.id);
+				const roleObj = msg.guild.roles.cache.find(r => r.name === role);
+				const memberObj = msg.guild.members.cache.get(user.id);
 
 				if (event.t === "MESSAGE_REACTION_ADD") {
-					memberObj.addRole(roleObj);
+					memberObj.roles.add(roleObj);
 					console.log(`${roleObj.name} added to ${memberObj.user.username}`);
 				} else {
-					memberObj.removeRole(roleObj);
+					memberObj.roles.remove(roleObj);
 					console.log(`${roleObj.name} removed from ${memberObj.user.username}`);
 				}
 			}
