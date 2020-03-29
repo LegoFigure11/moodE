@@ -3,7 +3,7 @@
 
 ## About
 
-moodE is a competitive Pokémon-focussed chat bot for Discord ~~, Pokemon Showdown, and Twitch~~, written in nodejs. It is based on [JsKingBoo](https://github.com/JsKingBoo)'s [SableyeBot](https://github.com/JsKingBoo/SableyeBot3/), [DragonWhale](https://github.com/DragonWhale)'s [BattleSpotBot](https://github.com/DragonWhale/BattleSpotBot), and [sirDonovan](https://github.com/sirDonovan/)'s [Lanette](https://github.com/sirDonovan/Lanette) and [Cassius](https://github.com/sirDonovan/Cassius). It parses data from [pokemon-showdown](https://github.com/smogon/pokemon-showdown), and some of the commands use code from there.
+moodE is a competitive Pokémon-focused chat bot for Discord ~~, Pokemon Showdown, and Twitch~~, written in nodejs. It is based on [JsKingBoo](https://github.com/JsKingBoo)'s [SableyeBot](https://github.com/JsKingBoo/SableyeBot3/), [DragonWhale](https://github.com/DragonWhale)'s [BattleSpotBot](https://github.com/DragonWhale/BattleSpotBot), and [sirDonovan](https://github.com/sirDonovan/)'s [Lanette](https://github.com/sirDonovan/Lanette) and [Cassius](https://github.com/sirDonovan/Cassius). It parses data from [pokemon-showdown](https://github.com/smogon/pokemon-showdown), and some of the commands use code from there.
 
 ## Installation
 
