@@ -20,7 +20,7 @@ module.exports = {
 		if (doc !== null) {
 			if (doc.json().sections[0].paragraphs[0].sentences) {
 				const desc = [];
-				const index = doc.json().sections[0].paragraphs[0].sentences === [] ? 0 : 1;
+				const index = doc.json().sections[0].paragraphs[0].sentences.length > 0 ? 0 : 1;
 				for (let i = 0; i < 2; i++) {
 					if (!doc.json().sections[0].paragraphs[index].sentences[i]) break;
 					desc.push(doc.json().sections[0].paragraphs[index].sentences[i].text);
