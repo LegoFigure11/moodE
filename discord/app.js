@@ -51,11 +51,13 @@ client.on("guildCreate", guild => {
 client.on("message", message => {
 	if (!listen) return;
 	if (message.author.bot) return; // Don't respond to bots
+	
+	if (message.channel.type !== "dm") {
+		discordMessageParser.process(message);
+	}
 
 	if (message.content.startsWith(discordConfig.commandCharacter)) {
 		resolveMessage(message);
-	} else if (message.channel.type !== "dm") {
-		discordMessageParser.process(message);
 	}
 });
 
