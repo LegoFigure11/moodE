@@ -90,6 +90,29 @@ client.on("messageDelete", async (message) => {
 	client.channels.cache.get(db.config.logger.deletesChannel).send(descText, {embed});
 });
 
+client.on("messageUpdate", async (oldMessage, newMessage) => {
+	if (!listen) return;
+	const db = Storage.getDatabase(oldMessage.guild.id);
+	if (!db.config.logger || !db.config.logger.logEdits || !db.config.logger.editsChannel) return;
+	if (db.config.logger.ignoreChan && db.config.logger.ignoreChan.includes(oldMessage.channel.id)) return;
+	let descText = "A message was edited.";
+	const embed = {
+		color: message.guild.members.cache.get(client.user.id).displayColor,
+		timestamp: new Date(),
+		fields: [
+			{name: "Author", value: `${oldMessage.author}`, inline: true},
+			{name: "Channel", value: `${oldMessage.channel}`, inline: true},
+			{name: "Old Message", value: `${oldMessage.content || "{embed}"}`, inline: true},
+			{name: "New Message", value: `${newMessage.content || "{embed}"}`, inline: true},
+		],
+		footer: {
+			icon_url: client.user.avatarURL(),
+			text: "moodE",
+		},
+	};
+	client.channels.cache.get(db.config.logger.editsChannel).send(descText, {embed});
+});
+
 // Legacy Support
 client.on("raw", async (event) => {
 	if (!listen) return;
