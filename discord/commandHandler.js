@@ -167,7 +167,28 @@ class CommandHandler {
 						commandOutput = await command.execute(message, args);
 					}
 				} catch (e) {
-					message.channel.send(`${discordConfig.failureEmoji} The command crashed! Please notify the bot owner (and include the output below), or try again later.\n\`\`\`${e}\`\`\``);
+					if (discordConfig.logChannel) {
+						message.channel.send(`${discordConfig.failureEmoji} The command crashed! The crash has been logged and a fix will (hopefully) be on its way soon.`);
+						const embed = {
+							timestamp: new Date(),
+							fields: [
+								{name: "Crash", value: e},
+								{name: "Command", value: `${command.name}`},
+								{name: "Input", value: cmd},
+								{name: "args", value: JSON.stringify(args)},
+								{name: "Server", value: message.channel.type === "dm" ? "Private Message" : message.guild.name + " (" + message.guild.id + ")"},
+								{name: "User", value: `${authorId} (${message.author.username}#${message.author.discriminator})`},
+							],
+							footer: {
+								icon_url: client.user.avatarURL(),
+								text: "moodE",
+							},
+						};
+						client.channels.cache.get(discordConfig.logChannel).send("A command crashed! Stack trace:", {embed});
+						client.channels.cache.get(discordConfig.logChannel).send("```" + e.stack + "```");
+					} else {
+						message.channel.send(`${discordConfig.failureEmoji} The command crashed! Please notify the bot owner (and include the output below), or try again later.\n\`\`\`${e}\`\`\``);
+					}
 					console.log(`${discordText}\n${"ERROR".brightRed}: ${e} at ${e.stack}\nfrom command ${command.name}\nwith input ${cmd}\nwith args ${JSON.stringify(args)}\nin ${message.channel.type === "dm" ? "a private message with" : "server " + message.guild.name + " (" + message.guild.id + ") by"} user ${authorId} (${message.author.username}#${message.author.discriminator})`);
 					commandOutput = false;
 				}

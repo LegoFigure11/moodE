@@ -6,5 +6,6 @@
   "elevated": [],
   "defaultGen": 8,
   "successEmoji": "<:greentick:123456789012345678>",
-  "failureEmoji": "<:redcross:123456789012345678>"
+  "failureEmoji": "<:redcross:123456789012345678>",
+  "logChannel": "123456789012345678"
 }
