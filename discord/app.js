@@ -35,6 +35,11 @@ client.on("ready", (async () => {
 	console.log(`${discordText}--------------`);
 	console.log(`${discordText}${"Ready!".green}`);
 	console.log(`${discordText}--------------`);
+
+	if (discordConfig.logChannel) {
+		client.channels.cache.get(discordConfig.logChannel).send(`Bot online! ${discordConfig.commandCharacter === "~" ? "(Local)" : "(Production)"}`);
+	}
+
 	listen = true;
 }));
 
