@@ -3,8 +3,8 @@
 module.exports = {
 	desc: "Forces the bot to crash.",
 	adminOnly: true,
+	hasCustomFormatting: true,
 	async process(message, args) {
-		const x = null;
-		message.channel.send(x["foo"]);
+		throw new Error("Deliberate Error");
 	},
 };
