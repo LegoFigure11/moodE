@@ -95,9 +95,9 @@ client.on("messageUpdate", async (oldMessage, newMessage) => {
 	const db = Storage.getDatabase(oldMessage.guild.id);
 	if (!db.config.logger || !db.config.logger.logEdits || !db.config.logger.editsChannel) return;
 	if (db.config.logger.ignoreChan && db.config.logger.ignoreChan.includes(oldMessage.channel.id)) return;
-	let descText = "A message was edited.";
+	const descText = "A message was edited.";
 	const embed = {
-		color: message.guild.members.cache.get(client.user.id).displayColor,
+		color: oldMessage.guild.members.cache.get(client.user.id).displayColor,
 		timestamp: new Date(),
 		fields: [
 			{name: "Author", value: `${oldMessage.author}`, inline: true},
