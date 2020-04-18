@@ -19,4 +19,5 @@ converter.js
 /discord/commands/joke/*
 !/discord/commands/joke/command.js.example
 /discord/rules/*
+!/discord/rules/link-message.js
 !/discord/rules/rule.js.example
