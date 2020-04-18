@@ -104,6 +104,7 @@ module.exports = {
 			const allMons = Object.keys(dex.data.Pokedex);
 			const validMons = [];
 			for (let i = 0; i < allMons.length; i++) {
+				if (dex.data.Pokedex[allMons[i]].num <= 0) continue; // Prevent CAP
 				const Species = dex.getSpecies(allMons[i]);
 				const monset = new Learnset(Species, dex);
 				if (monset.canHaveMove(move.id, dex.gen, true)) {
