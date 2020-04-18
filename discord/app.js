@@ -97,7 +97,7 @@ client.on("messageDelete", async (message) => {
 
 client.on("messageUpdate", async (oldMessage, newMessage) => {
 	if (!listen) return;
-	if (oldMessage.author.id === client.user.id) return;
+	if (newMessage.author.bot) return; // Don't log bot edits
 	const db = Storage.getDatabase(oldMessage.guild.id);
 	if (!db.config.logger || !db.config.logger.logEdits || !db.config.logger.editsChannel) return;
 	if (db.config.logger.ignoreChan && db.config.logger.ignoreChan.includes(oldMessage.channel.id)) return;
