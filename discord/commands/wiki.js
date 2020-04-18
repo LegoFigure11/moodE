@@ -28,11 +28,13 @@ module.exports = {
 				const embed = {
 					title: doc.json().title,
 					url: `https://en.wikipedia.org/?curid=${doc.json().pageID}`,
-					description: desc.join(" "),
-					image: {
-						url: doc.images(0).json().url ? doc.images(0).thumb() : "",
-					},
+					description: desc.join(" ").includes(" may refer to:") ? `${doc.json().title} may refer to many things, so here is a disambiguation page.` : desc.join(" "),
 				};
+				if (doc.images(0)) {
+					embed.image = {
+						url: doc.images(0).json().url ? doc.images(0).thumb() : "",
+					};
+				}
 				return message.channel.send({embed});
 			}
 			return message.channel.send(`Wiki found, but I was not able to parse it as text... You can view it here: https://en.wikipedia.org/?curid=${doc.json().pageID}`);
