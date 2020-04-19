@@ -26,7 +26,7 @@ module.exports = {
 			console.log(`${moodeText}Error: could not pull origin.`);
 			return message.channel.send(`${failureEmoji} Error: could not pull origin.`);
 		}
-		if (pull.stdout.replace("\n", "") === "Already up to date.") {
+		if (pull.stdout.replace("\n", "").replace("-", " ") === "Already up to date.") {
 			console.log(`${moodeText}Already up to date!`);
 			return message.channel.send(`${failureEmoji} Already up to date!`);
 		} else {
