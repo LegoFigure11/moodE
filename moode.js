@@ -107,7 +107,7 @@ Storage.importDatabases();
 		console.log(`${showdownText}Error: could not pull origin.`);
 		return;
 	}
-	if (pull.stdout.replace("\n", "") === "Already up to date.") {
+	if (pull.stdout.replace("\n", "").replace(/-/g, " ") === "Already up to date.") {
 		needsBuild = false;
 		console.log(`${showdownText}Already up to date!`);
 	} else {
