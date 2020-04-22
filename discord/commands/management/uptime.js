@@ -18,10 +18,10 @@ module.exports = {
 		switch (buffer.length) {
 		case 5:
 			text += buffer[4] + ", ";
-			break;
+			/* falls through */
 		case 4:
 			text += buffer[3] + ", ";
-			break;
+			/* falls through */
 		case 3:
 			text += buffer[2] + ", " + buffer[1] + ", and " + buffer[0];
 			break;
