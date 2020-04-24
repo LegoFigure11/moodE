@@ -29,14 +29,14 @@ class Room {
 		if (id === user.id) {
 			user.name = newName;
 		} else {
-			delete Users.users[user.id];
-			if (Users.users[id]) {
-				user = Users.users[id];
+			delete psUsers.users[user.id];
+			if (psUsers.users[id]) {
+				user = psUsers.users[id];
 				user.name = newName;
 			} else {
 				user.name = newName;
 				user.id = id;
-				Users.users[id] = user;
+				psUsers.users[id] = user;
 			}
 		}
 		this.users.set(user, rank);
