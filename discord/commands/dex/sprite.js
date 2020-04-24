@@ -65,6 +65,13 @@ module.exports = {
 			dir = "gen6";
 		}
 
+		// Hardcode Unown forme exceptions
+		// Gens 2, 3, and 4 only have one unown sprite
+		if (spriteId === "unown" && dex.gen >= 5) {
+			const regex = /-[!?A-Za-z]/;
+			spriteId += args[0].match(regex)[0].toLowerCase().replace("!", "exclamation").replace("?", "question");
+		}
+
 		if (Tools.toId(args).includes("female") && genNum >= 4) {
 			const checker = new Promise((resolve, reject) => {
 				const req = https.request({"host": "play.pokemonshowdown.com",
