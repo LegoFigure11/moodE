@@ -46,6 +46,13 @@ class MessageParser {
 		});
 	}
 
+	get(name) {
+		for (const rule of this.rules) {
+			if ([rule.name].includes(Tools.toId(name))) return rule;
+		}
+		throw new Error(`messageParser error: Rule "${name}" not found!`);
+	}
+
 	process(message) {
 		for (let i = 0; i < this.rules.length; i++) {
 			const rule = this.rules[i];

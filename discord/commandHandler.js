@@ -73,6 +73,13 @@ class CommandHandler {
 		});
 	}
 
+	get(name) {
+		for (const command of this.commands) {
+			if ([command.name, ...command.aliases].includes(Tools.toId(name))) return command;
+		}
+		throw new Error(`commandHandler error: Command "${name}" not found!`);
+	}
+
 	async executeCommand(cmd, message, args) {
 		let passDex = Dex;
 		const authorId = message.author.id;
