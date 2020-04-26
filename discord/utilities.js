@@ -109,7 +109,7 @@ class Utilities {
 		if (rand === 0) return true;
 		return false;
 	}
-	
+
 	getFc(str) {
 		const db = Storage.getDatabase("fc").fc;
 		for (const id of Object.keys(db)) {
