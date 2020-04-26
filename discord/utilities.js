@@ -109,6 +109,15 @@ class Utilities {
 		if (rand === 0) return true;
 		return false;
 	}
+	
+	getFc(str) {
+		const db = Storage.getDatabase("fc").fc;
+		for (const id of Object.keys(db)) {
+		    const entry = db[id];
+		    if ((this.parseUserId(str) && this.parseUserId(str).id === id) || str.replace("@", "") === entry.user) return entry;
+		}
+		return "No FCs found.";
+	}
 
 	toSmogonString(dex) {
 		let genStr = "ss";
