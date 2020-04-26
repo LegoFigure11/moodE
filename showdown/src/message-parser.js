@@ -45,15 +45,15 @@ class MessageParser {
 
 			if (psClient.connectTimeout) clearTimeout(psClient.connectTimeout);
 			if (splitMessage[1] !== "1") {
-				console.log("Failed to log in");
+				console.log(`${showdownText}${"Failed to log in.".brightRed}`);
 				process.exit();
 			}
 
 			console.log(`${showdownText}Successfully logged in!`);
 			if (psConfig.rooms) {
 				if (!(psConfig.rooms instanceof Array)) throw new Error("Config.rooms must be an array");
-				for (let i = 0, len = psConfig.rooms.length; i < len; i++) {
-					psClient.send("|/join " + psConfig.rooms[i]);
+				for (const room of psConfig.rooms) {
+					psClient.send(`|/join ${room}`);
 				}
 			}
 			if (psConfig.avatar) psClient.send("|/avatar " + psConfig.avatar);
@@ -99,6 +99,70 @@ class MessageParser {
 			if (user.id === psUsers.self.id) return;
 			user.globalRank = (splitMessage[0][0]);
 			psCommandHandler.executeCommand(splitMessage.slice(2).join("|"), user, user);
+			break;
+		}
+		case "N":
+		case "n": {
+			const user = psUsers.add(splitMessage[1].split("@")[0]);
+			if (!user) return;
+			const zn = splitMessage[0].replace(/^./, "");
+			const n = zn.indexOf("@");
+			const text = zn.substring(0, n !== -1 ? n : splitMessage[0].length);
+			let status = zn.substring(n !== -1 ? n + 1 : zn.length, zn.length);
+			if (status.charAt(0) === "!") {
+				user.away = true;
+				status = status.substr(1);
+			} else { user.away = false; }
+			user.status = status;
+			if (status.length > 6) {
+				console.log(user.id + ", " + room.id + ": " + status);
+			}
+			splitMessage[0] = splitMessage[0][0] + text;
+			if (!user.alts.includes(Tools.toId(splitMessage[0]))) {
+				user.alts.push(Tools.toId(splitMessage[0]));
+			}
+			if (!user.alts.includes(Tools.toId(splitMessage[1]))) {
+				user.alts.push(Tools.toId(splitMessage[1]));
+			}
+			room.onRename(user, splitMessage[0]);
+			if (Storage.globalDatabase.mail && user.id in Storage.globalDatabase.mail) {
+				const mail = Storage.globalDatabase.mail[user.id];
+				for (let i = 0, len = mail.length; i < len; i++) {
+					user.say("[" + Tools.toDurationString(Date.now() - mail[i].time) + " ago] **" + mail[i].from + "** said: " + mail[i].text);
+				}
+				delete Storage.globalDatabase.mail[user.id];
+				Storage.exportDatabase("global");
+			}
+			break;
+		}
+		case "J":
+		case "j": {
+			// remove first character (so that we don't get false positives for Moderators)
+			const zn = splitMessage[0].replace(/^./, "");
+			// search for the @ character and delete the status that comes after
+			const n = zn.indexOf("@");
+			const text = zn.substring(0, n !== -1 ? n : splitMessage[0].length);
+			splitMessage[0] = splitMessage[0][0] + text;
+			const user = psUsers.add(splitMessage[0]);
+			if (!user) return;
+			// get the status from what comes after the @
+			let status = zn.substring(n !== -1 ? n + 1 : zn.length, zn.length);
+			if (status.charAt(0) === "!") {
+				user.away = true;
+				status = status.substr(1);
+			} else {
+				user.away = false;
+			}
+			user.status = status;
+			room.onJoin(user, splitMessage[0].charAt(0));
+			if (Storage.globalDatabase.mail && user.id in Storage.globalDatabase.mail) {
+				const mail = Storage.globalDatabase.mail[user.id];
+				for (let i = 0, len = mail.length; i < len; i++) {
+					user.say("[" + Tools.toDurationString(Date.now() - mail[i].time) + " ago] **" + mail[i].from + "** said: " + mail[i].text);
+				}
+				delete Storage.globalDatabase.mail[user.id];
+				Storage.exportDatabase("global");
+			}
 			break;
 		}
 		}
