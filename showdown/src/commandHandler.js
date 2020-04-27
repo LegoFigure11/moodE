@@ -8,6 +8,7 @@ const Dex = require("../../pokemon-showdown/.sim-dist/dex.js").Dex;
 const utilities = require(path.resolve(__dirname, "./utilities.js"));
 
 const COMMANDS_DIRECTORY = path.resolve(__dirname, "../commands/");
+const CHINESE_COMMANDS_DIRECTORY = path.resolve(__dirname, "../commands/chinese/");
 const DEV_COMMANDS_DIRECTORY = path.resolve(__dirname, "../commands/dev/");
 
 // const databaseDirectory = path.resolve(__dirname, "../../databases");
@@ -15,14 +16,22 @@ const DEV_COMMANDS_DIRECTORY = path.resolve(__dirname, "../commands/dev/");
 class CommandHandler {
 	constructor() {
 		this.commands = [];
+		this.chineseCommands = [];
 	}
 
 	async init(isReload) {
 		console.log(`${showdownText}${isReload ? "Rel" : "L"}oading commands...`);
 		await Promise.all([
 			this.loadDirectory(COMMANDS_DIRECTORY, Commands.ShowdownCommand, "Bot", isReload),
+			this.loadDirectory(CHINESE_COMMANDS_DIRECTORY, Commands.ChineseCommand, "Chinese", isReload),
 			this.loadDirectory(DEV_COMMANDS_DIRECTORY, Commands.DevCommand, "Dev", isReload),
 		]);
+		for (let i = 0; i < this.chineseCommands.length; i++) {
+			for (let j = 0; j < this.chineseCommands.length; j++) {
+				if (i === j || this.chineseCommands[j].commandType === "ChineseCommand" || this.chineseCommands[i].name !== this.chineseCommands[j].name) continue;
+				this.chineseCommands.splice(j, 1);
+			}
+		}
 	}
 
 	loadDirectory(directory, Command, type, isReload) {
@@ -39,7 +48,9 @@ class CommandHandler {
 							try {
 								name = name.slice(0, -3); // remove extention
 								const command = new Command(name, require(directory + "/" + name + ".js"));
-								this.commands.push(command);
+
+								if (command.commandType !== "ChineseCommand") this.commands.push(command);
+								this.chineseCommands.push(command);
 								/*fs.readdir(databaseDirectory, (err, dbs) => {
 									for (let id of dbs) {
 										if (id.endsWith(".json")) {
@@ -63,6 +74,13 @@ class CommandHandler {
 		});
 	}
 
+	get(name) {
+		for (const command of this.commands) {
+			if ([command.name, ...command.aliases].includes(Tools.toId(name))) return command;
+		}
+		throw new Error(`commandHandler error: Command "${name}" not found!`);
+	}
+
 	async executeCommand(message, room, user, time) {
 		const passDex = Dex;
 		message = message.substr(1); // Remove command character
@@ -77,8 +95,9 @@ class CommandHandler {
 			cmd = message;
 		}
 
-		for (let i = 0; i < this.commands.length; i++) {
-			const command = this.commands[i];
+		const commandsList = room.id === "chinese" ? this.chineseCommands : this.commands;
+		for (let i = 0; i < commandsList.length; i++) {
+			const command = commandsList[i];
 			if (command.trigger(cmd)) {
 				const hrStart = process.hrtime();
 				console.log(`${showdownText}Executing command: ${command.name.cyan}`);
@@ -87,16 +106,13 @@ class CommandHandler {
 					commandOutput = await command.execute(args, room, user);
 				} catch (e) {
 					let stack = e.stack;
-					console.log(stack);
 					stack += "Additional information:\n";
 					stack += "Command = " + command.name + "\n";
 					stack += "Args = " + args + "\n";
 					stack += "Time = " + new Date(time).toLocaleString() + "\n";
-					//stack += "User = " + user.name + "\n";
+					stack += "User = " + user.name + "\n";
 					stack += "Room = " + (room instanceof psUsers.User ? "in PM" : room.id);
 					console.log(stack);
-					//message.channel.send(`${discordConfig.failureEmoji} The command crashed! Please notify the bot owner (and include the output below), or try again later.\n\`\`\`${e}\`\`\``);
-					//console.log(`${showdownText}\n${"ERROR".brightRed}: ${e} at ${e.stack}\nfrom command ${command.name}\nwith input ${cmd}\nwith args ${JSON.stringify(args)}\nin ${message.channel.type === "dm" ? "a private message with" : "server " + message.guild.name + " (" + message.guild.id + ") by"} user ${authorId} (${message.author.username}#${message.author.discriminator})`);
 					commandOutput = false;
 				}
 				if (commandOutput || command.hasCustomFormatting) {

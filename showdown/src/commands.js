@@ -37,12 +37,12 @@ class Command {
 		return false;
 	}
 
-	execute(message, args) {
-		return this.process(message, args);
+	execute(args, room, user) {
+		return this.process(args, room, user);
 	}
 
 	toString() {
-		return `${discordConfig.commandCharacter}${this.name} ${this.usage}`;
+		return `${psConfig.commandCharacter}${this.name} ${this.usage}`;
 	}
 }
 
@@ -52,15 +52,29 @@ class DevCommand extends Command {
 		this.commandType = "DevCommand";
 	}
 
-	execute(msg = [], flags = this.options) {
+	execute(args, room, user) {
 		if (this.disabled) {
 			return;
 		}
-		return this.process(msg, flags);
+		return this.process(args, room, user);
 	}
 }
 
-class DexCommand extends Command {
+class ChineseCommand extends Command {
+	constructor(name, cmd) {
+		super(name, cmd);
+		this.commandType = "ChineseCommand";
+	}
+
+	execute(args, room, user) {
+		if (this.disabled) {
+			return;
+		}
+		return this.process(args, room, user);
+	}
+}
+
+/*class DexCommand extends Command {
 	constructor(name, cmd) {
 		super(name, cmd);
 		this.commandType = "DexCommand";
@@ -86,7 +100,7 @@ class DexCommand extends Command {
 		}
 		return this.process(msg, flags, dex);
 	}
-}
+}*/
 
 class ShowdownCommand extends Command {
 	constructor(name, cmd) {
@@ -94,75 +108,15 @@ class ShowdownCommand extends Command {
 		this.commandType = "BotCommand";
 	}
 
-	execute(msg = [], flags = this.options) {
+	execute(args, room, user) {
 		if (this.disabled) {
 			return;
 		}
-		return this.process(msg, flags);
-	}
-}
-
-class FcCommand extends Command {
-	constructor(name, cmd) {
-		super(name, cmd);
-		this.commandType = "FcCommand";
-	}
-
-	execute(msg = [], flags = this.options) {
-		if (this.disabled) {
-			return;
-		}
-		return this.process(msg, flags);
-	}
-}
-
-class JokeCommand extends Command {
-	constructor(name, cmd) {
-		super(name, cmd);
-		this.commandType = "JokeCommand";
-	}
-
-	execute(msg = [], flags = this.options) {
-		if (this.disabled) {
-			return;
-		}
-		return this.process(msg, flags);
-	}
-}
-
-class ManagementCommand extends Command {
-	constructor(name, cmd) {
-		super(name, cmd);
-		this.commandType = "ManagementCommand";
-	}
-
-	execute(msg = [], flags = this.options) {
-		if (this.disabled) {
-			return;
-		}
-		return this.process(msg, flags);
-	}
-}
-
-class NsfwCommand extends Command {
-	constructor(name, cmd) {
-		super(name, cmd);
-		this.commandType = "NsfwCommand";
-	}
-
-	execute(msg = [], flags = this.options) {
-		if (this.disabled) {
-			return;
-		}
-		return this.process(msg, flags);
+		return this.process(args, room, user);
 	}
 }
 
 module.exports.Command = Command;
 module.exports.DevCommand = DevCommand;
-module.exports.DexCommand = DexCommand;
 module.exports.ShowdownCommand = ShowdownCommand;
-module.exports.FcCommand = FcCommand;
-module.exports.JokeCommand = JokeCommand;
-module.exports.ManagementCommand = ManagementCommand;
-module.exports.NsfwCommand = NsfwCommand;
+module.exports.ChineseCommand = ChineseCommand;

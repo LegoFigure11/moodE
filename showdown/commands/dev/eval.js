@@ -5,7 +5,7 @@ const utilities = require("../../src/utilities.js"); // eslint-disable-line
 module.exports = {
 	desc: "Evaluates arbitrary javascript.",
 	usage: "<expression>",
-	aliases: ["js"],
+	aliases: ["js", "evaluate"],
 	developerOnly: true,
 	async process(args, room, user) {
 		args = args.join(",").trim();
