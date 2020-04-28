@@ -50,6 +50,10 @@ class Room {
 		psClient.send(`${this.id}|${message}`);
 	}
 
+	isPm() {
+		return this instanceof psUsers.User;
+	}
+
 	on(message, listener) {
 		message = Tools.normalizeMessage(message, this);
 		if (!(message)) return;
