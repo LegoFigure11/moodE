@@ -71,6 +71,11 @@ This bot builds upon the work of and wouldn't be possible without:
 * [DragonWhale](https://github.com/DragonWhale)
 * [tmagicturtle](https://github.com/tmagicturtle/)
 * Guangcong Luo ([Zarel](https://github.com/Zarel)) and [contributors](https://github.com/smogon/pokemon-showdown/graphs/contributors)
+And, of course, my amazing [direct contributors](https://github.com/LegoFigure11/moodE/graphs/contributors)!
+
+Additionally, I would like to thank the following people for their translation work (currently used in `/showdown/commands/chinese`):
+
+* [bobochan](https://www.smogon.com/forums/members/271968/) and [others](https://pastebin.com/raw/WLHef9D7)
 
 ## License
 
