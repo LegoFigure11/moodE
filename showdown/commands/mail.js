@@ -1,3 +1,6 @@
+// Mail delivery is handled in showdown/src/messageParser.js
+// This command exists purely to queue mail
+
 "use strict";
 
 const utilities = require("../src/utilities.js");
