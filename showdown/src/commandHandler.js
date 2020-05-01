@@ -10,6 +10,7 @@ const utilities = require(path.resolve(__dirname, "./utilities.js"));
 const COMMANDS_DIRECTORY = path.resolve(__dirname, "../commands/");
 const CHINESE_COMMANDS_DIRECTORY = path.resolve(__dirname, "../commands/chinese/");
 const DEV_COMMANDS_DIRECTORY = path.resolve(__dirname, "../commands/dev/");
+const DEX_COMMANDS_DIRECTORY = path.resolve(__dirname, "../commands/dex/");
 
 // const databaseDirectory = path.resolve(__dirname, "../../databases");
 
@@ -25,6 +26,7 @@ class CommandHandler {
 			this.loadDirectory(COMMANDS_DIRECTORY, Commands.ShowdownCommand, "Bot", isReload),
 			this.loadDirectory(CHINESE_COMMANDS_DIRECTORY, Commands.ChineseCommand, "Chinese", isReload),
 			this.loadDirectory(DEV_COMMANDS_DIRECTORY, Commands.DevCommand, "Dev", isReload),
+			this.loadDirectory(DEX_COMMANDS_DIRECTORY, Commands.DexCommand, "Dex", isReload),
 		]);
 		for (let i = 0; i < this.chineseCommands.length; i++) {
 			for (let j = 0; j < this.chineseCommands.length; j++) {
@@ -82,7 +84,7 @@ class CommandHandler {
 	}
 
 	async executeCommand(message, room, user, time) {
-		const passDex = Dex;
+		let passDex = Dex;
 		message = message.substr(1); // Remove command character
 
 		const spaceIndex = message.indexOf(" ");
@@ -99,11 +101,69 @@ class CommandHandler {
 		for (let i = 0; i < commandsList.length; i++) {
 			const command = commandsList[i];
 			if (command.trigger(cmd)) {
+				// Permissions checking
+				if (command.developerOnly && !user.isDeveloper()) return user.say("You do not have permission to use this command!");
+				// if (command.roomRank && !(user.hasRoomRank(room, "+") || user.hasGlobalRank(room, "+"))) return user.say(`You do not have permission to use ${psConfig.commandCharacter}${command.name} in <<${room.id}>>.`);
+
+				if (command.commandType === "DexCommand") {
+					for (let i = 0; i < args.length; i++) {
+						if (["lgpe", "gen7", "gen6", "gen5", "gen4", "gen3", "gen2", "gen1", "usum", "sm", "oras", "xy", "bw2", "bw", "hgss", "dppt", "adv", "rse", "frlg", "gsc", "rby"].includes(Tools.toId(args[i]))) {
+							switch (Tools.toId(args[i])) {
+							case "lgpe":
+								passDex = Dex.mod("lgpe");
+								break;
+							case "gen7":
+							case "usum":
+							case "sm":
+								passDex = Dex.mod("gen7");
+								break;
+							case "gen6":
+							case "oras":
+							case "xy":
+								passDex = Dex.mod("gen6");
+								break;
+							case "gen5":
+							case "bw2":
+							case "bw":
+								passDex = Dex.mod("gen5");
+								break;
+							case "gen4":
+							case "hgss":
+							case "dppt":
+								passDex = Dex.mod("gen4");
+								break;
+							case "gen3":
+							case "adv":
+							case "rse":
+							case "frlg":
+								passDex = Dex.mod("gen3");
+								break;
+							case "gen2":
+							case "gsc":
+								passDex = Dex.mod("gen2");
+								break;
+							case "gen1":
+							case "rby":
+							case "rbyg":
+								passDex = Dex.mod("gen1");
+								break;
+							default:
+								passDex = Dex.mod("gen7");
+							}
+							args.splice(i, 1);
+							break;
+						}
+					}
+				}
+
 				const hrStart = process.hrtime();
 				console.log(`${showdownText}Executing command: ${command.name.cyan}`);
-				let commandOutput;
 				try {
-					commandOutput = await command.execute(args, room, user);
+					if (command.commandType === "DexCommand") {
+						await command.execute(args, room, user, passDex);
+					} else {
+						await command.execute(args, room, user);
+					}
 				} catch (e) {
 					let stack = e.stack;
 					stack += "Additional information:\n";
@@ -113,15 +173,10 @@ class CommandHandler {
 					stack += "User = " + user.name + "\n";
 					stack += "Room = " + (room instanceof psUsers.User ? "in PM" : room.id);
 					console.log(stack);
-					commandOutput = false;
 				}
-				if (commandOutput || command.hasCustomFormatting) {
-					const hrEnd = process.hrtime(hrStart);
-					const timeString = hrEnd[0] > 3 ? `${hrEnd[0]}s ${hrEnd[1]}ms`.brightRed : `${hrEnd[0]}s ${hrEnd[1]}ms`.grey;
-					console.log(`${showdownText}Executed command: ${command.name.green} in ${timeString}`);
-				} else {
-					console.log(`${showdownText}Error parsing command: ${command.name.brightRed} - command function does not return anything!`);
-				}
+				const hrEnd = process.hrtime(hrStart);
+				const timeString = hrEnd[0] > 3 ? `${hrEnd[0]}s ${hrEnd[1]}ms`.brightRed : `${hrEnd[0]}s ${hrEnd[1]}ms`.grey;
+				console.log(`${showdownText}Executed command: ${command.name.green} in ${timeString}`);
 			}
 		}
 	}

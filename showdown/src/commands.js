@@ -74,33 +74,22 @@ class ChineseCommand extends Command {
 	}
 }
 
-/*class DexCommand extends Command {
+class DexCommand extends Command {
 	constructor(name, cmd) {
 		super(name, cmd);
 		this.commandType = "DexCommand";
-
-		let hasDex = false;
-		for (let i = 0; i < this.options.length; i++) {
-			if (this.options[i].name === "gen") {
-				hasDex = true;
-				break;
-			}
-		}
-		if (!hasDex) {
-			this.options.push({name: "gen", value: discordConfig.defaultGen, desc: "The generation to run the command with."});
-		}
 	}
 
-	execute(msg = [], flags = this.options, dex = null) {
+	execute(args, room, user, dex) {
 		if (this.disabled) {
 			return;
 		}
 		if (!dex) {
 			return;
 		}
-		return this.process(msg, flags, dex);
+		return this.process(args, room, user, dex);
 	}
-}*/
+}
 
 class ShowdownCommand extends Command {
 	constructor(name, cmd) {
@@ -118,5 +107,6 @@ class ShowdownCommand extends Command {
 
 module.exports.Command = Command;
 module.exports.DevCommand = DevCommand;
+module.exports.DexCommand = DexCommand;
 module.exports.ShowdownCommand = ShowdownCommand;
 module.exports.ChineseCommand = ChineseCommand;

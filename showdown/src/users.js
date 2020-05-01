@@ -17,7 +17,7 @@ class User {
 		this.say = this.say;
 	}
 
-	hasRank(room, targetRank) {
+	hasRoomRank(room, targetRank) {
 		if (groups) return false;
 		let rank;
 		if (typeof room === "string") {
