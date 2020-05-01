@@ -14,6 +14,7 @@ class Command {
 		this.rooms = cmd.rooms || false;
 		this.process = cmd.process;
 		this.noPm = cmd.noPm || false;
+		this.pmOnly = cmd.pmOnly || false;
 		this.commandType = "Command";
 
 		if (Array.isArray(this.longDesc)) {

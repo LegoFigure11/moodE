@@ -157,9 +157,9 @@ class Utilities {
 				throw new SyntaxError(`"${json}" is not valid JSON`);
 			}
 		}
-		if (!(fs.existsSync(path.resolve(__dirname, `../databases/${name}.json`)))) {
-			fs.writeFileSync(path.resolve(__dirname, `../databases/${name}.json`), json);
-			if (dummyId) fs.writeFileSync(path.resolve(__dirname, `../databases/${name} - ${dummyId}`), "This is a guide file to assist with navigation of the `databases` directory.\nIt can be deleted without consequence if need be.");
+		if (!(fs.existsSync(path.resolve(__dirname, `../../databases/${name}.json`)))) {
+			fs.writeFileSync(path.resolve(__dirname, `../../databases/${name}.json`), json);
+			if (dummyId) fs.writeFileSync(path.resolve(__dirname, `../../databases/${name} - ${dummyId}`), "This is a guide file to assist with navigation of the `databases` directory.\nIt can be deleted without consequence if need be.");
 		}
 		Storage.importDatabase(name);
 	}
