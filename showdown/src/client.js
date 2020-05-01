@@ -11,7 +11,7 @@ const BASE_RECONNECT_SECONDS = 60;
 
 let server = "play.pokemonshowdown.com";
 if (psConfig.server && psConfig.server !== server) {
-	server = psConfig.server.includes(".psim.us") ? psConfig.server : psConfig.server + ".psim.us";
+	server = psConfig.server.includes(".psim.us") ? psConfig.server : `${psConfig.server}.psim.us`;
 }
 const serverId = "showdown";
 let reconnections = 0;
@@ -63,23 +63,27 @@ class Client {
 		if (error) console.log(error.stack);
 		reconnections++;
 		const retryTime = BASE_RECONNECT_SECONDS * reconnections;
-		console.log("Failed to connect to server " + server + "\nRetrying in " + retryTime + " seconds" + (reconnections > 1 ? " (" + reconnections + ")" : ""));
+		console.log(`${showdownText}Failed to connect to server ${server.brightRed}\n${showdownText}(Retrying in ${retryTime.cyan} seconds ${reconnections > 1 ? " (" + reconnections + ")" : ""})`);
 		this.connectTimeout = setTimeout(() => this.connect(), retryTime * 1000);
+	}
+
+	onConnectionError(error) {
+		console.log(`${showdownText}Connection error: ${error.stack}`);
 	}
 
 	onConnectionClose(code, description) {
 		if (this.connectTimeout) clearTimeout(this.connectTimeout);
 		let reconnectTime;
 		if (this.lockdown) {
-			console.log("Connection closed: the server restarted");
+			console.log(`${showdownText}Connection closed: the server restarted!`);
 			reconnections = 0;
 			reconnectTime = 15;
 		} else {
-			console.log("Connection closed: " + description + " (" + code + ")");
+			console.log(`${showdownText}Connection closed: ${description} (${code})`);
 			reconnections++;
 			reconnectTime = BASE_RECONNECT_SECONDS * reconnections;
 		}
-		console.log("Reconnecting in " + reconnectTime + " seconds" + (reconnections > 1 ? " (" + reconnections + ")" : ""));
+		console.log(`Reconnecting in ${reconnectTime.cyan} seconds (${reconnections > 1 ? " (" + reconnections + ")" : ""}`);
 		psRooms.destroyRooms();
 		psUsers.destroyUsers();
 		this.connectTimeout = setTimeout(() => this.connect(), reconnectTime * 1000);
@@ -92,7 +96,7 @@ class Client {
 	connect() {
 		const options = {
 			hostname: "play.pokemonshowdown.com",
-			path: "/crossdomain.php?" + querystring.stringify({host: server, path: ""}),
+			path: `/crossdomain.php?${querystring.stringify({host: server, path: ""})}`,
 			method: "GET",
 		};
 
@@ -109,21 +113,21 @@ class Client {
 					if (typeof config === "string") config = JSON.parse(config); // encoded twice by the server
 					if (config.host) {
 						if (config.id) this.serverId = config.id;
-						this.client.connect("ws://" + (config.host === "showdown" ? "sim.smogon.com" : config.host) + ":" + (config.port || 8000) + "/showdown/websocket");
+						this.client.connect(`ws://${config.host === "showdown" ? "sim.smogon.com" : config.host}:${config.port || 8000}/showdown/websocket`);
 						return;
 					}
 				}
-				console.log("Error: failed to get data for server " + server);
+				console.log(`${showdownText}${"Error".brightRed}: failed to get data for server ${server}`);
 			});
 		}).on("error", error => {
-			console.log("Error: " + error.message);
+			console.log(`${showdownText}${"Error".brightRed}: ${error.message}`);
 		});
 
-		//this.connectTimeout = setTimeout(() => this.onConnectFail(), 30 * 1000);
+		this.connectTimeout = setTimeout(() => this.onConnectFail(), 30 * 1000);
 	}
 	login() {
 		console.log(`${showdownText}Logging in to ${server.cyan}`);
-		const action = url.parse("https://play.pokemonshowdown.com/~~" + this.serverId + "/action.php");
+		const action = url.parse(`https://play.pokemonshowdown.com/~~${this.serverId}/action.php`);
 		const options = {
 			hostname: action.hostname,
 			path: action.pathname,
@@ -161,17 +165,17 @@ class Client {
 			});
 			response.on("end", () => {
 				if (data === ";") {
-					console.log("Failed to log in: invalid password");
+					console.log(`${showdownText}Failed to log in: invalid password`);
 					process.exit();
 				} else if (data.charAt(0) !== "]") {
-					console.log("Failed to log in: " + data);
+					console.log(`${showdownText}Failed to log in: ${data}`);
 					process.exit();
 				} else if (data.startsWith("<!DOCTYPE html>")) {
-					console.log("Failed to log in: connection timed out. Trying again in " + RELOGIN_SECONDS + " seconds");
+					console.log(`${showdownText}Failed to log in: connection timed out. Trying again in ${RELOGIN_SECONDS.cyan} seconds`);
 					setTimeout(() => this.login(), RELOGIN_SECONDS * 1000);
 					return;
 				} else if (data.includes("heavy load")) {
-					console.log("Failed to log in: the login server is under heavy load. Trying again in " + RELOGIN_SECONDS + " seconds");
+					console.log(`${showdownText}Failed to log in: the login server is under heavy load. Trying again in ${RELOGIN_SECONDS.cyan} seconds`);
 					setTimeout(() => this.login(), RELOGIN_SECONDS * 1000);
 					return;
 				} else {
@@ -180,7 +184,7 @@ class Client {
 						if (assertion.actionsuccess && assertion.assertion) {
 							data = assertion.assertion;
 						} else {
-							console.log("Failed to log in: " + JSON.stringify(assertion));
+							console.log(`${showdownText}Failed to log in: ${JSON.stringify(assertion)}`);
 							process.exit();
 						}
 					}
@@ -189,7 +193,7 @@ class Client {
 			});
 		});
 
-		request.on("error", error => console.log("Login error: " + error.stack));
+		request.on("error", error => console.log(`${showdownText}Login error: ${error.stack}`));
 
 		if (postData) request.write(postData);
 		request.end();
