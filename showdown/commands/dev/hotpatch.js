@@ -9,7 +9,7 @@ module.exports = {
 		console.log(`${showdownText}--------------`);
 		Tools.uncacheDir("showdown/");
 
-		global.psMessageParser = require("../../src/message-parser.js").MessageParser;
+		global.psMessageParser = require("../../src/messageParser.js").MessageParser;
 
 		global.PsCommandHandler = require("../../src/commandHandler.js");
 		global.psCommandHandler = new PsCommandHandler();

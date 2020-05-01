@@ -1,5 +1,7 @@
 "use strict";
 
+const utilities = require("./utilities.js");
+
 class Context {
 	constructor(target, room, user, command, originalCommand, time) {
 		this.target = target ? target.trim() : "";
@@ -125,13 +127,15 @@ class MessageParser {
 				user.alts.push(Tools.toId(splitMessage[1]));
 			}
 			room.onRename(user, splitMessage[0]);
-			if (Storage.globalDatabase.mail && user.id in Storage.globalDatabase.mail) {
-				const mail = Storage.globalDatabase.mail[user.id];
+			utilities.checkForDb("mail", "{}");
+			const db = Storage.getDatabase("mail");
+			if (user.id in db) {
+				const mail = db[user.id];
 				for (let i = 0, len = mail.length; i < len; i++) {
-					user.say("[" + Tools.toDurationString(Date.now() - mail[i].time) + " ago] **" + mail[i].from + "** said: " + mail[i].text);
+					user.say(`[${Tools.toDurationString(Date.now() - mail[i].time)} ago] **${mail[i].from}** said: ${mail[i].text}`);
 				}
-				delete Storage.globalDatabase.mail[user.id];
-				Storage.exportDatabase("global");
+				delete db[user.id];
+				Storage.exportDatabase("mail");
 			}
 			break;
 		}
@@ -155,13 +159,15 @@ class MessageParser {
 			}
 			user.status = status;
 			room.onJoin(user, splitMessage[0].charAt(0));
-			if (Storage.globalDatabase.mail && user.id in Storage.globalDatabase.mail) {
-				const mail = Storage.globalDatabase.mail[user.id];
+			utilities.checkForDb("mail", "{}");
+			const db = Storage.getDatabase("mail");
+			if (user.id in db) {
+				const mail = db[user.id];
 				for (let i = 0, len = mail.length; i < len; i++) {
-					user.say("[" + Tools.toDurationString(Date.now() - mail[i].time) + " ago] **" + mail[i].from + "** said: " + mail[i].text);
+					user.say(`[${Tools.toDurationString(Date.now() - mail[i].time)} ago] **${mail[i].from}** said: ${mail[i].text}`);
 				}
-				delete Storage.globalDatabase.mail[user.id];
-				Storage.exportDatabase("global");
+				delete db[user.id];
+				Storage.exportDatabase("mail");
 			}
 			break;
 		}
