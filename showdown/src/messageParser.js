@@ -53,7 +53,7 @@ class MessageParser {
 
 			console.log(`${showdownText}Successfully logged in!`);
 			if (psConfig.rooms) {
-				if (!(psConfig.rooms instanceof Array)) throw new Error("Config.rooms must be an array");
+				if (!(psConfig.rooms instanceof Array)) throw new Error("psConfig.rooms must be an array");
 				for (const room of psConfig.rooms) {
 					psClient.send(`|/join ${room}`);
 				}
@@ -171,7 +171,114 @@ class MessageParser {
 			}
 			break;
 		}
+		case "formats": {
+			this.formatsList = splitMessage.slice();
+			this.parseFormats();
+			break;
 		}
+		case "tournament": {
+			//if (!psConfig.tournaments || !psConfig.tournaments.includes(room.id)) return;
+			switch (splitMessage[0]) {
+			case "create": {
+				const format = Tools.getFormat(splitMessage[1]);
+				if (!format) throw new Error("Unknown format used in tournament (" + splitMessage[1] + ")");
+				console.log(format);
+				if (room.id === "chinese") {
+					// Apparently `format.gen` sometimes === 0, so we have to extract it manually from the id
+					const gen = parseInt(format.id.substring(3, 4)) - 1;
+					const genStr = [
+						"【第一代】", // Gen 1
+						"【第二代】", // Gen 2
+						"【第三代】", // Gen 3
+						"【第四代】", // Gen 4
+						"【第五代】", // Gen 5
+						"【第六代】", // Gen 6
+						"【第七代】", // Gen 7
+						"【第八代】", // Gen 8
+					][gen];
+
+					let formatName = format.name.substring(format.name.indexOf("] ") + 2);
+
+					switch (format.id.substring(4)) {
+					case "challengecup1v1":
+						formatName = "挑战杯";
+						break;
+
+					case "monotyperandombattle":
+						formatName = "同属性随机对战";
+						break;
+
+					case "battlefactory":
+						formatName = "战斗工厂";
+						break;
+
+					case "randombattle":
+						formatName = "随机对战";
+						break;
+					}
+
+					const name = `${genStr}${formatName}`;
+					room.say(`/tour name ${name}`);
+				}
+			}
+			}
+		}
+		}
+	}
+
+	parseFormats() {
+		if (!this.formatsList.length) return;
+		this.formatsData = {};
+		let isSection = false;
+		let section = "";
+		for (let i = 0, len = this.formatsList.length; i < len; i++) {
+			if (isSection) {
+				section = this.formatsList[i];
+				isSection = false;
+			} else if (this.formatsList[i] === ",LL") {
+				continue;
+			} else if (this.formatsList[i] === "" || (this.formatsList[i].charAt(0) === "," && !isNaN(parseInt(this.formatsList[i].substr(1))))) {
+				isSection = true;
+			} else {
+				let name = this.formatsList[i];
+				let searchShow = true;
+				let challengeShow = true;
+				let tournamentShow = true;
+				const lastCommaIndex = name.lastIndexOf(",");
+				const code = lastCommaIndex >= 0 ? parseInt(name.substr(lastCommaIndex + 1), 16) : NaN;
+				if (!isNaN(code)) {
+					name = name.substr(0, lastCommaIndex);
+					if (!(code & 2)) searchShow = false;
+					if (!(code & 4)) challengeShow = false;
+					if (!(code & 8)) tournamentShow = false;
+				} else {
+				// Backwards compatibility: late 0.9.0 -> 0.10.0
+					if (name.substr(name.length - 2) === ",#") { // preset teams
+						name = name.substr(0, name.length - 2);
+					}
+					if (name.substr(name.length - 2) === ",,") { // search-only
+						challengeShow = false;
+						name = name.substr(0, name.length - 2);
+					} else if (name.substr(name.length - 1) === ",") { // challenge-only
+						searchShow = false;
+						name = name.substr(0, name.length - 1);
+					}
+				}
+				const id = Tools.toId(name);
+				if (!id) continue;
+				this.formatsData[id] = {
+					name: name,
+					id: id,
+					section: section,
+					searchShow: searchShow,
+					challengeShow: challengeShow,
+					tournamentShow: tournamentShow,
+					playable: tournamentShow || ((searchShow || challengeShow) && tournamentShow !== false),
+				};
+			}
+		}
+
+		Tools.FormatCache.clear();
 	}
 }
 

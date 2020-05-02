@@ -685,13 +685,13 @@ class Tools {
 			name = this.data.aliases[id];
 			id = this.toId(name);
 		}
-		if ("gen" + this.gen + id in MessageParser.formatsData) {
+		if ("gen" + this.gen + id in psMessageParser.formatsData) {
 			id = "gen" + this.gen + id;
 		}
-		if (id === "constructor" || !(id in MessageParser.formatsData)) return null;
+		if (id === "constructor" || !(id in psMessageParser.formatsData)) return null;
 		let format = this.FormatCache.get(id);
 		if (format) return format;
-		format = new Data.Format(name, MessageParser.formatsData[id]);
+		format = new Data.Format(name, psMessageParser.formatsData[id]);
 		this.FormatCache.set(id, format);
 		return format;
 	}
