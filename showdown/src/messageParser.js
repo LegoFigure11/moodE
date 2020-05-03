@@ -219,7 +219,7 @@ class MessageParser {
 						break;
 					}
 
-					const elim = splitMessage(2) === "Double Elimination" ? "（两条命）" : "";
+					const elim = splitMessage[2] === "Double Elimination" ? "（两条命）" : "";
 
 					const name = `${genStr}${formatName}${elim}`;
 					room.say(`/tour name ${name}`);
