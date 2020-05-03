@@ -17,7 +17,7 @@
       "Users": false, "Config": false, "packagejson": false, "discordConfig": false, "failureEmoji": false, "successEmoji": false,
       "DiscordMessageParser": false, "discordMessageParser": false, "discordText": false, "moodeText": false, "showdownText": false,
       "pokemonShowdownText": false, "psClient": false, "psConfig": false, "psRooms": false, "psUsers": false, "PsCommandHandler": false,
-      "psCommandHandler": false, "psMessageParser": false
+      "psCommandHandler": false, "psMessageParser": false, "Tournaments": false
     },
   "extends": "eslint:recommended",
   "rules": {

@@ -29,6 +29,7 @@ class MessageParser {
 		this.formatsList = [];
 		this.formatsData = {};
 		this.globalContext = new Context("", psRooms.globalRoom, psUsers.self, "", "");
+		this.tourRulesListeners = {};
 	}
 
 	parse(message, room) {
@@ -182,7 +183,8 @@ class MessageParser {
 			case "create": {
 				const format = Tools.getFormat(splitMessage[1]);
 				if (!format) throw new Error("Unknown format used in tournament (" + splitMessage[1] + ")");
-				console.log(format);
+				room.tour = Tournaments.createTournament(room, format, splitMessage[2]);
+				if (splitMessage[3]) room.tour.playerCap = parseInt(splitMessage[3]);
 				if (room.id === "chinese") {
 					// Apparently `format.gen` sometimes === 0, so we have to extract it manually from the id
 					const gen = parseInt(format.id.substring(3, 4)) - 1;
@@ -217,10 +219,114 @@ class MessageParser {
 						break;
 					}
 
-					const name = `${genStr}${formatName}`;
+					const elim = splitMessage(2) === "Double Elimination" ? "（两条命）" : "";
+
+					const name = `${genStr}${formatName}${elim}`;
 					room.say(`/tour name ${name}`);
+					room.say("/tour autostart on");
 				}
+				break;
 			}
+			case "update": {
+				const data = JSON.parse(splitMessage.slice(1).join("|"));
+				if (!data || !(data instanceof Object)) return;
+				if (!room.tour) {
+					const format = Tools.getFormat(data.teambuilderFormat) || Tools.getFormat(data.format);
+					if (!format) throw new Error(`Unknown format used in tournament (${(data.teambuilderFormat || data.format)})`);
+					room.tour = Tournaments.createTournament(room, format, data.generator);
+					room.tour.started = true;
+				}
+				Object.assign(room.tour.updates, data);
+				break;
+			}
+			case "updateEnd":
+				if (room.tour) room.tour.update(room);
+				break;
+			case "end": {
+				const data = JSON.parse(splitMessage.slice(1).join("|"));
+				if (!data || !(data instanceof Object)) return;
+				if (!room.tour) {
+					const format = Tools.getFormat(data.teambuilderFormat) || Tools.getFormat(data.format);
+					if (!format) throw new Error(`Unknown format used in tournament (${(data.teambuilderFormat || data.format)})`);
+					room.tour = Tournaments.createTournament(room, format, data.generator);
+					room.tour.started = true;
+				}
+				Object.assign(room.tour.updates, data);
+				room.tour.update(room);
+				room.tour.end(room);
+				break;
+			}
+			case "forceend":
+				if (room.tour) room.tour.end(room);
+				break;
+			case "join":
+				if (room.tour) room.tour.addPlayer(splitMessage[1]);
+				break;
+			case "leave":
+				if (room.tour) room.tour.removePlayer(splitMessage[1]);
+				break;
+			case "disqualify":
+				if (room.tour) room.tour.removePlayer(splitMessage[1]);
+				break;
+			case "start":
+				if (room.tour) room.tour.start();
+				break;
+			case "battlestart":
+				if (room.tour && !room.tour.isRoundRobin && room.tour.generator === 1 && room.tour.getRemainingPlayerCount() === 2) {
+					// room.say("/wall Final battle of " + room.tour.format.name + " tournament: <<" + splitMessage[3].trim() + ">>");
+				}
+				break;
+			}
+			break;
+		}
+		case "html": {
+			if (!this.tourRulesListeners || !this.tourRulesListeners[room.id]) this.tourRulesListeners[room.id] = false;
+			if (room.id !== "chinese") {
+				this.tourRulesListeners[room.id] = true;
+				return;
+			}
+			for (const message of splitMessage) {
+				if (!message.includes("This tournament includes:")) return;
+				if (!message.includes("Removed rules")) return;
+				if (!message.includes("- teampreview")) return;
+
+				const gen = parseInt(room.tour.format.id.substring(3, 4)) - 1;
+				const genStr = [
+					"【第一代】", // Gen 1
+					"【第二代】", // Gen 2
+					"【第三代】", // Gen 3
+					"【第四代】", // Gen 4
+					"【第五代】", // Gen 5
+					"【第六代】", // Gen 6
+					"【第七代】", // Gen 7
+					"【第八代】", // Gen 8
+				][gen];
+
+				let formatName = room.tour.format.name.substring(room.tour.name.indexOf("] ") + 2);
+
+				switch (room.tour.format.id.substring(4)) {
+				case "challengecup1v1":
+					formatName = "挑战杯";
+					break;
+
+				case "monotyperandombattle":
+					formatName = "同属性随机对战";
+					break;
+
+				case "battlefactory":
+					formatName = "战斗工厂";
+					break;
+
+				case "randombattle":
+					formatName = "随机对战";
+					break;
+				}
+
+				const elim = room.tour.generator === 2 ? "（两条命）" : "";
+
+				const name = `${genStr}${formatName}${elim}（无队伍预览）`;
+				room.say(`/tour name ${name}`);
+				this.tourRulesListeners[room.id] = true;
 			}
 		}
 		}
