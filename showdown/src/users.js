@@ -18,7 +18,6 @@ class User {
 	}
 
 	hasRoomRank(room, targetRank) {
-		if (groups) return false;
 		let rank;
 		if (typeof room === "string") {
 			rank = room;

@@ -102,8 +102,14 @@ class CommandHandler {
 			const command = commandsList[i];
 			if (command.trigger(cmd)) {
 				// Permissions checking
-				if (command.developerOnly && !user.isDeveloper()) return user.say("You do not have permission to use this command!");
-				// if (command.roomRank && !(user.hasRoomRank(room, "+") || user.hasGlobalRank(room, "+"))) return user.say(`You do not have permission to use ${psConfig.commandCharacter}${command.name} in <<${room.id}>>.`);
+				if (!user.isDeveloper()) {
+					if (command.developerOnly) return user.say("You do not have permission to use this command!");
+				  if (command.roomRank && !(user.hasRoomRank(room, command.roomRank) || user.hasGlobalRank(command.roomRank))) return user.say(`You do not have permission to use \`\`${psConfig.commandCharacter}${command.name}\`\` in <<${room.id}>>.`);
+					if (command.globalRank && !user.hasGlobalRank(command.globalRank)) return user.say(`You do not have permission to use \`\`${psConfig.commandCharacter}${command.name}\`\` in <<${room.id}>>.`);
+					if (command.rooms && !command.rooms.includes(room.id)) return;
+					if (command.noPm && room.isPm()) return user.say(`\`\`${psConfig.commandCharacter}${command.name}\`\` is not available in PMs!`);
+					if (command.pmOnly && !room.isPm()) return user.say(`\`\`${psConfig.commandCharacter}${command.name}\`\` is only available in PMs!`);
+				}
 
 				if (command.commandType === "DexCommand") {
 					for (let i = 0; i < args.length; i++) {
@@ -181,7 +187,7 @@ class CommandHandler {
 		}
 	}
 
-	helpCommand(cmd, message) {
+	/*helpCommand(cmd, message) {
 		const hrStart = process.hrtime();
 		console.log(`${showdownText}Executing command: ${"help".cyan}`);
 		const botCommands = [];
@@ -259,15 +265,7 @@ class CommandHandler {
 		const timeString = hrEnd[0] > 3 ? `${hrEnd[0]}s ${hrEnd[1]}ms`.brightRed : `${hrEnd[0]}s ${hrEnd[1]}ms`.grey;
 		console.log(`${showdownText}Executed command: ${"help".green} in ${timeString}`);
 		return message.channel.send(sendMsg);
-	}
-}
-
-function isAdmin(id) {
-	return (discordConfig.admin.includes(parseInt(id)) || id === discordConfig.owner);
-}
-
-function isElevated(id) {
-	return (discordConfig.elevated.includes(parseInt(id)) || isAdmin(id));
+	}*/
 }
 
 module.exports = CommandHandler;
