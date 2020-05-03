@@ -5,8 +5,8 @@ const probe = require("probe-image-size");
 
 module.exports = {
 	desc: "Gets a random dog photo.",
-	hasCustomFormatting: true,
 	aliases: ["randomdog", "randdog"],
+	roomRank: "+",
 	async process(args, room, user) {
 		const options = {
 			hostname: "random.dog",
