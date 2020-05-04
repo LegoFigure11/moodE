@@ -61,6 +61,20 @@ class DevCommand extends Command {
 	}
 }
 
+class PrivateCommand extends Command {
+	constructor(name, cmd) {
+		super(name, cmd);
+		this.commandType = "PrivateCommand";
+	}
+
+	execute(args, room, user) {
+		if (this.disabled) {
+			return;
+		}
+		return this.process(args, room, user);
+	}
+}
+
 class ChineseCommand extends Command {
 	constructor(name, cmd) {
 		super(name, cmd);
@@ -111,3 +125,4 @@ module.exports.DevCommand = DevCommand;
 module.exports.DexCommand = DexCommand;
 module.exports.ShowdownCommand = ShowdownCommand;
 module.exports.ChineseCommand = ChineseCommand;
+module.exports.PrivateCommand = PrivateCommand;

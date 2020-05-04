@@ -28,7 +28,7 @@ class CommandHandler {
 			this.loadDirectory(CHINESE_COMMANDS_DIRECTORY, Commands.ChineseCommand, "Chinese", isReload),
 			this.loadDirectory(DEV_COMMANDS_DIRECTORY, Commands.DevCommand, "Dev", isReload),
 			this.loadDirectory(DEX_COMMANDS_DIRECTORY, Commands.DexCommand, "Dex", isReload),
-			this.loadDirectory(PRIVATE_COMMANDS_DIRECTORY, Commands.ShowdownCommand, "Private", isReload),
+			this.loadDirectory(PRIVATE_COMMANDS_DIRECTORY, Commands.PrivateCommand, "Private", isReload),
 		]);
 		for (let i = 0; i < this.chineseCommands.length; i++) {
 			for (let j = 0; j < this.chineseCommands.length; j++) {
@@ -65,9 +65,10 @@ class CommandHandler {
 										}
 									}
 								});*/
-								if (!(isReload)) console.log(`${showdownText}${isReload ? "Rel" : "L"}oaded command ${type === "NSFW" ? (name.charAt(0) + "*****").green : name.green}`);
+								if (!(isReload)) console.log(`${showdownText}${isReload ? "Rel" : "L"}oaded command ${type === "Private" ? (name.charAt(0) + "*****").green : name.green}`);
 							} catch (e) {
 								console.log(`${showdownText}${"CommandHandler loadDirectory() error: ".brightRed}${e} while parsing ${name.yellow}${".js".yellow} in ${directory}`);
+								console.log(e.stack);
 							}
 						}
 					}
@@ -78,8 +79,9 @@ class CommandHandler {
 		});
 	}
 
-	get(name) {
-		for (const command of this.commands) {
+	get(name, list) {
+		const commandsList = list ? list : this.commands;
+		for (const command of commandsList) {
 			if ([command.name, ...command.aliases].includes(Tools.toId(name))) return command;
 		}
 		throw new Error(`commandHandler error: Command "${name}" not found!`);
@@ -189,21 +191,21 @@ class CommandHandler {
 		}
 	}
 
-	/*helpCommand(cmd, message) {
+	helpCommand(message, room, user, time) {
 		const hrStart = process.hrtime();
+		const commandsList = room.id === "chinese" ? this.chineseCommands : this.commands;
 		console.log(`${showdownText}Executing command: ${"help".cyan}`);
 		const botCommands = [];
 		const devCommands = [];
 		const dexCommands = [];
-		const fcCommands = [];
-		const managementCommands = [];
 		let sendMsg = [];
-		if (!(cmd[0])) {
-			message.author.send(`List of commands; use \`${discordConfig.commandCharacter}help <command name>\` for more information:`);
-			for (let i = 0; i < this.commands.length; i++) {
-				const command = this.commands[i];
-				if (!command.disabled && !command.isNSFW && command.commandType !== "JokeCommand") {
-					const cmdText = `${discordConfig.commandCharacter}${command.name}${command.desc ? " - " + command.desc : ""}`;
+
+		if (!(message.trim.includes(" "))) {
+			room.say(`List of commands; use \`\`${psConfig.commandCharacter}help <command name>\`\` for more information:`);
+			for (let i = 0; i < commandsList.length; i++) {
+				const command = commandsList[i];
+				if (!command.disabled && command.commandType !== "PrivateCommand") {
+					const cmdText = `${psConfig.commandCharacter}${command.name}${command.desc ? " - " + command.desc : ""}`;
 					switch (command.commandType) {
 					case "BotCommand":
 						botCommands.push(cmdText);
@@ -214,46 +216,31 @@ class CommandHandler {
 					case "DexCommand":
 						dexCommands.push(cmdText);
 						break;
-					case "FcCommand":
-						fcCommands.push(cmdText);
-						break;
-					case "ManagementCommand":
-						managementCommands.push(cmdText);
-						break;
 					}
 				}
 			}
 			const hrEnd = process.hrtime(hrStart);
 			const timeString = hrEnd[0] > 3 ? `${hrEnd[0]}s ${hrEnd[1]}ms`.brightRed : `${hrEnd[0]}s ${hrEnd[1]}ms`.grey;
 			console.log(`${showdownText}Executed command: ${"help".green} in ${timeString}`);
-			if (botCommands.length > 0) message.author.send(`Bot Commands:\n\`\`\`${botCommands.join("\n")}\`\`\``);
-			if (devCommands.length > 0) message.author.send(`Dev Commands:\n\`\`\`${devCommands.join("\n")}\`\`\``);
-			if (dexCommands.length > 0) message.author.send(`Dex Commands:\n\`\`\`${dexCommands.join("\n")}\`\`\``);
-			if (fcCommands.length > 0) message.author.send(`FC Commands:\n\`\`\`${fcCommands.join("\n")}\`\`\``);
-			if (managementCommands.length > 0) message.author.send(`Management Commands:\n\`\`\`${managementCommands.join("\n")}\`\`\``);
+			if (botCommands.length > 0) user.say(`Bot Commands:\n\`\`\`${botCommands.join("\n")}\`\`\``);
+			if (devCommands.length > 0) user.say(`Dev Commands:\n\`\`\`${devCommands.join("\n")}\`\`\``);
+			if (dexCommands.length > 0) user.say(`Dex Commands:\n\`\`\`${dexCommands.join("\n")}\`\`\``);
 			return true;
 		}
-		const lookup = Tools.toId(cmd[0]);
+		const lookup = Tools.toId(message.split(" ")[0]);
 		let command;
 		let matched = false;
-		for (let i = 0; i < this.commands.length; i++) {
+		for (let i = 0; i < commandsList.length; i++) {
 			if (matched) break;
-			command = this.commands[i];
+			command = commandsList[i];
 			if (command.name === lookup || (command.aliases && command.aliases.includes(lookup))) matched = true;
 		}
 
-		if (!matched) return message.author.send(`${failureEmoji} No command "${lookup}" found!`);
-
-		if (command.adminOnly && !isAdmin(message.author.id)) {
-			return "```" + `${command.name} is an admin-only command.` + "```";
-		}
-		if (command.elevated && !isElevated(message.author.id)) {
-			return "```" + `${command.name} is an elevated-only command.` + "```";
-		}
+		if (!matched) return user.say(`${failureEmoji} No command "${lookup}" found!`);
 
 		sendMsg = [
 			command.name,
-			`${discordConfig.commandCharacter}${command.name}${command.usage.length > 0 ? " " + command.usage : ""}`,
+			`${psConfig.commandCharacter}${command.name}${command.usage.length > 0 ? " " + command.usage : ""}`,
 			command.longDesc,
 			"",
 			`${command.aliases.length > 0 ? "Aliases: " + command.aliases.join(", ") : ""}`,
@@ -267,7 +254,7 @@ class CommandHandler {
 		const timeString = hrEnd[0] > 3 ? `${hrEnd[0]}s ${hrEnd[1]}ms`.brightRed : `${hrEnd[0]}s ${hrEnd[1]}ms`.grey;
 		console.log(`${showdownText}Executed command: ${"help".green} in ${timeString}`);
 		return message.channel.send(sendMsg);
-	}*/
+	}
 }
 
 module.exports = CommandHandler;
