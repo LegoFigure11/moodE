@@ -175,7 +175,7 @@ class Tournament {
 				const queue = [data.rootNode];
 				while (queue.length > 0) {
 					const node = queue.shift();
-					if (!node) break;
+					if (!node || !node.children) break;
 
 					if (node.children[0] && node.children[0].team) {
 						const userA = Tools.toId(node.children[0].team);
