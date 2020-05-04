@@ -29,7 +29,9 @@ module.exports = {
 
 		const dimensions = await fitImage(JSON.parse(data.toString()).file, 300, 400);
 
-		return room.say(`/adduhtml randcat, <img src="${JSON.parse(data.toString()).file}" width="${dimensions[0]}" height="${dimensions[1]}" style="width:${dimensions[0]}px; height:${dimensions[1]}px; display: block; margin-left: auto; margin-right: auto;" />`);
+		const id = room.id === "dreamyard" ? Tools.toId(JSON.parse(data.toString()).file) : "randcat";
+
+		return room.say(`/adduhtml ${id}, <img src="${JSON.parse(data.toString()).file}" width="${dimensions[0]}" height="${dimensions[1]}" style="width:${dimensions[0]}px; height:${dimensions[1]}px; display: block; margin-left: auto; margin-right: auto;" />`);
 	},
 };
 

@@ -29,7 +29,9 @@ module.exports = {
 
 		const dimensions = await fitImage(`https://random.dog/${data.toString()}`, 300, 400);
 
-		return room.say(`/adduhtml randdog, <img src="https://random.dog/${data.toString()}" width="${dimensions[0]}" height="${dimensions[1]}" style="width:${dimensions[0]}px; height:${dimensions[1]}px; display: block; margin-left: auto; margin-right: auto;" />`);
+		const id = room.id === "dreamyard" ? Tools.toId(data.toString()) : "randdog";
+
+		return room.say(`/adduhtml ${id}, <img src="https://random.dog/${data.toString()}" width="${dimensions[0]}" height="${dimensions[1]}" style="width:${dimensions[0]}px; height:${dimensions[1]}px; display: block; margin-left: auto; margin-right: auto;" />`);
 	},
 };
 
