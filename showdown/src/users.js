@@ -14,7 +14,6 @@ class User {
 		this.rooms = new Map();
 		this.roomsData = new Map();
 		this.game = null;
-		this.say = this.say;
 	}
 
 	hasRoomRank(room, targetRank) {
