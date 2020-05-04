@@ -23,3 +23,5 @@ converter.js
 !/discord/rules/rule.js.example
 
 /showdown/config.json
+/showdown/commands/private/*
+!/showdown/commands/private/command.js.example

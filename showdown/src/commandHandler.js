@@ -11,6 +11,7 @@ const COMMANDS_DIRECTORY = path.resolve(__dirname, "../commands/");
 const CHINESE_COMMANDS_DIRECTORY = path.resolve(__dirname, "../commands/chinese/");
 const DEV_COMMANDS_DIRECTORY = path.resolve(__dirname, "../commands/dev/");
 const DEX_COMMANDS_DIRECTORY = path.resolve(__dirname, "../commands/dex/");
+const PRIVATE_COMMANDS_DIRECTORY = path.resolve(__dirname, "../commands/private/");
 
 // const databaseDirectory = path.resolve(__dirname, "../../databases");
 
@@ -27,6 +28,7 @@ class CommandHandler {
 			this.loadDirectory(CHINESE_COMMANDS_DIRECTORY, Commands.ChineseCommand, "Chinese", isReload),
 			this.loadDirectory(DEV_COMMANDS_DIRECTORY, Commands.DevCommand, "Dev", isReload),
 			this.loadDirectory(DEX_COMMANDS_DIRECTORY, Commands.DexCommand, "Dex", isReload),
+			this.loadDirectory(PRIVATE_COMMANDS_DIRECTORY, Commands.ShowdownCommand, "Private", isReload),
 		]);
 		for (let i = 0; i < this.chineseCommands.length; i++) {
 			for (let j = 0; j < this.chineseCommands.length; j++) {
