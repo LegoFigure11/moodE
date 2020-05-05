@@ -3,7 +3,7 @@
 
 ## About
 
-moodE is a competitive Pokémon-focused chat bot for Discord ~~, Pokemon Showdown, and Twitch~~, written in nodejs. It is based on [JsKingBoo](https://github.com/JsKingBoo)'s [SableyeBot](https://github.com/JsKingBoo/SableyeBot3/), [DragonWhale](https://github.com/DragonWhale)'s [BattleSpotBot](https://github.com/DragonWhale/BattleSpotBot), and [sirDonovan](https://github.com/sirDonovan/)'s [Lanette](https://github.com/sirDonovan/Lanette) and [Cassius](https://github.com/sirDonovan/Cassius). It parses data from [pokemon-showdown](https://github.com/smogon/pokemon-showdown), and some of the commands use code from there.
+moodE is a competitive Pokémon-focused chat bot for Discord, Pokemon Showdown, ~~and Twitch~~, written in nodejs. It is based on [JsKingBoo](https://github.com/JsKingBoo)'s [SableyeBot](https://github.com/JsKingBoo/SableyeBot3/), [DragonWhale](https://github.com/DragonWhale)'s [BattleSpotBot](https://github.com/DragonWhale/BattleSpotBot), and [sirDonovan](https://github.com/sirDonovan/)'s [Lanette](https://github.com/sirDonovan/Lanette) and [Cassius](https://github.com/sirDonovan/Cassius). It parses data from [pokemon-showdown](https://github.com/smogon/pokemon-showdown), and some of the commands use code from there.
 
 ## Installation
 
@@ -33,7 +33,9 @@ From here, install the dependencies from `package.json` (you can ignore the warn
 
 3. Set up config files
 
-Currently, only Discord is supported by this bot (Twitch and Pokemon Showdown are in the works!). The configuration file for discord is found in `/discord/config.json`, and you will need to create this file by copying `/discord/config-example.json` and renaming it to `config.json`. You will then need to edit this file to include your [bot token](https://www.writebots.com/discord-bot-token/), amongst other things.
+Currently, Discord and Pokemon Showdown are supported by this bot (Twitch is in the works!).
+
+3a. The configuration file for discord is found in `/discord/config.json`, and you will need to create this file by copying `/discord/config-example.json` and renaming it to `config.json`. You will then need to edit this file to include your [bot token](https://www.writebots.com/discord-bot-token/), amongst other things.
 
 | Field | Value | Description |
 | -----:|:------|-------------|
@@ -47,6 +49,19 @@ Currently, only Discord is supported by this bot (Twitch and Pokemon Showdown ar
 | failureEmoji (optional) | "<:string:emojiID>" | Emoji that the bot will use as an error symbol in all servers. See `/assets/redcross.png` for an example. You can upload this image as an emoji to any server that the bot is in, as bot accounts have Nitro by default.|
 
 Some additional configuration can be done in `/moode.js` and command-specific configuration can be done later (once the bot is running).
+
+3b. The configuration file for Pokemon Showdown is found in `/showdown/config.json`, and you will need to create this file by copying `/showdown/config-example.json` and renaming it to `config.json`. You will then need to edit this file to contain your bot's login details, amongst other things.
+
+| Field | Value | Description |
+| -----:|:------|-------------|
+| username | "string" | The username of the bot account. |
+| password | "string" | The password of the bot account. |
+| developers | ["array", "of", "strings"] | A list of the users who will have access to all commands. |
+| tournaments | ["array", "of", "strings"] | A list of the rooms in which tournament parsing is enabled. |
+| rooms | ["array", "of", "strings"] | A list of the rooms for the bot to join. |
+| commandCharacter | "string" | The character that the bot will use to recognise commands. |
+| allowMail | boolean | Toggles enabling mail commands. |
+| server | "string" | Server for the bot to join (leave this out of your config file to connect to main). |
 
 4. Starting up the bot
 
@@ -71,6 +86,12 @@ This bot builds upon the work of and wouldn't be possible without:
 * [DragonWhale](https://github.com/DragonWhale)
 * [tmagicturtle](https://github.com/tmagicturtle/)
 * Guangcong Luo ([Zarel](https://github.com/Zarel)) and [contributors](https://github.com/smogon/pokemon-showdown/graphs/contributors)
+
+And, of course, my amazing [direct contributors](https://github.com/LegoFigure11/moodE/graphs/contributors)!
+
+Additionally, I would like to thank the following people for their translation work (currently used in `/showdown/commands/chinese`):
+
+* [bobochan](https://www.smogon.com/forums/members/271968/) and [others](https://pastebin.com/raw/WLHef9D7)
 
 ## License
 

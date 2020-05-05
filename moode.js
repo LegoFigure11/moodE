@@ -7,7 +7,8 @@ const util = require("util");
 
 const exec = util.promisify(child_process.exec);
 
-const runDiscord = true;
+const runDiscord = false;
+const runShowdown = true;
 
 // set up globals
 global.colors = require("colors");
@@ -19,7 +20,8 @@ global.Tools = require("./sources/tools.js");
 
 global.discordText = "Discord-Bot: ".yellow;
 global.moodeText = "moodE: ".yellow;
-global.showdownText = "pokemon-showdown: ".yellow;
+global.pokemonShowdownText = "pokemon-showdown: ".yellow;
+global.showdownText = "PS-Bot: ".yellow;
 
 Storage.importDatabases();
 
@@ -100,24 +102,24 @@ Storage.importDatabases();
 		fs.writeFileSync(moodeShaDir, currentSha);
 	}
 
-	console.log(`${showdownText}Attempting pull...`);
+	console.log(`${pokemonShowdownText}Attempting pull...`);
 	const pull = await exec("git pull");
 	if (!pull || pull.Error) {
 		needsBuild = false;
-		console.log(`${showdownText}Error: could not pull origin.`);
+		console.log(`${pokemonShowdownText}Error: could not pull origin.`);
 		return;
 	}
 	if (pull.stdout.replace("\n", "").replace(/-/g, " ") === "Already up to date.") {
 		needsBuild = false;
-		console.log(`${showdownText}Already up to date!`);
+		console.log(`${pokemonShowdownText}Already up to date!`);
 	} else {
-		console.log(`${showdownText}Pull completed!`);
+		console.log(`${pokemonShowdownText}Pull completed!`);
 	}
 
 	if (firstRun || needsBuild || needsClone) {
-		console.log(`${showdownText}Commencing build script...`);
+		console.log(`${pokemonShowdownText}Commencing build script...`);
 		await exec("node build").catch(e => console.log(e));
-		console.log(`${showdownText}Built!`);
+		console.log(`${pokemonShowdownText}Built!`);
 	}
 
 	process.chdir(__dirname);
@@ -141,7 +143,22 @@ Storage.importDatabases();
 
 		global.discord = require("./discord/app.js");
 	} else {
-		console.log(`${moodeText}Discord disabled.`);
+		console.log(`${moodeText}Discord Bot disabled.`);
+	}
+
+	if (runShowdown) {
+		console.log(`${moodeText}Launching PS Bot...`);
+		try {
+			fs.accessSync(path.resolve(__dirname, "./showdown/config.json"));
+		} catch (e) {
+			if (e.code !== "ENOENT") throw e;
+			console.log(`${showdownText}: No PS Bot configuration file found...`);
+			console.log(`${showdownText}: Writing one with default values. Please fill it out with your own information!`);
+			fs.writeFileSync(path.resolve(__dirname, "./showdown/config.json"), fs.readFileSync(path.resolve(__dirname, "./showdown/config-example.json")));
+		}
+		global.psBot = require("./showdown/app.js");
+	} else {
+		console.log(`${moodeText}PS Bot disabled.`);
 	}
 })();
 

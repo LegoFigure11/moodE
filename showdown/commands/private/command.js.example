@@ -1,0 +1,12 @@
+"use strict";
+
+module.exports = {
+	desc: "Description",
+	longDesc: "You can really elaborate here!\nFeel free to use linebreaks too.",
+	usage: "<argument>",
+	aliases: ["alias", "another alias"],
+	async process(args, room, user) {
+		// code goes here
+		return room.say("hello world!");
+	},
+};

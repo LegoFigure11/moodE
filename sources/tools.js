@@ -11,6 +11,7 @@
 const https = require("https");
 const url = require("url");
 const Data = require("./tools-data");
+const groups = require("../showdown/src/groups.json");
 
 const whitespaceRegex = new RegExp("\\s+", "g");
 const nullCharactersRegex = new RegExp("[\u0000\u200B-\u200F]+", "g");
@@ -306,7 +307,7 @@ class Tools {
 				}
 			}
 		}
-		if (Config.groups && text.charAt(0) in Config.groups) text = text.substr(1);
+		if (groups && text.charAt(0) in groups) text = text.substr(1);
 		// Crop out the status (which occurs after @)
 		const n = text.indexOf("@");
 		text = text.substring(0, n !== -1 ? n : text.length);
@@ -333,6 +334,22 @@ class Tools {
 		text = this.toString(text);
 		if (!text) return "";
 		return text.replace(/[^a-zA-Z0-9 ]/g, "").trim();
+	}
+
+	parseUsernameText(usernameText) {
+		let away = false;
+		let status = "";
+		let username = "";
+		const atIndex = usernameText.indexOf("@");
+		if (atIndex !== -1) {
+			username = usernameText.substr(0, atIndex);
+			status = usernameText.substr(atIndex + 1);
+			away = status.charAt(0) === "!";
+		} else {
+			username = usernameText;
+		}
+
+		return {away, status, username};
 	}
 
 	/**
@@ -668,13 +685,13 @@ class Tools {
 			name = this.data.aliases[id];
 			id = this.toId(name);
 		}
-		if ("gen" + this.gen + id in MessageParser.formatsData) {
+		if ("gen" + this.gen + id in psMessageParser.formatsData) {
 			id = "gen" + this.gen + id;
 		}
-		if (id === "constructor" || !(id in MessageParser.formatsData)) return null;
+		if (id === "constructor" || !(id in psMessageParser.formatsData)) return null;
 		let format = this.FormatCache.get(id);
 		if (format) return format;
-		format = new Data.Format(name, MessageParser.formatsData[id]);
+		format = new Data.Format(name, psMessageParser.formatsData[id]);
 		this.FormatCache.set(id, format);
 		return format;
 	}
