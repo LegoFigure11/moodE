@@ -7,7 +7,7 @@ const util = require("util");
 
 const exec = util.promisify(child_process.exec);
 
-const runDiscord = false;
+const runDiscord = true;
 const runShowdown = true;
 
 // set up globals
