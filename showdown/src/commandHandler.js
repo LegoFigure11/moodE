@@ -200,8 +200,8 @@ class CommandHandler {
 		const dexCommands = [];
 		let sendMsg = [];
 
-		if (!(message.trim.includes(" "))) {
-			room.say(`List of commands; use \`\`${psConfig.commandCharacter}help <command name>\`\` for more information:`);
+		if (!(message.trim().includes(" "))) {
+			user.say(`List of commands; use \`\`${psConfig.commandCharacter}help <command name>\`\` for more information:`);
 			for (let i = 0; i < commandsList.length; i++) {
 				const command = commandsList[i];
 				if (!command.disabled && command.commandType !== "PrivateCommand") {
@@ -222,38 +222,48 @@ class CommandHandler {
 			const hrEnd = process.hrtime(hrStart);
 			const timeString = hrEnd[0] > 3 ? `${hrEnd[0]}s ${hrEnd[1]}ms`.brightRed : `${hrEnd[0]}s ${hrEnd[1]}ms`.grey;
 			console.log(`${showdownText}Executed command: ${"help".green} in ${timeString}`);
-			if (botCommands.length > 0) user.say(`Bot Commands:\n\`\`\`${botCommands.join("\n")}\`\`\``);
-			if (devCommands.length > 0) user.say(`Dev Commands:\n\`\`\`${devCommands.join("\n")}\`\`\``);
-			if (dexCommands.length > 0) user.say(`Dex Commands:\n\`\`\`${dexCommands.join("\n")}\`\`\``);
+			if (botCommands.length > 0) {
+				user.say("**Bot commands**");
+				for (const line of botCommands) user.say(line);
+			}
+			if (devCommands.length > 0) {
+				user.say("**Dev Commands**");
+				for (const line of devCommands) user.say(line);
+			}
+			if (dexCommands.length > 0) {
+				user.say("**Dex Commands**");
+				for (const line of dexCommands) user.say(line);
+			}
 			return true;
 		}
-		const lookup = Tools.toId(message.split(" ")[0]);
+		const lookup = Tools.toId(message.split(" ")[1]);
 		let command;
 		let matched = false;
+		console.log(commandsList);
 		for (let i = 0; i < commandsList.length; i++) {
 			if (matched) break;
 			command = commandsList[i];
 			if (command.name === lookup || (command.aliases && command.aliases.includes(lookup))) matched = true;
 		}
 
-		if (!matched) return user.say(`${failureEmoji} No command "${lookup}" found!`);
+		if (!matched) return user.say(`No command "${lookup}" found!`);
 
 		sendMsg = [
-			command.name,
-			`${psConfig.commandCharacter}${command.name}${command.usage.length > 0 ? " " + command.usage : ""}`,
-			command.longDesc,
-			"",
+			`Help for: ${command.name}`,
+			`Usage: \`\`${psConfig.commandCharacter}${command.name}${command.usage.length > 0 ? " " + command.usage : ""}\`\``,
+			`Description: ${command.longDesc}`,
 			`${command.aliases.length > 0 ? "Aliases: " + command.aliases.join(", ") : ""}`,
 		];
-		for (let i = 0; i < command.options.length; i++) {
-			sendMsg.push(`  ${command.options[i].toString()}: ${command.options[i].desc}`);
+		if (command.options) {
+			for (let i = 0; i < command.options.length; i++) {
+				sendMsg.push(`${command.options[i].toString()}: ${command.options[i].desc}`);
+			}
 		}
-		sendMsg = sendMsg.join("\n");
-		sendMsg = "```" + sendMsg + "```";
 		const hrEnd = process.hrtime(hrStart);
 		const timeString = hrEnd[0] > 3 ? `${hrEnd[0]}s ${hrEnd[1]}ms`.brightRed : `${hrEnd[0]}s ${hrEnd[1]}ms`.grey;
 		console.log(`${showdownText}Executed command: ${"help".green} in ${timeString}`);
-		return message.channel.send(sendMsg);
+		for (const line of sendMsg) user.say(line);
+		return;
 	}
 }
 

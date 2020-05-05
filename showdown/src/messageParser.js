@@ -92,7 +92,11 @@ class MessageParser {
 			const time = parseInt(splitMessage[0]) * 1000;
 			if (message.charAt(0) === psConfig.commandCharacter) {
 				try {
-					psCommandHandler.executeCommand(message, room, user, time);
+					if (Tools.toId(message.split(" ")[0]) === "help") {
+						psCommandHandler.helpCommand(message, room, user, time);
+					} else {
+						psCommandHandler.executeCommand(message, room, user, time);
+					}
 				} catch (e) {}
 			}
 			break;
@@ -101,7 +105,13 @@ class MessageParser {
 			if (!user) return;
 			if (user.id === psUsers.self.id) return;
 			user.globalRank = (splitMessage[0][0]);
-			psCommandHandler.executeCommand(splitMessage.slice(2).join("|"), user, user);
+			try {
+				if (Tools.toId(splitMessage[2].split(" ")[0]) === "help") {
+					psCommandHandler.helpCommand(splitMessage.slice(2).join("|"), user, user);
+				} else {
+					psCommandHandler.executeCommand(splitMessage.slice(2).join("|"), user, user);
+				}
+			} catch (e) {}
 			break;
 		}
 		case "N":
