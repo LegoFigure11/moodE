@@ -207,6 +207,14 @@ class Client {
 		let lines = message.utf8Data.split("\n");
 		if (lines[0].charAt(0) === ">") {
 			room = psRooms.add(lines[0].substr(1));
+			for (let i = 0, len = lines.length; i < len; i++) {
+				if (lines[i].startsWith("|title|")) {
+					room.title = lines[i].split("|")[2];
+				}
+				if (lines[i].startsWith("|tier|")) {
+					room.tier = lines[i].split("|")[2];
+				}
+			}
 			lines.shift();
 		}
 		for (let i = 0, len = lines.length; i < len; i++) {

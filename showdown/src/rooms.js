@@ -8,6 +8,9 @@ class Room {
 		this.listeners = {};
 		this.game = null;
 		this.tour = null;
+
+		this.title = "";
+		this.tier = "";
 	}
 
 	onJoin(user, rank) {

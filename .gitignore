@@ -20,6 +20,7 @@ converter.js
 !/discord/commands/joke/command.js.example
 /discord/rules/*
 !/discord/rules/link-message.js
+!/discord/rules/get-ps-battle-info.js
 !/discord/rules/rule.js.example
 
 /showdown/config.json
