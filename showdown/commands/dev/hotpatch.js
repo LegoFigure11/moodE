@@ -8,6 +8,10 @@ module.exports = {
 		console.log(`${showdownText}Hot-patching...`);
 		console.log(`${showdownText}--------------`);
 		Tools.uncacheDir("showdown/");
+		Tools.uncacheDir("sources/");
+
+		global.Storage = require("../../../sources/storage.js");
+		global.Tools = require("../../../sources/tools.js");
 
 		global.psMessageParser = require("../../src/messageParser.js").MessageParser;
 

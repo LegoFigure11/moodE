@@ -11,6 +11,10 @@ module.exports = {
 		console.log(`${discordText}Hot-patching ${silent ? "(silently)".grey : ""}...`);
 		console.log(`${discordText}--------------`);
 		Tools.uncacheDir("discord/");
+		Tools.uncacheDir("sources/");
+
+		global.Storage = require("../../../sources/storage.js");
+		global.Tools = require("../../../sources/tools.js");
 
 		global.DiscordMessageParser = require("../../messageParser.js");
 		global.discordMessageParser = new DiscordMessageParser();
