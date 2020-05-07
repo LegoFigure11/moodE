@@ -3,6 +3,7 @@
 const discordConfig = require("./config.json");
 const utilities = require("./utilities.js");
 
+// Prevent handlers from firing before client is ready
 let listen = false;
 
 client.on("ready", (async () => {
@@ -37,7 +38,7 @@ client.on("ready", (async () => {
 	console.log(`${discordText}--------------`);
 
 	if (discordConfig.logChannel) {
-		client.channels.cache.get(discordConfig.logChannel).send(`Bot online! ${discordConfig.commandCharacter === "~" ? "(Local)" : "(Production)"}`);
+		client.channels.cache.get(discordConfig.logChannel).send(`Bot online! ${discordConfig.commandCharacter === "~" ? "(Local)" : "(Production)"} | Discord: ${runDiscord} | PS: ${runShowdown}`);
 	}
 
 	listen = true;
