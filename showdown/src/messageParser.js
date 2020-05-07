@@ -64,6 +64,7 @@ class MessageParser {
 		case "init":
 			room.onJoin(psUsers.self, " ");
 			console.log(`${showdownText}Joined room: ${room.id.green}`);
+			if (!room.id.includes("battle-")) utilities.checkForDb(room.id, "{}");
 			break;
 		case "noinit":
 			console.log(`${showdownText}Could not join room: ${room.id.brightRed}`);
