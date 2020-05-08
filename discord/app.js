@@ -110,6 +110,7 @@ client.on("messageUpdate", async (oldMessage, newMessage) => {
 		fields: [
 			{name: "Author", value: `${oldMessage.author}`, inline: true},
 			{name: "Channel", value: `${oldMessage.channel}`, inline: true},
+			{name: "Link", value: `[Click me!](${oldMessage.url})`, inline: true},
 			{name: "Old Message", value: `${oldMessage.content || "{embed}"}`, inline: true},
 			{name: "New Message", value: `${newMessage.content || "{embed}"}`, inline: true},
 		],
