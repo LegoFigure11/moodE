@@ -13,5 +13,6 @@ global.psClient = new ShowdownClient();
 	global.PsCommandHandler = require("./src/commandHandler.js");
 	global.psCommandHandler = new PsCommandHandler();
 	await psCommandHandler.init();
+	await psMessageParser.init();
 	psClient.connect();
 })();

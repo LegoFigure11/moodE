@@ -1,5 +1,9 @@
 "use strict";
 
+const path = require("path");
+const Rules = require(path.resolve(__dirname, "./rules.js"));
+const RULES_DIRECTORY = path.resolve(__dirname, "../rules/");
+
 const utilities = require("./utilities.js");
 
 class Context {
@@ -29,7 +33,59 @@ class MessageParser {
 		this.formatsList = [];
 		this.formatsData = {};
 		this.globalContext = new Context("", psRooms.globalRoom, psUsers.self, "", "");
+		this.rules = [];
 		this.tourRulesListeners = {};
+	}
+
+	async init(isReload) {
+		console.log(`${showdownText}${isReload ? "Rel" : "L"}oading rules...`);
+		await Promise.all([
+			this.loadDirectory(RULES_DIRECTORY, Rules.Rule, isReload),
+		]);
+	}
+
+	loadDirectory(directory, Rule, isReload) {
+		console.log(`${showdownText}${isReload ? "Rel" : "L"}oading ${"Message Parser".cyan} rules...`);
+		return new Promise((resolve, reject) => {
+			fs.readdir(directory, (err, files) => {
+				if (err) {
+					reject(`Error reading rules directory: ${err}`);
+				} else if (!files) {
+					reject(`No files in directory ${directory}`);
+				} else {
+					for (let name of files) {
+						if (name.endsWith(".js")) {
+							try {
+								name = name.slice(0, -3); // remove extention
+								const rule = new Rule(name, require(directory + "/" + name + ".js"));
+								this.rules.push(rule);
+								if (!(isReload)) console.log(`${showdownText}${isReload ? "Rel" : "L"}oaded rule ${name.green}`);
+							} catch (e) {
+								console.log(`${showdownText}${"MessageParser loadDirectory() error: ".brightRed} ${e} while parsing ${name.yellow}${".js".yellow} in ${directory}`);
+							}
+						}
+					}
+					console.log(`${showdownText}${"Message Parser".cyan} rules ${isReload ? "rel" : "l"}oaded!`);
+					resolve();
+				}
+			});
+		});
+	}
+
+	get(name) {
+		for (const rule of this.rules) {
+			if ([rule.name].includes(Tools.toId(name))) return rule;
+		}
+		throw new Error(`messageParser error: Rule "${name}" not found!`);
+	}
+
+	process(message, room, user) {
+		for (let i = 0; i < this.rules.length; i++) {
+			const rule = this.rules[i];
+			if (rule.rooms.length > 0 && !rule.rooms.includes(room.id)) continue;
+			if (rule.users.length > 0 && !rule.users.includes(user.id)) continue;
+			rule.execute(message, room, user);
+		}
 	}
 
 	parse(message, room) {
@@ -91,6 +147,8 @@ class MessageParser {
 			let message = splitMessage.slice(2).join("|");
 			message = message.trim();
 			const time = parseInt(splitMessage[0]) * 1000;
+			// No need for pm checking
+			this.process(message, room, user);
 			if (message.charAt(0) === psConfig.commandCharacter) {
 				try {
 					if (Tools.toId(message.split(" ")[0]) === "help") {

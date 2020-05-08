@@ -17,6 +17,7 @@ module.exports = {
 
 		global.PsCommandHandler = require("../../src/commandHandler.js");
 		global.psCommandHandler = new PsCommandHandler();
+		psMessageParser.init(true);
 		psCommandHandler.init(true);
 
 		room.say("Hotpatch completed!");

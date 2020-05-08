@@ -23,7 +23,7 @@ class MessageParser {
 		return new Promise((resolve, reject) => {
 			fs.readdir(directory, (err, files) => {
 				if (err) {
-					reject(`Error reading commands directory: ${err}`);
+					reject(`Error reading rules directory: ${err}`);
 				} else if (!files) {
 					reject(`No files in directory ${directory}`);
 				} else {
