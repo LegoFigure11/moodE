@@ -26,3 +26,5 @@ converter.js
 /showdown/config.json
 /showdown/commands/private/*
 !/showdown/commands/private/command.js.example
+/showdown/rules/*
+!/showdown/rules/rule.js.example
