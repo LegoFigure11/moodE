@@ -8,6 +8,8 @@ node_modules/
 
 converter.js
 
+/assets/private/*
+
 /databases/*
 !/databases/.dummy
 
