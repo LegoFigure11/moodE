@@ -12,12 +12,10 @@ module.exports = {
 		let output;
 		try {
 			output = eval(args);
-			if (output.constructor === {}.constructor) {
-				output = JSON.stringify(output, null, 2);
-			}
+			output = JSON.stringify(output, null, 2);
 		} catch (e) {
 			return message.channel.send(`Error while evaluating expression: ${e}`);
 		}
-		return message.channel.send(output);
+		return message.channel.send(`\`\`\`${output}\`\`\``);
 	},
 };

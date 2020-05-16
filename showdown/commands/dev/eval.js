@@ -12,9 +12,7 @@ module.exports = {
 		let output;
 		try {
 			output = eval(args);
-			if (output.constructor === {}.constructor) {
-				output = JSON.stringify(output, null, 2);
-			}
+			output = JSON.stringify(output, null, 2);
 			console.log(output);
 		} catch (e) {
 			return room.say(`Error while evaluating expression: ${e}`);
