@@ -63,7 +63,7 @@ class Client {
 		if (error) console.log(error.stack);
 		reconnections++;
 		const retryTime = BASE_RECONNECT_SECONDS * reconnections;
-		console.log(`${showdownText}Failed to connect to server ${server.brightRed}\n${showdownText}(Retrying in ${retryTime.cyan} seconds ${reconnections > 1 ? " (" + reconnections + ")" : ""})`);
+		console.log(`${showdownText}Failed to connect to server ${server.brightRed}\n${showdownText}(Retrying in ${(retryTime).cyan} seconds${reconnections > 1 ? " (" + reconnections + ")" : ""})`);
 		this.connectTimeout = setTimeout(() => this.connect(), retryTime * 1000);
 	}
 
