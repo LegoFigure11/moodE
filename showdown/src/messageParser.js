@@ -148,7 +148,7 @@ class MessageParser {
 			message = message.trim();
 			const time = parseInt(splitMessage[0]) * 1000;
 			// No need for pm checking
-			this.process(message, room, user);
+			// this.process(message, room, user);
 			if (message.charAt(0) === psConfig.commandCharacter) {
 				try {
 					if (Tools.toId(message.split(" ")[0]) === "help") {
