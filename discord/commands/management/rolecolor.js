@@ -22,7 +22,7 @@ module.exports = {
 			data: {
 				name: `${message.author.username} - ${color}`,
 				color: color,
-				position: message.guild.members.cache.get(client.user.id).roles.highest.position,
+				position: message.guild.members.cache.get(client.user.id).roles.highest.position - 1,
 			},
 			reason: "Custom Role Color",
 		}).catch(console.error);
