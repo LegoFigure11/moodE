@@ -17,6 +17,7 @@ module.exports = {
 		}
 		color = color.replace("0x", "#");
 		if (!color.startsWith("#")) color = `#${color}`;
+		color = color.toUpperCase();
 		if (!(hexRegex.test(color.trim()))) return message.channel.send(`${discordConfig.failureEmoji} Unable to coerce "${args[0]}" as a hex code!`);
 		await message.guild.roles.create({
 			data: {
