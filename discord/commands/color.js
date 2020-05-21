@@ -5,6 +5,7 @@ const nodeHtmlToImage = require("node-html-to-image");
 module.exports = {
 	desc: "Displays the color of a provided hex code.",
 	usage: "<hex code>",
+	aliases: ["colour"],
 	async process(message, args) {
 		const hexRegex = /^(0[xX]){1}[A-Fa-f0-9]{6}$|^#[A-Fa-f0-9]{6}$|^[A-Fa-f0-9]{6}$/;
 		let color = args[0];
@@ -28,6 +29,7 @@ module.exports = {
 				<body>
 				</body>
 			</html>`,
+			puppeteerArgs: ["--no-sandbox", "--disable-setuid-sandbox"],
 		});
 
 		return message.channel.send(args[0], {files: [image]});
