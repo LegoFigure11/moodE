@@ -3,7 +3,7 @@
 module.exports = {
 	desc: "Gives the user a custom role color.",
 	usage: "<hex code>",
-	aliases: ["rolecolour", "customcolor", "customcolour"],
+	aliases: ["rolecolour", "customcolor", "customcolour", "namecolor", "namecolour"],
 	async process(message, args) {
 		if (!message.guild.members.cache.get(client.user.id).hasPermission("MANAGE_ROLES")) return message.channel.send(`${discordConfig.failureEmoji} Insufficient permissions!`);
 		const db = Storage.getDatabase(message.guild.id);
