@@ -28,11 +28,19 @@ module.exports = {
 			reason: "Custom Role Color",
 		}).catch(console.error);
 		const newRole = message.guild.roles.cache.find(role => role.name === `${message.author.username} - ${color}`);
-		await message.member.roles.add(newRole).catch(console.error);
-		message.channel.send(`Successfully added ${color} to <@${message.author.id}>`);
+		try {
+			await message.member.roles.add(newRole);
+			message.channel.send(`Successfully added ${color} to <@${message.author.id}>`);
+		} catch (e) {
+			message.channel.send(`${discordConfig.failureEmoji} Something went wrong creating your role!`);
+		}
 		if (db.customRoles[message.author.id].roleId) {
-			const oldRole = message.guild.roles.cache.find(role => role.id === db.customRoles[message.author.id].roleId);
-			if (oldRole) await oldRole.delete("Old custom color role");
+			try {
+				const oldRole = message.guild.roles.cache.find(role => role.id === db.customRoles[message.author.id].roleId);
+				if (oldRole) await oldRole.delete("Old custom color role");
+			} catch (e) {
+				message.channel.send(`${discordConfig.failureEmoji} Something went wrong deleting your old role!`);
+			}
 		}
 		db.customRoles[message.author.id].roleId = newRole.id;
 		Storage.exportDatabase(message.guild.id);
