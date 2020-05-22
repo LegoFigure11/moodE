@@ -14,6 +14,7 @@ module.exports = {
 		Tools.uncacheDir("sources/");
 
 		global.Storage = require("../../../sources/storage.js");
+		Storage.importDatabases();
 		global.Tools = require("../../../sources/tools.js");
 
 		global.DiscordMessageParser = require("../../messageParser.js");
