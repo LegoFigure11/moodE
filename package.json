@@ -10,6 +10,7 @@
   "author": "LegoFigure11",
   "license": "MIT",
   "dependencies": {
+    "archiver": "^4.0.1",
     "colors": "^1.4.0",
     "discord.js": "^12.2.0",
     "hex2dec": "^1.1.2",

@@ -144,6 +144,7 @@ Storage.importDatabases();
 		global.discord = require("./discord/app.js");
 	} else {
 		console.log(`${moodeText}Discord Bot disabled.`);
+		console.log(`${moodeText}${"/!\\".yellow}PLEASE NOTE THAT THIS ALSO DISABLES DATABASE BACKUPS!!! ${"/!\\".yellow}`);
 	}
 
 	if (runShowdown) {
