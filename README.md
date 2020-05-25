@@ -1,7 +1,9 @@
 # moodE
-![https://github.com/LegoFigure11/moodE/actions](https://github.com/LegoFigure11/moodE/workflows/Node.js%20CI/badge.svg)
+[<img src="https://github.com/LegoFigure11/moodE/workflows/Node.js%20CI/badge.svg">](https://github.com/LegoFigure11/moodE/actions) [<img src="https://discord.com/api/guilds/700625145592676372/widget.png?style=shield">](https://spo.ink/moodedev)
 
 ## About
+
+[<img src="https://discord.com/api/guilds/700625145592676372/widget.png?style=banner2">](https://spo.ink/moodedev)
 
 moodE is a competitive Pokémon-focused chat bot for Discord, Pokemon Showdown, ~~and Twitch~~, written in nodejs. It is based on [JsKingBoo](https://github.com/JsKingBoo)'s [SableyeBot](https://github.com/JsKingBoo/SableyeBot3/), [DragonWhale](https://github.com/DragonWhale)'s [BattleSpotBot](https://github.com/DragonWhale/BattleSpotBot), and [sirDonovan](https://github.com/sirDonovan/)'s [Lanette](https://github.com/sirDonovan/Lanette) and [Cassius](https://github.com/sirDonovan/Cassius). It parses data from [pokemon-showdown](https://github.com/smogon/pokemon-showdown), and some of the commands use code from there.
 
