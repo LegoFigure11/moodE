@@ -47,6 +47,9 @@ Currently, Discord and Pokemon Showdown are supported by this bot (Twitch is in 
 | defaultGen | number (1-8) | The default generation to run Dex commands with, if none is specified. |
 | successEmoji (optional) | "<:string:emojiID>" | Emoji that the bot will use as a success symbol in all servers. See `/assets/greentick.png` for an example. You can upload this image as an emoji to any server that the bot is in, as bot accounts have Nitro by default. |
 | failureEmoji (optional) | "<:string:emojiID>" | Emoji that the bot will use as an error symbol in all servers. See `/assets/redcross.png` for an example. You can upload this image as an emoji to any server that the bot is in, as bot accounts have Nitro by default.|
+| logChannel (optional) | "string" | ID of channel where errors and other disgnostic messages will be logged. |
+| backups.channel (optional) | "string" | ID of channel where the bot should automatically back up databases to. |
+| backups.interval (optional) | number | Interval (in ms) that the bot should perform a database backup |
 
 Some additional configuration can be done in `/moode.js` and command-specific configuration can be done later (once the bot is running).
 
