@@ -5,7 +5,7 @@ module.exports = {
 	channels: [],
 	users: [],
 	async process(message) {
-		const regex = /https:\/\/discordapp\.com\/channels\/[0-9]*\/[0-9]*\/[0-9]*/g;
+		const regex = /https:\/\/discord(|app)\.com\/channels\/[0-9]*\/[0-9]*\/[0-9]*/g;
 		const matches = [...new Set(message.content.match(regex))]; // Remove duplicate entries
 		for (let match of matches) {
 			match = match.split("/");
