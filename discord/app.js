@@ -79,13 +79,20 @@ client.on("messageDelete", async (message) => {
 	if (!listen) return;
 	const db = Storage.getDatabase(message.guild.id);
 	if (!db.config.logger || !db.config.logger.logDeletes || !db.config.logger.deletesChannel) return;
+	if (db.config.logger.ignoreChar && message.content.startsWith(db.config.logger.ignoreChar) && db.config.logger.ignoreChan && db.config.logger.ignoreChan.includes(message.channel.id)) return;
+
 	let entry;
 	let user;
 	if (message.guild.me.hasPermission("VIEW_AUDIT_LOG")) {
 		entry = await message.guild.fetchAuditLogs({type: "MESSAGE_DELETE"}).then(audit => audit.entries.first());
-		if (entry.createdTimestamp > (Date.now() - 5000)) user = utilities.parseUserId(entry.executor.id);
+		if (entry && entry.createdTimestamp > (Date.now() - 5000)) user = utilities.parseUserId(entry.executor.id);
 	}
-	if (db.config.logger.ignoreChar && message.content.startsWith(db.config.logger.ignoreChar) && db.config.logger.ignoreChan && db.config.logger.ignoreChan.includes(message.channel.id)) return;
+	let attachmentNum = 0;
+	const attachments = [];
+	for (const attachment of message.attachments) {
+		attachments.push(attachment[1].url);
+		attachmentNum += 1;
+	}
 	let descText = "A message was deleted.";
 	const embed = {
 		color: message.guild.members.cache.get(client.user.id).displayColor,
@@ -93,15 +100,17 @@ client.on("messageDelete", async (message) => {
 		fields: [
 			{name: "Author", value: `${message.author}`, inline: true},
 			{name: "Channel", value: `${message.channel}`, inline: true},
-			{name: "Message", value: `${message.content || "{embed}"}`, inline: true},
+			{name: "Message", value: `${message.content || "(none)"}`, inline: true},
 		],
 		footer: {
 			icon_url: client.user.avatarURL(),
 			text: "moodE",
 		},
 	};
+	if (attachmentNum > 0) embed.fields.push({name: "Attachments", value: `${attachmentNum}`, inline: true});
 	if (user) descText = `A message was deleted by ${user.tag}.`;
-	client.channels.cache.get(db.config.logger.deletesChannel).send(descText, {embed});
+	client.channels.cache.get(db.config.logger.deletesChannel).send(descText, {embed: embed});
+	if (attachmentNum > 0) client.channels.cache.get(db.config.logger.deletesChannel).send("Attachments:", {files: attachments});
 });
 
 client.on("messageUpdate", async (oldMessage, newMessage) => {
