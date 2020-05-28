@@ -5,8 +5,8 @@ module.exports = {
 	aliases: ["reload", "rl"],
 	developerOnly: true,
 	async process(args, room, user) {
-		console.log(`${showdownText}Hot-patching...`);
-		console.log(`${showdownText}--------------`);
+		console.log(`${Tools.showdownText()}Hot-patching...`);
+		console.log(`${Tools.showdownText()}--------------`);
 		Tools.uncacheDir("showdown/");
 		Tools.uncacheDir("sources/");
 

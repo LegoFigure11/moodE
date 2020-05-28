@@ -22,7 +22,7 @@ class CommandHandler {
 	}
 
 	async init(isReload) {
-		console.log(`${showdownText}${isReload ? "Rel" : "L"}oading commands...`);
+		console.log(`${Tools.showdownText()}${isReload ? "Rel" : "L"}oading commands...`);
 		await Promise.all([
 			this.loadDirectory(COMMANDS_DIRECTORY, Commands.ShowdownCommand, "Bot", isReload),
 			this.loadDirectory(CHINESE_COMMANDS_DIRECTORY, Commands.ChineseCommand, "Chinese", isReload),
@@ -39,7 +39,7 @@ class CommandHandler {
 	}
 
 	loadDirectory(directory, Command, type, isReload) {
-		console.log(`${showdownText}${isReload ? "Rel" : "L"}oading ${type.cyan} commands...`);
+		console.log(`${Tools.showdownText()}${isReload ? "Rel" : "L"}oading ${type.cyan} commands...`);
 		return new Promise((resolve, reject) => {
 			fs.readdir(directory, (err, files) => {
 				if (err) {
@@ -65,14 +65,14 @@ class CommandHandler {
 										}
 									}
 								});*/
-								if (!(isReload)) console.log(`${showdownText}${isReload ? "Rel" : "L"}oaded command ${type === "Private" ? (name.charAt(0) + "*****").green : name.green}`);
+								if (!(isReload)) console.log(`${Tools.showdownText()}${isReload ? "Rel" : "L"}oaded command ${type === "Private" ? (name.charAt(0) + "*****").green : name.green}`);
 							} catch (e) {
-								console.log(`${showdownText}${"CommandHandler loadDirectory() error: ".brightRed}${e} while parsing ${name.yellow}${".js".yellow} in ${directory}`);
+								console.log(`${Tools.showdownText()}${"CommandHandler loadDirectory() error: ".brightRed}${e} while parsing ${name.yellow}${".js".yellow} in ${directory}`);
 								console.log(e.stack);
 							}
 						}
 					}
-					console.log(`${showdownText}${type.cyan} commands ${isReload ? "rel" : "l"}oaded!`);
+					console.log(`${Tools.showdownText()}${type.cyan} commands ${isReload ? "rel" : "l"}oaded!`);
 					resolve();
 				}
 			});
@@ -167,7 +167,7 @@ class CommandHandler {
 				}
 
 				const hrStart = process.hrtime();
-				console.log(`${showdownText}Executing command: ${command.name.cyan}`);
+				console.log(`${Tools.showdownText()}Executing command: ${command.name.cyan}`);
 				try {
 					if (command.commandType === "DexCommand") {
 						await command.execute(args, room, user, passDex);
@@ -186,7 +186,7 @@ class CommandHandler {
 				}
 				const hrEnd = process.hrtime(hrStart);
 				const timeString = hrEnd[0] > 3 ? `${hrEnd[0]}s ${hrEnd[1]}ms`.brightRed : `${hrEnd[0]}s ${hrEnd[1]}ms`.grey;
-				console.log(`${showdownText}Executed command: ${command.name.green} in ${timeString}`);
+				console.log(`${Tools.showdownText()}Executed command: ${command.name.green} in ${timeString}`);
 			}
 		}
 	}
@@ -194,7 +194,7 @@ class CommandHandler {
 	helpCommand(message, room, user, time) {
 		const hrStart = process.hrtime();
 		const commandsList = room.id === "chinese" ? this.chineseCommands : this.commands;
-		console.log(`${showdownText}Executing command: ${"help".cyan}`);
+		console.log(`${Tools.showdownText()}Executing command: ${"help".cyan}`);
 		const botCommands = [];
 		const devCommands = [];
 		const dexCommands = [];
@@ -221,7 +221,7 @@ class CommandHandler {
 			}
 			const hrEnd = process.hrtime(hrStart);
 			const timeString = hrEnd[0] > 3 ? `${hrEnd[0]}s ${hrEnd[1]}ms`.brightRed : `${hrEnd[0]}s ${hrEnd[1]}ms`.grey;
-			console.log(`${showdownText}Executed command: ${"help".green} in ${timeString}`);
+			console.log(`${Tools.showdownText()}Executed command: ${"help".green} in ${timeString}`);
 			if (botCommands.length > 0) {
 				user.say("**Bot commands**");
 				for (const line of botCommands) user.say(line);
@@ -261,7 +261,7 @@ class CommandHandler {
 		}
 		const hrEnd = process.hrtime(hrStart);
 		const timeString = hrEnd[0] > 3 ? `${hrEnd[0]}s ${hrEnd[1]}ms`.brightRed : `${hrEnd[0]}s ${hrEnd[1]}ms`.grey;
-		console.log(`${showdownText}Executed command: ${"help".green} in ${timeString}`);
+		console.log(`${Tools.showdownText()}Executed command: ${"help".green} in ${timeString}`);
 		for (const line of sendMsg) user.say(line);
 		return;
 	}

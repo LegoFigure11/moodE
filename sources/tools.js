@@ -326,6 +326,22 @@ class Tools {
 		return (text.toString ? text.toString() : JSON.stringify(text));
 	}
 
+	discordText() {
+		return `[${new Date().toTimeString().split(" ")[0]}] Discord-Bot: `.yellow;
+	}
+
+	moodeText() {
+		return `[${new Date().toTimeString().split(" ")[0]}] moodE: `.yellow;
+	}
+
+	pokemonShowdownText() {
+		return `[${new Date().toTimeString().split(" ")[0]}] pokemon-showdown: `.yellow;
+	}
+
+	showdownText() {
+		return `[${new Date().toTimeString().split(" ")[0]}] PS-Bot: `.yellow;
+	}
+
 	/**
   * @param {any} text
   * @return {string}

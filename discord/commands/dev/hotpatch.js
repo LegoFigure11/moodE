@@ -8,8 +8,8 @@ module.exports = {
 	async process(message, args) {
 		let silent;
 		if (args[0]) silent = true;
-		console.log(`${discordText}Hot-patching ${silent ? "(silently)".grey : ""}...`);
-		console.log(`${discordText}--------------`);
+		console.log(`${Tools.discordText()}Hot-patching ${silent ? "(silently)".grey : ""}...`);
+		console.log(`${Tools.discordText()}--------------`);
 		Tools.uncacheDir("discord/");
 		Tools.uncacheDir("sources/");
 

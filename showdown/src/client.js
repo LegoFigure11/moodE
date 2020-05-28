@@ -63,23 +63,23 @@ class Client {
 		if (error) console.log(error.stack);
 		reconnections++;
 		const retryTime = BASE_RECONNECT_SECONDS * reconnections;
-		console.log(`${showdownText}Failed to connect to server ${server.brightRed}\n${showdownText}(Retrying in ${(retryTime).cyan} seconds${reconnections > 1 ? " (" + reconnections + ")" : ""})`);
+		console.log(`${Tools.showdownText()}Failed to connect to server ${server.brightRed}\n${Tools.showdownText()}(Retrying in ${(retryTime).cyan} seconds${reconnections > 1 ? " (" + reconnections + ")" : ""})`);
 		this.connectTimeout = setTimeout(() => this.connect(), retryTime * 1000);
 	}
 
 	onConnectionError(error) {
-		console.log(`${showdownText}Connection error: ${error.stack}`);
+		console.log(`${Tools.showdownText()}Connection error: ${error.stack}`);
 	}
 
 	onConnectionClose(code, description) {
 		if (this.connectTimeout) clearTimeout(this.connectTimeout);
 		let reconnectTime;
 		if (this.lockdown) {
-			console.log(`${showdownText}Connection closed: the server restarted!`);
+			console.log(`${Tools.showdownText()}Connection closed: the server restarted!`);
 			reconnections = 0;
 			reconnectTime = 15;
 		} else {
-			console.log(`${showdownText}Connection closed: ${description} (${code})`);
+			console.log(`${Tools.showdownText()}Connection closed: ${description} (${code})`);
 			reconnections++;
 			reconnectTime = BASE_RECONNECT_SECONDS * reconnections;
 		}
@@ -90,7 +90,7 @@ class Client {
 	}
 
 	onConnect() {
-		console.log(`${showdownText}Successfully connected to ${server.cyan}`);
+		console.log(`${Tools.showdownText()}Successfully connected to ${server.cyan}`);
 	}
 
 	connect() {
@@ -117,16 +117,16 @@ class Client {
 						return;
 					}
 				}
-				console.log(`${showdownText}${"Error".brightRed}: failed to get data for server ${server}`);
+				console.log(`${Tools.showdownText()}${"Error".brightRed}: failed to get data for server ${server}`);
 			});
 		}).on("error", error => {
-			console.log(`${showdownText}${"Error".brightRed}: ${error.message}`);
+			console.log(`${Tools.showdownText()}${"Error".brightRed}: ${error.message}`);
 		});
 
 		this.connectTimeout = setTimeout(() => this.onConnectFail(), 30 * 1000);
 	}
 	login() {
-		console.log(`${showdownText}Logging in to ${server.cyan}`);
+		console.log(`${Tools.showdownText()}Logging in to ${server.cyan}`);
 		const action = url.parse(`https://play.pokemonshowdown.com/~~${this.serverId}/action.php`);
 		const options = {
 			hostname: action.hostname,
@@ -165,17 +165,17 @@ class Client {
 			});
 			response.on("end", () => {
 				if (data === ";") {
-					console.log(`${showdownText}Failed to log in: invalid password`);
+					console.log(`${Tools.showdownText()}Failed to log in: invalid password`);
 					process.exit();
 				} else if (data.charAt(0) !== "]") {
-					console.log(`${showdownText}Failed to log in: ${data}`);
+					console.log(`${Tools.showdownText()}Failed to log in: ${data}`);
 					process.exit();
 				} else if (data.startsWith("<!DOCTYPE html>")) {
-					console.log(`${showdownText}Failed to log in: connection timed out. Trying again in ${RELOGIN_SECONDS.cyan} seconds`);
+					console.log(`${Tools.showdownText()}Failed to log in: connection timed out. Trying again in ${RELOGIN_SECONDS.cyan} seconds`);
 					setTimeout(() => this.login(), RELOGIN_SECONDS * 1000);
 					return;
 				} else if (data.includes("heavy load")) {
-					console.log(`${showdownText}Failed to log in: the login server is under heavy load. Trying again in ${RELOGIN_SECONDS.cyan} seconds`);
+					console.log(`${Tools.showdownText()}Failed to log in: the login server is under heavy load. Trying again in ${RELOGIN_SECONDS.cyan} seconds`);
 					setTimeout(() => this.login(), RELOGIN_SECONDS * 1000);
 					return;
 				} else {
@@ -184,7 +184,7 @@ class Client {
 						if (assertion.actionsuccess && assertion.assertion) {
 							data = assertion.assertion;
 						} else {
-							console.log(`${showdownText}Failed to log in: ${JSON.stringify(assertion)}`);
+							console.log(`${Tools.showdownText()}Failed to log in: ${JSON.stringify(assertion)}`);
 							process.exit();
 						}
 					}
@@ -193,7 +193,7 @@ class Client {
 			});
 		});
 
-		request.on("error", error => console.log(`${showdownText}Login error: ${error.stack}`));
+		request.on("error", error => console.log(`${Tools.showdownText()}Login error: ${error.stack}`));
 
 		if (postData) request.write(postData);
 		request.end();

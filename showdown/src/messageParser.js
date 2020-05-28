@@ -38,14 +38,14 @@ class MessageParser {
 	}
 
 	async init(isReload) {
-		console.log(`${showdownText}${isReload ? "Rel" : "L"}oading rules...`);
+		console.log(`${Tools.showdownText()}${isReload ? "Rel" : "L"}oading rules...`);
 		await Promise.all([
 			this.loadDirectory(RULES_DIRECTORY, Rules.Rule, isReload),
 		]);
 	}
 
 	loadDirectory(directory, Rule, isReload) {
-		console.log(`${showdownText}${isReload ? "Rel" : "L"}oading ${"Message Parser".cyan} rules...`);
+		console.log(`${Tools.showdownText()}${isReload ? "Rel" : "L"}oading ${"Message Parser".cyan} rules...`);
 		return new Promise((resolve, reject) => {
 			fs.readdir(directory, (err, files) => {
 				if (err) {
@@ -59,13 +59,13 @@ class MessageParser {
 								name = name.slice(0, -3); // remove extention
 								const rule = new Rule(name, require(directory + "/" + name + ".js"));
 								this.rules.push(rule);
-								if (!(isReload)) console.log(`${showdownText}${isReload ? "Rel" : "L"}oaded rule ${name.green}`);
+								if (!(isReload)) console.log(`${Tools.showdownText()}${isReload ? "Rel" : "L"}oaded rule ${name.green}`);
 							} catch (e) {
-								console.log(`${showdownText}${"MessageParser loadDirectory() error: ".brightRed} ${e} while parsing ${name.yellow}${".js".yellow} in ${directory}`);
+								console.log(`${Tools.showdownText()}${"MessageParser loadDirectory() error: ".brightRed} ${e} while parsing ${name.yellow}${".js".yellow} in ${directory}`);
 							}
 						}
 					}
-					console.log(`${showdownText}${"Message Parser".cyan} rules ${isReload ? "rel" : "l"}oaded!`);
+					console.log(`${Tools.showdownText()}${"Message Parser".cyan} rules ${isReload ? "rel" : "l"}oaded!`);
 					resolve();
 				}
 			});
@@ -104,11 +104,11 @@ class MessageParser {
 
 			if (psClient.connectTimeout) clearTimeout(psClient.connectTimeout);
 			if (splitMessage[1] !== "1") {
-				console.log(`${showdownText}${"Failed to log in.".brightRed}`);
+				console.log(`${Tools.showdownText()}${"Failed to log in.".brightRed}`);
 				process.exit();
 			}
 
-			console.log(`${showdownText}Successfully logged in!`);
+			console.log(`${Tools.showdownText()}Successfully logged in!`);
 			if (psConfig.rooms) {
 				if (!(psConfig.rooms instanceof Array)) throw new Error("psConfig.rooms must be an array");
 				for (const room of psConfig.rooms) {
@@ -119,11 +119,11 @@ class MessageParser {
 			break;
 		case "init":
 			room.onJoin(psUsers.self, " ");
-			console.log(`${showdownText}Joined room: ${room.id.green}`);
+			console.log(`${Tools.showdownText()}Joined room: ${room.id.green}`);
 			if (!room.id.includes("battle-")) utilities.checkForDb(room.id, "{}");
 			break;
 		case "noinit":
-			console.log(`${showdownText}Could not join room: ${room.id.brightRed}`);
+			console.log(`${Tools.showdownText()}Could not join room: ${room.id.brightRed}`);
 			psRooms.destroy(room);
 			break;
 		case "deinit":

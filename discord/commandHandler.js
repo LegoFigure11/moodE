@@ -23,7 +23,7 @@ class CommandHandler {
 	}
 
 	async init(isReload) {
-		console.log(`${discordText}${isReload ? "Rel" : "L"}oading commands...`);
+		console.log(`${Tools.discordText()}${isReload ? "Rel" : "L"}oading commands...`);
 		await Promise.all([
 			this.loadDirectory(COMMANDS_DIRECTORY, Commands.DiscordCommand, "Bot", isReload),
 			this.loadDirectory(DEV_COMMANDS_DIRECTORY, Commands.DevCommand, "Dev", isReload),
@@ -36,7 +36,7 @@ class CommandHandler {
 	}
 
 	loadDirectory(directory, Command, type, isReload) {
-		console.log(`${discordText}${isReload ? "Rel" : "L"}oading ${type.cyan} commands...`);
+		console.log(`${Tools.discordText()}${isReload ? "Rel" : "L"}oading ${type.cyan} commands...`);
 		return new Promise((resolve, reject) => {
 			fs.readdir(directory, (err, files) => {
 				if (err) {
@@ -60,13 +60,13 @@ class CommandHandler {
 										}
 									}
 								});
-								if (!(isReload)) console.log(`${discordText}${isReload ? "Rel" : "L"}oaded command ${type === "NSFW" ? (name.charAt(0) + "*****").green : name.green}`);
+								if (!(isReload)) console.log(`${Tools.discordText()}${isReload ? "Rel" : "L"}oaded command ${type === "NSFW" ? (name.charAt(0) + "*****").green : name.green}`);
 							} catch (e) {
 								console.log("Discord: ".yellow + "CommandHandler loadDirectory() error: ".brightRed + `${e} while parsing ${name.yellow}${".js".yellow} in ${directory}`);
 							}
 						}
 					}
-					console.log(`${discordText}${type.cyan} commands ${isReload ? "rel" : "l"}oaded!`);
+					console.log(`${Tools.discordText()}${type.cyan} commands ${isReload ? "rel" : "l"}oaded!`);
 					resolve();
 				}
 			});
@@ -165,7 +165,7 @@ class CommandHandler {
 				}
 
 				const hrStart = process.hrtime();
-				console.log(`${discordText}Executing command: ${command.name.cyan}`);
+				console.log(`${Tools.discordText()}Executing command: ${command.name.cyan}`);
 				let commandOutput;
 				try {
 					if (command.commandType === "DexCommand") {
@@ -196,15 +196,15 @@ class CommandHandler {
 					} else {
 						message.channel.send(`${discordConfig.failureEmoji} The command crashed! Please notify the bot owner (and include the output below), or try again later.\n\`\`\`${e}\`\`\``);
 					}
-					console.log(`${discordText}\n${"ERROR".brightRed}: ${e} at ${e.stack}\nfrom command ${command.name}\nwith input ${cmd}\nwith args ${JSON.stringify(args)}\nin ${message.channel.type === "dm" ? "a private message with" : "server " + message.guild.name + " (" + message.guild.id + ") by"} user ${authorId} (${message.author.username}#${message.author.discriminator})`);
+					console.log(`${Tools.discordText()}\n${"ERROR".brightRed}: ${e} at ${e.stack}\nfrom command ${command.name}\nwith input ${cmd}\nwith args ${JSON.stringify(args)}\nin ${message.channel.type === "dm" ? "a private message with" : "server " + message.guild.name + " (" + message.guild.id + ") by"} user ${authorId} (${message.author.username}#${message.author.discriminator})`);
 					commandOutput = false;
 				}
 				if (commandOutput || command.hasCustomFormatting) {
 					const hrEnd = process.hrtime(hrStart);
 					const timeString = hrEnd[0] > 3 ? `${hrEnd[0]}s ${hrEnd[1]}ms`.brightRed : `${hrEnd[0]}s ${hrEnd[1]}ms`.grey;
-					console.log(`${discordText}Executed command: ${command.name.green} in ${timeString}`);
+					console.log(`${Tools.discordText()}Executed command: ${command.name.green} in ${timeString}`);
 				} else {
-					console.log(`${discordText}Error parsing command: ${command.name.brightRed} - command function does not return anything!`);
+					console.log(`${Tools.discordText()}Error parsing command: ${command.name.brightRed} - command function does not return anything!`);
 				}
 			}
 		}
@@ -212,7 +212,7 @@ class CommandHandler {
 
 	helpCommand(cmd, message) {
 		const hrStart = process.hrtime();
-		console.log(`${discordText}Executing command: ${"help".cyan}`);
+		console.log(`${Tools.discordText()}Executing command: ${"help".cyan}`);
 		const botCommands = [];
 		const devCommands = [];
 		const dexCommands = [];
@@ -246,7 +246,7 @@ class CommandHandler {
 			}
 			const hrEnd = process.hrtime(hrStart);
 			const timeString = hrEnd[0] > 3 ? `${hrEnd[0]}s ${hrEnd[1]}ms`.brightRed : `${hrEnd[0]}s ${hrEnd[1]}ms`.grey;
-			console.log(`${discordText}Executed command: ${"help".green} in ${timeString}`);
+			console.log(`${Tools.discordText()}Executed command: ${"help".green} in ${timeString}`);
 			if (botCommands.length > 0) message.author.send(`Bot Commands:\n\`\`\`${botCommands.join("\n")}\`\`\``);
 			if (devCommands.length > 0) message.author.send(`Dev Commands:\n\`\`\`${devCommands.join("\n")}\`\`\``);
 			if (dexCommands.length > 0) message.author.send(`Dex Commands:\n\`\`\`${dexCommands.join("\n")}\`\`\``);
@@ -286,7 +286,7 @@ class CommandHandler {
 		sendMsg = "```" + sendMsg + "```";
 		const hrEnd = process.hrtime(hrStart);
 		const timeString = hrEnd[0] > 3 ? `${hrEnd[0]}s ${hrEnd[1]}ms`.brightRed : `${hrEnd[0]}s ${hrEnd[1]}ms`.grey;
-		console.log(`${discordText}Executed command: ${"help".green} in ${timeString}`);
+		console.log(`${Tools.discordText()}Executed command: ${"help".green} in ${timeString}`);
 		return message.channel.send(sendMsg);
 	}
 }

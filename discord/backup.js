@@ -16,7 +16,7 @@ class Backup {
 				backupDatabases();
 			}, BACKUP_INTERVAL);
 		} else {
-			console.log(`${discordText}Automatic database backups disabled.`);
+			console.log(`${Tools.discordText()}Automatic database backups disabled.`);
 		}
 	}
 }
@@ -37,7 +37,7 @@ async function backupDatabases() {
 	});
 
 	file.on("close", async function () {
-		console.log(`${discordText}Database backup complete! ${archive.pointer()} total bytes`);
+		console.log(`${Tools.discordText()}Database backup complete! ${archive.pointer()} total bytes`);
 		await client.channels.cache.get(discordConfig.backups.channel).send(filename, {files: [`${__dirname}/${filename}`]});
 		client.channels.cache.get(discordConfig.backups.channel).send(`\`\`\`${message.join("\n")}\`\`\``);
 		fs.unlinkSync(`${__dirname}/${filename}`);

@@ -20,17 +20,17 @@ client.on("ready", (async () => {
 	try {
 		fs.accessSync(path.resolve(__dirname, "./twitchMonitor.js"));
 		const twitchMonitor = require("./twitchMonitor.js");
-		console.log(`${discordText}Loading ${"TwitchMonitor".cyan}...`);
+		console.log(`${Tools.discordText()}Loading ${"TwitchMonitor".cyan}...`);
 		twitchMonitor.monitorTwitch();
-		console.log(`${discordText}${"TwitchMonitor".cyan} loaded!`);
+		console.log(`${Tools.discordText()}${"TwitchMonitor".cyan} loaded!`);
 	} catch (e) {}
 
 	try {
 		fs.accessSync(path.resolve(__dirname, "./backup.js"));
 		const Backup = require("./backup.js");
-		console.log(`${discordText}Loading ${"Backup".cyan}...`);
+		console.log(`${Tools.discordText()}Loading ${"Backup".cyan}...`);
 		Backup.databases();
-		console.log(`${discordText}${"Backup".cyan} loaded!`);
+		console.log(`${Tools.discordText()}${"Backup".cyan} loaded!`);
 	} catch (e) {}
 
 	global.DiscordMessageParser = require("./messageParser.js");
@@ -41,9 +41,9 @@ client.on("ready", (async () => {
 	global.discordCommandHandler = new DiscordCommandHandler();
 	await discordCommandHandler.init();
 
-	console.log(`${discordText}--------------`);
-	console.log(`${discordText}${"Ready!".green}`);
-	console.log(`${discordText}--------------`);
+	console.log(`${Tools.discordText()}--------------`);
+	console.log(`${Tools.discordText()}${"Ready!".green}`);
+	console.log(`${Tools.discordText()}--------------`);
 
 	if (discordConfig.logChannel) {
 		client.channels.cache.get(discordConfig.logChannel).send(`Bot online! ${discordConfig.commandCharacter === "~" ? "(Local)" : "(Production)"} | Discord: ${runDiscord} | PS: ${runShowdown}`);
@@ -168,7 +168,7 @@ client.on("raw", async (event) => {
 });
 
 client.on("disconnect", (errMsg, code) => {
-	console.log(`${discordText}Bot disconnected with code ${code} for reason: ${errMsg}`);
+	console.log(`${Tools.discordText()}Bot disconnected with code ${code} for reason: ${errMsg}`);
 	client.connect();
 });
 

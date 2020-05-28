@@ -33,7 +33,7 @@ class Utilities {
 	}
 
 	buildDb(id, name) {
-		console.log(`${discordText}Building database for ${name.green}...`);
+		console.log(`${Tools.discordText()}Building database for ${name.green}...`);
 		const db = Storage.getDatabase(id);
 		db.name = name; // Update identifier in case the server has changed name since the last command
 		if (!(db.config.nsfw)) db.config.nsfw = {"allowNSFW": false, "nsfwChannels": []};
@@ -48,7 +48,7 @@ class Utilities {
 		const db = Storage.getDatabase(id);
 		if (!(db.config.commands)) db.config.commands = {};
 		if (!(db.config.commands[cmd])) {
-			console.log(`${discordText}Adding ${type !== "NSFW" ? cmd.green : cmd.charAt(0).green + "*****".green} to ${(client.guilds.cache.get(id).name).cyan} database...`);
+			console.log(`${Tools.discordText()}Adding ${type !== "NSFW" ? cmd.green : cmd.charAt(0).green + "*****".green} to ${(client.guilds.cache.get(id).name).cyan} database...`);
 			db.config.commands[cmd] = {"uses": {"total": 0, "users": {}}, "requiredRoles": [], "bannedUsers": [], "bannedChannels": [], "isElevated": false, "isManager": false};
 		}
 		Storage.exportDatabase(id);

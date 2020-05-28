@@ -12,14 +12,14 @@ class MessageParser {
 	}
 
 	async init(isReload) {
-		console.log(`${discordText}${isReload ? "Rel" : "L"}oading rules...`);
+		console.log(`${Tools.discordText()}${isReload ? "Rel" : "L"}oading rules...`);
 		await Promise.all([
 			this.loadDirectory(RULES_DIRECTORY, Rules.Rule, isReload),
 		]);
 	}
 
 	loadDirectory(directory, Rule, isReload) {
-		console.log(`${discordText}${isReload ? "Rel" : "L"}oading ${"Message Parser".cyan} rules...`);
+		console.log(`${Tools.discordText()}${isReload ? "Rel" : "L"}oading ${"Message Parser".cyan} rules...`);
 		return new Promise((resolve, reject) => {
 			fs.readdir(directory, (err, files) => {
 				if (err) {
@@ -33,13 +33,13 @@ class MessageParser {
 								name = name.slice(0, -3); // remove extention
 								const rule = new Rule(name, require(directory + "/" + name + ".js"));
 								this.rules.push(rule);
-								if (!(isReload)) console.log(`${discordText}${isReload ? "Rel" : "L"}oaded rule ${name.green}`);
+								if (!(isReload)) console.log(`${Tools.discordText()}${isReload ? "Rel" : "L"}oaded rule ${name.green}`);
 							} catch (e) {
 								console.log("Discord: ".yellow + "MessageParser loadDirectory() error: ".brightRed + `${e} while parsing ${name.yellow}${".js".yellow} in ${directory}`);
 							}
 						}
 					}
-					console.log(`${discordText}${"Message Parser".cyan} rules ${isReload ? "rel" : "l"}oaded!`);
+					console.log(`${Tools.discordText()}${"Message Parser".cyan} rules ${isReload ? "rel" : "l"}oaded!`);
 					resolve();
 				}
 			});
