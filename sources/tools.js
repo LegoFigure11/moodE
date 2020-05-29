@@ -327,19 +327,19 @@ class Tools {
 	}
 
 	discordText() {
-		return `[${new Date().toTimeString().split(" ")[0]}] Discord-Bot: `.yellow;
+		return `[${new Date().toTimeString().split(" ")[0]}] `.grey + `Discord-Bot: `.yellow;
 	}
 
 	moodeText() {
-		return `[${new Date().toTimeString().split(" ")[0]}] moodE: `.yellow;
+		return `[${new Date().toTimeString().split(" ")[0]}] `.grey + `moodE: `.yellow;
 	}
 
 	pokemonShowdownText() {
-		return `[${new Date().toTimeString().split(" ")[0]}] pokemon-showdown: `.yellow;
+		return `[${new Date().toTimeString().split(" ")[0]}] `.grey + `pokemon-showdown: `.yellow;
 	}
 
 	showdownText() {
-		return `[${new Date().toTimeString().split(" ")[0]}] PS-Bot: `.yellow;
+		return `[${new Date().toTimeString().split(" ")[0]}] `.grey + `PS-Bot: `.yellow;
 	}
 
 	/**
