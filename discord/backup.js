@@ -4,6 +4,8 @@ const archiver = require("archiver");
 const fs = require("fs");
 const path = require("path");
 
+const utilities = require("./utilities.js");
+
 const databaseDirectory = path.resolve(__dirname, "../databases");
 
 const BACKUP_INTERVAL = discordConfig.backups.interval || 12 * 60 * 60 * 1000; // 12 hours
@@ -24,6 +26,8 @@ class Backup {
 module.exports = new Backup();
 
 async function backupDatabases() {
+	utilities.checkForDb("backup", "{}");
+
 	const filename = `Database backup - ${new Date().toLocaleString("en-GB").replace(/[/:]/g, "-")}.zip`;
 	const file = await fs.createWriteStream(`${__dirname}/${filename}`);
 	const archive = archiver("zip");
@@ -32,6 +36,8 @@ async function backupDatabases() {
 
 	Storage.exportDatabases();
 
+	const backup = Storage.getDatabase("backup");
+
 	archive.on("error", function (e) {
 		throw e;
 	});
@@ -39,7 +45,7 @@ async function backupDatabases() {
 	file.on("close", async function () {
 		console.log(`${Tools.discordText()}Database backup complete! ${archive.pointer()} total bytes`);
 		await client.channels.cache.get(discordConfig.backups.channel).send(filename, {files: [`${__dirname}/${filename}`]});
-		client.channels.cache.get(discordConfig.backups.channel).send(`\`\`\`${message.join("\n")}\`\`\``);
+		client.channels.cache.get(discordConfig.backups.channel).send(`Changes: ${message.length > 0 ? "```" + message.join("\n") + "```" : "None!"}`);
 		fs.unlinkSync(`${__dirname}/${filename}`);
 	});
 
@@ -47,11 +53,42 @@ async function backupDatabases() {
 
 	await fs.readdir(databaseDirectory, (err, files) => {
 		for (const file of files) {
-			archive.append(fs.createReadStream(`${databaseDirectory}/${file}`), {name: file});
-			if (file.endsWith(".json")) message.push(`${file} - ${formatBytes(fs.statSync(`${databaseDirectory}/${file}`).size)}`);
+			const dir = `${databaseDirectory}/${file}`;
+			archive.append(fs.createReadStream(dir), {name: file});
+
+			if (file.endsWith(".json") && file !== "backup.json") {
+				const guild = parseGuildId(file);
+				const size = fs.statSync(dir).size;
+
+				if (backup[file]) {
+					if (size > backup[file]) {
+						if (guild) {
+							message.push(`${file} (${guild.name}) - ${formatBytes(size)} (+${formatBytes(size - backup[file])})`);
+						} else {
+							message.push(`${file} - ${formatBytes(size)} (+${formatBytes(size - backup[file])})`);
+						}
+					}
+				} else {
+					if (guild) {
+						message.push(`${file} (${guild.name}) - ${formatBytes(size)} (+${formatBytes(size)})`);
+					} else {
+						message.push(`${file} - ${formatBytes(size)} (+${formatBytes(size)})`);
+					}
+				}
+				backup[file] = size;
+				Storage.exportDatabase("backup");
+			}
 		}
 		archive.finalize();
 	});
+}
+
+function parseGuildId(input) {
+	input = input.split(".json")[0];
+	if (client.guilds.cache.get(input)) {
+		return client.guilds.cache.get(input);
+	}
+	return undefined;
 }
 
 // From https://stackoverflow.com/a/18650828/13258354
