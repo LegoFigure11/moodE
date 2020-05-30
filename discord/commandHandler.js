@@ -14,6 +14,7 @@ const FC_COMMANDS_DIRECTORY = path.resolve(__dirname, "./commands/fc/");
 const JOKE_COMMANDS_DIRECTORY = path.resolve(__dirname, "./commands/joke/");
 const MANAGEMENT_COMMANDS_DIRECTORY = path.resolve(__dirname, "./commands/management/");
 const NSFW_COMMANDS_DIRECTORY = path.resolve(__dirname, "./commands/nsfw/");
+const RNG_COMMANDS_DIRECTORY = path.resolve(__dirname, "./commands/rng/");
 
 const databaseDirectory = path.resolve(__dirname, "../databases");
 
@@ -32,6 +33,7 @@ class CommandHandler {
 			this.loadDirectory(JOKE_COMMANDS_DIRECTORY, Commands.JokeCommand, "Joke", isReload),
 			this.loadDirectory(MANAGEMENT_COMMANDS_DIRECTORY, Commands.ManagementCommand, "Management", isReload),
 			this.loadDirectory(NSFW_COMMANDS_DIRECTORY, Commands.NsfwCommand, "NSFW", isReload),
+			this.loadDirectory(RNG_COMMANDS_DIRECTORY, Commands.DiscordCommand, "RNG", isReload),
 		]);
 	}
 
