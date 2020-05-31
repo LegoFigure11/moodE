@@ -13,7 +13,7 @@ class LCRNG {
 		for (let i = 0; i < times; i++) {
 			seed = this.unsign(Math.imul(seed, this.mult));
 			seed = this.unsign(seed + this.add);
-			seed = this.unsign(seed ^ 0x100000000);
+			seed = this.unsign(seed & 0xFFFFFFFF);
 			this.seed = seed;
 		}
 		return converter.decToHex(seed + "");
