@@ -5,6 +5,7 @@ module.exports = {
 	usage: "<PID (Hex)>, <TID (Dec)>",
 	aliases: ["sid4shiny", "square"],
 	async process(message, args) {
+		if (!args[1]) return message.channel.send(this.usage);
 		const decPid = parseInt(args[0], 16);
 		const decTid = parseInt(args[1]);
 
