@@ -1,5 +1,6 @@
 "use strict";
 
+const LCRNG = require("../../../sources/rng/lcrng.js"); // eslint-disable-line
 const utilities = require("../../src/utilities.js"); // eslint-disable-line
 
 module.exports = {
