@@ -19,6 +19,6 @@ module.exports = {
 		const square = pid16High ^ pid16Low ^ decTid;
 		const rangeLow = 8 * Math.floor(square / 8);
 
-		return message.channel.send(`SID range for shiny: ${rangeLow} - ${rangeLow + 7}\nSID to force Square Shiny: ${square}`);
+		return message.channel.send(`SID range for shiny: ${rangeLow} - ${rangeLow + 7}\nSID to force square shiny: ${square}`);
 	},
 };
