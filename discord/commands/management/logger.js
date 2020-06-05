@@ -22,7 +22,7 @@ module.exports = {
 			message.channel.send(`${successEmoji} Disabled event logging!`);
 			break;
 		default:
-			message.channel.send(`Currently logging events: ${db.config.logger ? db.config.logger.logDeletes + " in channel: " + utilities.parseChannelId(message, db.config.logger.deletesChannel).name : "false"}`);
+			message.channel.send(`Currently logging events: ${db.config.logger ? `${db.config.logger.logDeletes} in channel: ${utilities.parseChannelId(message, db.config.logger.deletesChannel).name}` : "false"}`);
 		}
 		Storage.exportDatabase(message.guild.id);
 		return true;

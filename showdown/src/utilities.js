@@ -23,7 +23,7 @@ class Utilities {
 		if (!(db.config.commands[cmd])) db.config.commands[cmd] = {"uses": {"total": 0, "users": {}}, "requiredRoles": [], "bannedUsers": [], "bannedChannels": [], "isElevated": false, "isManager": false};
 		if (!(db.config.commands[cmd].uses.users[message.author.id])) db.config.commands[cmd].uses.users[message.author.id] = {};
 
-		db.config.commands[cmd].uses.users[message.author.id].name = message.author.username + "#" + message.author.discriminator; // Update identifier in case Username has changed since last time
+		db.config.commands[cmd].uses.users[message.author.id].name = `${message.author.username}#${message.author.discriminator}`; // Update identifier in case Username has changed since last time
 		if (!(db.config.commands[cmd].uses.users[message.author.id].times)) db.config.commands[cmd].uses.users[message.author.id].times = 0;
 		db.config.commands[cmd].uses.total += 1;
 		db.config.commands[cmd].uses.users[message.author.id].times += 1;

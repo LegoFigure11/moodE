@@ -58,7 +58,7 @@ module.exports = {
 				abilitiesStr.push(pokemon.abilities["1"]);
 			}
 			if (pokemon.abilities["H"]) {
-				abilitiesStr.push(pokemon.abilities["H"] + " (Hidden" + (pokemon.unreleasedHidden ? " [Unreleased]" : "") + ")");
+				abilitiesStr.push(`${pokemon.abilities["H"]} (Hidden${pokemon.unreleasedHidden ? " [Unreleased]" : ""})`);
 			}
 			abilitiesStr.length === 1 ? abilitiesStr = 'Ability: ' + abilitiesStr[0] : abilitiesStr = `Abilities: ${abilitiesStr.join(", ")}`; //eslint-disable-line
 		}
@@ -156,7 +156,7 @@ module.exports = {
 
 		const embed = {
 			title: pokemon.name,
-			description: `HP: ${pokemon.baseStats.hp} / Atk: ${pokemon.baseStats.atk} / Def: ${pokemon.baseStats.def} / SpA: ${pokemon.baseStats.spa} / SpD: ${pokemon.baseStats.spd} / Spe: ${pokemon.baseStats.spe} (Total: ${bst})\n${abilitiesStr}\n${"Weight: " + pokemon.weightkg + "kg (" + lowKickCalcs(pokemon.weightkg) + " BP); Height: " + pokemon.heightm + "m"}`,
+			description: `HP: ${pokemon.baseStats.hp} / Atk: ${pokemon.baseStats.atk} / Def: ${pokemon.baseStats.def} / SpA: ${pokemon.baseStats.spa} / SpD: ${pokemon.baseStats.spd} / Spe: ${pokemon.baseStats.spe} (Total: ${bst})\n${abilitiesStr}\n${`Weight: ${pokemon.weightkg}kg (${lowKickCalcs(pokemon.weightkg)} BP); Height: ${pokemon.heightm}m`}`,
 			url: `https://www.smogon.com/dex/${utilities.toSmogonString(dex.gen)}/pokemon/${(pokemon.name.split(" ").join("-")).toLowerCase()}/`,
 			author: {
 				name: `#${pokemon.num} - ${pokemon.name} [${pokemon.types.join("/")}]`,

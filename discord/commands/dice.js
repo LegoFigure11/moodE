@@ -63,7 +63,7 @@ module.exports = {
 		let maxRoll = 0;
 		let minRoll = Number.MAX_SAFE_INTEGER;
 
-		const trackRolls = diceQuantity * (("" + diceFaces).length + 1) <= 60;
+		const trackRolls = diceQuantity * ((`${diceFaces}`).length + 1) <= 60;
 		const rolls = [];
 		let rollSum = 0;
 
@@ -87,11 +87,11 @@ module.exports = {
 		// Reply with relevant information
 
 		let offsetFragment = "";
-		if (offset) offsetFragment += (offset > 0 ? " + " + offset : offset);
+		if (offset) offsetFragment += (offset > 0 ? ` + ${offset}` : offset);
 
 		if (diceQuantity === 1) return message.channel.send(`Rolling (1 to ${diceFaces})${offsetFragment}: ${rollSum}`);
 		const outlierFragment = removeOutlier ? ` except ${removeOutlier > 0 ? "highest" : "lowest"}` : ``;
-		const rollsFragment = trackRolls ? ": " + rolls.join(", ") : "";
+		const rollsFragment = trackRolls ? `: ${rolls.join(", ")}` : "";
 		return message.channel.send(
 			`\`\`\`${diceQuantity} rolls (1 to ${diceFaces})${rollsFragment}\nSum${offsetFragment}${outlierFragment}: ${rollSum}\`\`\``
 		);

@@ -51,7 +51,7 @@ class CommandHandler {
 						if (name.endsWith(".js")) {
 							try {
 								name = name.slice(0, -3); // remove extention
-								const command = new Command(name, require(directory + "/" + name + ".js"));
+								const command = new Command(name, require(`${directory}/${name}.js`));
 
 								if (command.commandType !== "ChineseCommand") this.commands.push(command);
 								this.chineseCommands.push(command);
@@ -65,7 +65,7 @@ class CommandHandler {
 										}
 									}
 								});*/
-								if (!(isReload)) console.log(`${Tools.showdownText()}${isReload ? "Rel" : "L"}oaded command ${type === "Private" ? (name.charAt(0) + "*****").green : name.green}`);
+								if (!(isReload)) console.log(`${Tools.showdownText()}${isReload ? "Rel" : "L"}oaded command ${type === "Private" ? (`${name.charAt(0)}*****`).green : name.green}`);
 							} catch (e) {
 								console.log(`${Tools.showdownText()}${"CommandHandler loadDirectory() error: ".brightRed}${e} while parsing ${name.yellow}${".js".yellow} in ${directory}`);
 								console.log(e.stack);
@@ -177,11 +177,11 @@ class CommandHandler {
 				} catch (e) {
 					let stack = e.stack;
 					stack += "Additional information:\n";
-					stack += "Command = " + command.name + "\n";
-					stack += "Args = " + args + "\n";
-					stack += "Time = " + new Date(time).toLocaleString() + "\n";
-					stack += "User = " + user.name + "\n";
-					stack += "Room = " + (room instanceof psUsers.User ? "in PM" : room.id);
+					stack += `Command = ${command.name}\n`;
+					stack += `Args = ${args}\n`;
+					stack += `Time = ${new Date(time).toLocaleString()}\n`;
+					stack += `User = ${user.name}\n`;
+					stack += `Room = ${room instanceof psUsers.User ? "in PM" : room.id}`;
 					console.log(stack);
 				}
 				const hrEnd = process.hrtime(hrStart);
@@ -205,7 +205,7 @@ class CommandHandler {
 			for (let i = 0; i < commandsList.length; i++) {
 				const command = commandsList[i];
 				if (!command.disabled && command.commandType !== "PrivateCommand") {
-					const cmdText = `${psConfig.commandCharacter}${command.name}${command.desc ? " - " + command.desc : ""}`;
+					const cmdText = `${psConfig.commandCharacter}${command.name}${command.desc ? ` - ${command.desc}` : ""}`;
 					switch (command.commandType) {
 					case "BotCommand":
 						botCommands.push(cmdText);
@@ -250,9 +250,9 @@ class CommandHandler {
 
 		sendMsg = [
 			`Help for: ${command.name}`,
-			`Usage: \`\`${psConfig.commandCharacter}${command.name}${command.usage.length > 0 ? " " + command.usage : ""}\`\``,
+			`Usage: \`\`${psConfig.commandCharacter}${command.name}${command.usage.length > 0 ? ` ${command.usage}` : ""}\`\``,
 			`Description: ${command.longDesc}`,
-			`${command.aliases.length > 0 ? "Aliases: " + command.aliases.join(", ") : ""}`,
+			`${command.aliases.length > 0 ? `Aliases: ${command.aliases.join(", ")}` : ""}`,
 		];
 		if (command.options) {
 			for (let i = 0; i < command.options.length; i++) {

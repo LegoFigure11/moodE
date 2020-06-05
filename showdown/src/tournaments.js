@@ -39,7 +39,7 @@ class Tournaments {
 		if (room.id in this.tournamentTimers) clearTimeout(this.tournamentTimers[room.id]);
 		if (!cap) cap = this.defaultCap;
 		this.tournamentTimers[room.id] = setTimeout(() => {
-			room.say("/tour new " + formatid + ", elimination, " + cap);
+			room.say(`/tour new ${formatid}, elimination, ${cap}`);
 			delete this.tournamentTimers[room.id];
 		}, time);
 	}

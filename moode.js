@@ -71,14 +71,14 @@ Storage.importDatabases();
 	if (needsClone) {
 		const hrStart = process.hrtime();
 		console.log(`${Tools.moodeText()}Cloning ${moodeRemote.trim().cyan} (This may take some time!)`);
-		const cmd = await exec("git clone " + moodeRemote).catch(e => console.log(e));
+		const cmd = await exec(`git clone ${moodeRemote}`).catch(e => console.log(e));
 		if (!cmd || cmd.Error) {
 			reject();
 			return;
 		}
 		const hrEnd = process.hrtime(hrStart);
 		const timeString = `${Math.floor(hrEnd[0] / 60)} min ${hrEnd[0] % 60} sec`;
-		console.log(`${Tools.moodeText()}Cloned into ${pokemonShowdown.cyan} ${("(" + timeString + ")").grey}`);
+		console.log(`${Tools.moodeText()}Cloned into ${pokemonShowdown.cyan} ${(`(${timeString})`).grey}`);
 	} else {
 		console.log(`${Tools.moodeText()}No clone required!`);
 	}
@@ -93,7 +93,7 @@ Storage.importDatabases();
 	const moodeSha = fs.readFileSync(moodeShaDir).toString().trim();
 	const currentSha = revParseOutput.stdout.replace("\n", "");
 	if (moodeSha !== currentSha) {
-		console.log(`${Tools.moodeText()}Writing sha... ${("(" + currentSha + ")").grey}`);
+		console.log(`${Tools.moodeText()}Writing sha... ${(`(${currentSha})`).grey}`);
 		fs.writeFileSync(moodeShaDir, currentSha);
 	}
 

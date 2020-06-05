@@ -173,19 +173,19 @@ function list(message, cmd, area) {
 		for (const entry of db[area]) {
 			dbArr.push(`${utilities.parseRoleId(message, entry).name} (${entry})`);
 		}
-		message.channel.send(`${area} (${message.guild.name} - \`${discordConfig.commandCharacter}${cmd}\`)\n\`\`\`${dbArr.length === 0 ? "None!" : "\t• " + dbArr.join("\n\t• ")}\`\`\``);
+		message.channel.send(`${area} (${message.guild.name} - \`${discordConfig.commandCharacter}${cmd}\`)\n\`\`\`${dbArr.length === 0 ? "None!" : `\t• ${dbArr.join("\n\t• ")}`}\`\`\``);
 	}
 	if (area === "bannedUsers") {
 		for (const entry of db[area]) {
 			dbArr.push(`${utilities.parseUserId(entry).username}#${utilities.parseUserId(entry).discriminator} (${entry})`);
 		}
-		message.channel.send(`${area} (${message.guild.name} - \`${discordConfig.commandCharacter}${cmd}\`)\n\`\`\`${dbArr.length === 0 ? "None!" : "\t• " + dbArr.join("\n\t• ")}\`\`\``);
+		message.channel.send(`${area} (${message.guild.name} - \`${discordConfig.commandCharacter}${cmd}\`)\n\`\`\`${dbArr.length === 0 ? "None!" : `\t• ${dbArr.join("\n\t• ")}`}\`\`\``);
 	}
 	if (area === "bannedChannels") {
 		for (const entry of db[area]) {
 			dbArr.push(`${utilities.parseChannelId(message, entry).name} (${entry})`);
 		}
-		message.channel.send(`${area} (${message.guild.name} - \`${discordConfig.commandCharacter}${cmd}\`)\n\`\`\`${dbArr.length === 0 ? "None!" : "\t•" + dbArr.join("\n\t• ")}\`\`\``);
+		message.channel.send(`${area} (${message.guild.name} - \`${discordConfig.commandCharacter}${cmd}\`)\n\`\`\`${dbArr.length === 0 ? "None!" : `\t•${dbArr.join("\n\t• ")}`}\`\`\``);
 	}
 	return true;
 }

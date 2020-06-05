@@ -29,7 +29,7 @@ module.exports = {
 					}
 					const author = `${msg.author.username}#${msg.author.discriminator}`;
 
-					return message.channel.send(`Message from ${author}, posted in ${channel} on ${new Date(msg.createdTimestamp).toUTCString()}${attachmentNum > 0 ? " (with " + attachmentNum + " attachment" + (attachmentNum === 1 ? "" : "s") + ")" : ""}:\n${msg.content}`, {files: attachments});
+					return message.channel.send(`Message from ${author}, posted in ${channel} on ${new Date(msg.createdTimestamp).toUTCString()}${attachmentNum > 0 ? ` (with ${attachmentNum} attachment${attachmentNum === 1 ? "" : "s"})` : ""}:\n${msg.content}`, {files: attachments});
 				});
 			} catch (e) {}
 		}

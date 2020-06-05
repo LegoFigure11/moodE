@@ -45,7 +45,7 @@ async function backupDatabases() {
 	file.on("close", async function () {
 		console.log(`${Tools.discordText()}Database backup complete! ${archive.pointer()} total bytes`);
 		await client.channels.cache.get(discordConfig.backups.channel).send(filename, {files: [`${__dirname}/${filename}`]});
-		client.channels.cache.get(discordConfig.backups.channel).send(`Changes: ${message.length > 0 ? "```" + message.join("\n") + "```" : "None!"}`);
+		client.channels.cache.get(discordConfig.backups.channel).send(`Changes: ${message.length > 0 ? `\`\`\`${message.join("\n")}\`\`\`` : "None!"}`);
 		fs.unlinkSync(`${__dirname}/${filename}`);
 	});
 
@@ -101,5 +101,5 @@ function formatBytes(bytes, decimals = 2) {
 
 	const i = Math.floor(Math.log(bytes) / Math.log(k));
 
-	return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
+	return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
 }

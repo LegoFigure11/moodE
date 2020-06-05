@@ -59,7 +59,7 @@ module.exports = {
 			} else {
 				zStr = `(Z: ${move.zMovePower})`;
 			}
-			zStr = " " + zStr;
+			zStr = ` ${zStr}`;
 		}
 
 		let maxPower = "";
@@ -81,7 +81,7 @@ module.exports = {
 				else if (move.basePower >= 45) maxPower = 100;
 				else maxPower = 90;
 			}
-			maxPower = " (Max Move Power: " + maxPower + ")";
+			maxPower = ` (Max Move Power: ${maxPower})`;
 		}
 
 		let behaviorFlags = "";
@@ -156,7 +156,7 @@ module.exports = {
 
 		const embed = {
 			title: move.name,
-			description: `Base Power: ${move.basePower}${maxPower}${zStr}\nType: ${move.type} | Acc: ${move.accuracy === true ? "--" : move.accuracy} | Category: ${move.category} | PP: ${move.pp} (Max ${Math.floor(move.pp * 1.6)})\n${move.desc || move.shortDesc}${move.priority > 0 ? "\nPriority: +" + move.priority : move.priority < 0 ? "\nPriority: " + move.priority : ""}`,
+			description: `Base Power: ${move.basePower}${maxPower}${zStr}\nType: ${move.type} | Acc: ${move.accuracy === true ? "--" : move.accuracy} | Category: ${move.category} | PP: ${move.pp} (Max ${Math.floor(move.pp * 1.6)})\n${move.desc || move.shortDesc}${move.priority > 0 ? `\nPriority: +${move.priority}` : move.priority < 0 ? `\nPriority: ${move.priority}` : ""}`,
 			url: `https://www.smogon.com/dex/${utilities.toSmogonString(dex.gen)}/moves/${(move.name.split(" ").join("-")).toLowerCase()}/`,
 			author: {
 				name: `${move.name}`,

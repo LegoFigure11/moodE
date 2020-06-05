@@ -21,16 +21,16 @@ module.exports = {
 
 		switch (buffer.length) {
 		case 5:
-			text += buffer[4] + ", ";
+			text += `${buffer[4]}, `;
 			/* falls through */
 		case 4:
-			text += buffer[3] + ", ";
+			text += `${buffer[3]}, `;
 			/* falls through */
 		case 3:
-			text += buffer[2] + ", " + buffer[1] + ", and " + buffer[0];
+			text += `${buffer[2]}, ${buffer[1]}, and ${buffer[0]}`;
 			break;
 		case 2:
-			text += buffer[1] + " and " + buffer[0];
+			text += `${buffer[1]} and ${buffer[0]}`;
 			break;
 		case 1:
 			text += buffer[0];

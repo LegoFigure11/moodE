@@ -63,7 +63,7 @@ class Client {
 		if (error) console.log(error.stack);
 		reconnections++;
 		const retryTime = BASE_RECONNECT_SECONDS * reconnections;
-		console.log(`${Tools.showdownText()}Failed to connect to server ${server.brightRed}\n${Tools.showdownText()}(Retrying in ${(retryTime).cyan} seconds${reconnections > 1 ? " (" + reconnections + ")" : ""})`);
+		console.log(`${Tools.showdownText()}Failed to connect to server ${server.brightRed}\n${Tools.showdownText()}(Retrying in ${(retryTime).cyan} seconds${reconnections > 1 ? ` (${reconnections})` : ""})`);
 		this.connectTimeout = setTimeout(() => this.connect(), retryTime * 1000);
 	}
 
@@ -83,7 +83,7 @@ class Client {
 			reconnections++;
 			reconnectTime = BASE_RECONNECT_SECONDS * reconnections;
 		}
-		console.log(`Reconnecting in ${reconnectTime.cyan} seconds (${reconnections > 1 ? " (" + reconnections + ")" : ""}`);
+		console.log(`Reconnecting in ${reconnectTime.cyan} seconds (${reconnections > 1 ? ` (${reconnections})` : ""}`);
 		psRooms.destroyRooms();
 		psUsers.destroyUsers();
 		this.connectTimeout = setTimeout(() => this.connect(), reconnectTime * 1000);
@@ -150,11 +150,11 @@ class Client {
 			};
 		} else {
 			options.method = "GET";
-			options.path += "?" + querystring.stringify({
+			options.path += `?${querystring.stringify({
 				"act": "getassertion",
 				"userid": Tools.toId(psConfig.username),
 				"challstr": this.challstr,
-			});
+			})}`;
 		}
 
 		const request = https.request(options, response => {

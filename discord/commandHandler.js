@@ -50,7 +50,7 @@ class CommandHandler {
 						if (name.endsWith(".js")) {
 							try {
 								name = name.slice(0, -3); // remove extention
-								const command = new Command(name, require(directory + "/" + name + ".js"));
+								const command = new Command(name, require(`${directory}/${name}.js`));
 								this.commands.push(command);
 								fs.readdir(databaseDirectory, (err, dbs) => {
 									for (let id of dbs) {
@@ -62,9 +62,9 @@ class CommandHandler {
 										}
 									}
 								});
-								if (!(isReload)) console.log(`${Tools.discordText()}${isReload ? "Rel" : "L"}oaded command ${type === "NSFW" ? (name.charAt(0) + "*****").green : name.green}`);
+								if (!(isReload)) console.log(`${Tools.discordText()}${isReload ? "Rel" : "L"}oaded command ${type === "NSFW" ? (`${name.charAt(0)}*****`).green : name.green}`);
 							} catch (e) {
-								console.log("Discord: ".yellow + "CommandHandler loadDirectory() error: ".brightRed + `${e} while parsing ${name.yellow}${".js".yellow} in ${directory}`);
+								console.log(`${"Discord: ".yellow + "CommandHandler loadDirectory() error: ".brightRed}${e} while parsing ${name.yellow}${".js".yellow} in ${directory}`);
 							}
 						}
 					}
@@ -185,7 +185,7 @@ class CommandHandler {
 								{name: "Command", value: `${command.name}`},
 								{name: "Input", value: cmd},
 								{name: "args", value: JSON.stringify(args)},
-								{name: "Server", value: message.channel.type === "dm" ? "Private Message" : message.guild.name + " (" + message.guild.id + ")"},
+								{name: "Server", value: message.channel.type === "dm" ? "Private Message" : `${message.guild.name} (${message.guild.id})`},
 								{name: "User", value: `${authorId} (${message.author.username}#${message.author.discriminator})`},
 							],
 							footer: {
@@ -194,11 +194,11 @@ class CommandHandler {
 							},
 						};
 						client.channels.cache.get(discordConfig.logChannel).send("A command crashed! Stack trace:", {embed});
-						client.channels.cache.get(discordConfig.logChannel).send("```" + e.stack + "```");
+						client.channels.cache.get(discordConfig.logChannel).send(`\`\`\`${e.stack}\`\`\``);
 					} else {
 						message.channel.send(`${discordConfig.failureEmoji} The command crashed! Please notify the bot owner (and include the output below), or try again later.\n\`\`\`${e}\`\`\``);
 					}
-					console.log(`${Tools.discordText()}\n${"ERROR".brightRed}: ${e} at ${e.stack}\nfrom command ${command.name}\nwith input ${cmd}\nwith args ${JSON.stringify(args)}\nin ${message.channel.type === "dm" ? "a private message with" : "server " + message.guild.name + " (" + message.guild.id + ") by"} user ${authorId} (${message.author.username}#${message.author.discriminator})`);
+					console.log(`${Tools.discordText()}\n${"ERROR".brightRed}: ${e} at ${e.stack}\nfrom command ${command.name}\nwith input ${cmd}\nwith args ${JSON.stringify(args)}\nin ${message.channel.type === "dm" ? "a private message with" : `server ${message.guild.name} (${message.guild.id}) by`} user ${authorId} (${message.author.username}#${message.author.discriminator})`);
 					commandOutput = false;
 				}
 				if (commandOutput || command.hasCustomFormatting) {
@@ -226,7 +226,7 @@ class CommandHandler {
 			for (let i = 0; i < this.commands.length; i++) {
 				const command = this.commands[i];
 				if (!command.disabled && !command.isNSFW && command.commandType !== "JokeCommand") {
-					const cmdText = `${discordConfig.commandCharacter}${command.name}${command.desc ? " - " + command.desc : ""}`;
+					const cmdText = `${discordConfig.commandCharacter}${command.name}${command.desc ? ` - ${command.desc}` : ""}`;
 					switch (command.commandType) {
 					case "BotCommand":
 						botCommands.push(cmdText);
@@ -268,24 +268,24 @@ class CommandHandler {
 		if (!matched) return message.author.send(`${failureEmoji} No command "${lookup}" found!`);
 
 		if (command.adminOnly && !isAdmin(message.author.id)) {
-			return "```" + `${command.name} is an admin-only command.` + "```";
+			return `\`\`\`${command.name} is an admin-only command.\`\`\``;
 		}
 		if (command.elevated && !isElevated(message.author.id)) {
-			return "```" + `${command.name} is an elevated-only command.` + "```";
+			return `\`\`\`${command.name} is an elevated-only command.\`\`\``;
 		}
 
 		sendMsg = [
 			command.name,
-			`${discordConfig.commandCharacter}${command.name}${command.usage.length > 0 ? " " + command.usage : ""}`,
+			`${discordConfig.commandCharacter}${command.name}${command.usage.length > 0 ? ` ${command.usage}` : ""}`,
 			command.longDesc,
 			"",
-			`${command.aliases.length > 0 ? "Aliases: " + command.aliases.join(", ") : ""}`,
+			`${command.aliases.length > 0 ? `Aliases: ${command.aliases.join(", ")}` : ""}`,
 		];
 		for (let i = 0; i < command.options.length; i++) {
 			sendMsg.push(`  ${command.options[i].toString()}: ${command.options[i].desc}`);
 		}
 		sendMsg = sendMsg.join("\n");
-		sendMsg = "```" + sendMsg + "```";
+		sendMsg = `\`\`\`${sendMsg}\`\`\``;
 		const hrEnd = process.hrtime(hrStart);
 		const timeString = hrEnd[0] > 3 ? `${hrEnd[0]}s ${hrEnd[1]}ms`.brightRed : `${hrEnd[0]}s ${hrEnd[1]}ms`.grey;
 		console.log(`${Tools.discordText()}Executed command: ${"help".green} in ${timeString}`);

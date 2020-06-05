@@ -31,11 +31,11 @@ class MessageParser {
 						if (name.endsWith(".js")) {
 							try {
 								name = name.slice(0, -3); // remove extention
-								const rule = new Rule(name, require(directory + "/" + name + ".js"));
+								const rule = new Rule(name, require(`${directory}/${name}.js`));
 								this.rules.push(rule);
 								if (!(isReload)) console.log(`${Tools.discordText()}${isReload ? "Rel" : "L"}oaded rule ${name.green}`);
 							} catch (e) {
-								console.log("Discord: ".yellow + "MessageParser loadDirectory() error: ".brightRed + `${e} while parsing ${name.yellow}${".js".yellow} in ${directory}`);
+								console.log(`${"Discord: ".yellow + "MessageParser loadDirectory() error: ".brightRed}${e} while parsing ${name.yellow}${".js".yellow} in ${directory}`);
 							}
 						}
 					}

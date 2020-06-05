@@ -176,7 +176,7 @@ module.exports = {
 };
 
 function noMatch(db, message, dbText, area) {
-	let buf = "```" + `\nCurrent ${area}:`;
+	let buf = `\`\`\`\nCurrent ${area}:`;
 	for (let i = 0; i < db.config[dbText].length; i++) {
 		const user = utilities.parseUserId(db.config[dbText][i]);
 		const chan = utilities.parseChannelId(message, db.config[dbText][i]);
@@ -191,7 +191,7 @@ function noMatch(db, message, dbText, area) {
 
 function nsfwCheck(db, message, dbText, area) {
 	const isNSFW = db.config.nsfw.allowNSFW;
-	let buf = "```" + `\nCurrent ${area}:`;
+	let buf = `\`\`\`\nCurrent ${area}:`;
 	for (let i = 0; i < db.config.nsfw[dbText].length; i++) {
 		const chan = utilities.parseChannelId(message, db.config.nsfw[dbText][i]);
 		if (chan) buf += `\n\t${chan.id} (#${chan.name})`;

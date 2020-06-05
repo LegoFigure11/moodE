@@ -57,7 +57,7 @@ class MessageParser {
 						if (name.endsWith(".js")) {
 							try {
 								name = name.slice(0, -3); // remove extention
-								const rule = new Rule(name, require(directory + "/" + name + ".js"));
+								const rule = new Rule(name, require(`${directory}/${name}.js`));
 								this.rules.push(rule);
 								if (!(isReload)) console.log(`${Tools.showdownText()}${isReload ? "Rel" : "L"}oaded rule ${name.green}`);
 							} catch (e) {
@@ -115,7 +115,7 @@ class MessageParser {
 					psClient.send(`|/join ${room}`);
 				}
 			}
-			if (psConfig.avatar) psClient.send("|/avatar " + psConfig.avatar);
+			if (psConfig.avatar) psClient.send(`|/avatar ${psConfig.avatar}`);
 			break;
 		case "init":
 			room.onJoin(psUsers.self, " ");
@@ -187,7 +187,7 @@ class MessageParser {
 			} else { user.away = false; }
 			user.status = status;
 			if (status.length > 6) {
-				console.log(user.id + ", " + room.id + ": " + status);
+				console.log(`${user.id}, ${room.id}: ${status}`);
 			}
 			splitMessage[0] = splitMessage[0][0] + text;
 			if (!user.alts.includes(Tools.toId(splitMessage[0]))) {
@@ -251,7 +251,7 @@ class MessageParser {
 			switch (splitMessage[0]) {
 			case "create": {
 				const format = Tools.getFormat(splitMessage[1]);
-				if (!format) throw new Error("Unknown format used in tournament (" + splitMessage[1] + ")");
+				if (!format) throw new Error(`Unknown format used in tournament (${splitMessage[1]})`);
 				room.tour = Tournaments.createTournament(room, format, splitMessage[2]);
 				if (splitMessage[3]) room.tour.playerCap = parseInt(splitMessage[3]);
 				if (room.id === "chinese") {
@@ -342,7 +342,7 @@ class MessageParser {
 				break;
 			case "battlestart":
 				if (room.tour && !room.tour.isRoundRobin && room.tour.generator === 1 && room.tour.getRemainingPlayerCount() === 2) {
-					room.say("/wall Final battle of " + room.tour.format.name + " tournament: <<" + splitMessage[3].trim() + ">>");
+					room.say(`/wall Final battle of ${room.tour.format.name} tournament: <<${splitMessage[3].trim()}>>`);
 				}
 				break;
 			}

@@ -265,7 +265,7 @@ class Pokemon extends Effect {
 		 * species and forme.
 		 * @type {string}
 		 */
-		this.spriteid = this.spriteid || (Tools.toId(this.baseSpecies) + (this.baseSpecies !== this.name ? "-" + Tools.toId(this.forme) : ""));
+		this.spriteid = this.spriteid || (Tools.toId(this.baseSpecies) + (this.baseSpecies !== this.name ? `-${Tools.toId(this.forme)}` : ""));
 
 		/**
 		 * Abilities

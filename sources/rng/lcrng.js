@@ -16,11 +16,11 @@ class LCRNG {
 			seed = this.unsign(seed & 0xFFFFFFFF);
 			this.seed = seed;
 		}
-		return converter.decToHex(seed + "");
+		return converter.decToHex(`${seed}`);
 	}
 
 	getNext16BitNumber(seed = this.seed) {
-		return converter.decToHex((this.getNext32BitNumber(seed) >>> 16) + "");
+		return converter.decToHex(`${this.getNext32BitNumber(seed) >>> 16}`);
 	}
 
 	// From X-Act IVs to PID applet

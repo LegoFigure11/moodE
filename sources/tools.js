@@ -95,7 +95,7 @@ class Tools {
 	loadData() {
 		let typeChart;
 		try {
-			typeChart = require(this.dataFilePath + "typechart.js").BattleTypeChart;
+			typeChart = require(`${this.dataFilePath}typechart.js`).BattleTypeChart;
 		} catch (e) {
 			if (e.code !== "MODULE_NOT_FOUND") {
 				throw e;
@@ -123,7 +123,7 @@ class Tools {
 
 		let pokedex;
 		try {
-			pokedex = require(this.dataFilePath + "pokedex.js").BattlePokedex;
+			pokedex = require(`${this.dataFilePath}pokedex.js`).BattlePokedex;
 		} catch (e) {
 			if (e.code !== "MODULE_NOT_FOUND") {
 				throw e;
@@ -137,7 +137,7 @@ class Tools {
 
 		let moves;
 		try {
-			moves = require(this.dataFilePath + "moves.js").BattleMovedex;
+			moves = require(`${this.dataFilePath}moves.js`).BattleMovedex;
 		} catch (e) {
 			if (e.code !== "MODULE_NOT_FOUND") {
 				throw e;
@@ -151,7 +151,7 @@ class Tools {
 
 		let items;
 		try {
-			items = require(this.dataFilePath + "items.js").BattleItems;
+			items = require(`${this.dataFilePath}items.js`).BattleItems;
 		} catch (e) {
 			if (e.code !== "MODULE_NOT_FOUND") {
 				throw e;
@@ -165,7 +165,7 @@ class Tools {
 
 		let abilities;
 		try {
-			abilities = require(this.dataFilePath + "abilities.js").BattleAbilities;
+			abilities = require(`${this.dataFilePath}abilities.js`).BattleAbilities;
 		} catch (e) {
 			if (e.code !== "MODULE_NOT_FOUND") {
 				throw e;
@@ -177,7 +177,7 @@ class Tools {
 	loadAliases() {
 		let aliases;
 		try {
-			aliases = require(this.dataFilePath + "aliases.js").BattleAliases;
+			aliases = require(`${this.dataFilePath}aliases.js`).BattleAliases;
 		} catch (e) {
 			if (e.code !== "MODULE_NOT_FOUND") {
 				throw e;
@@ -191,7 +191,7 @@ class Tools {
 
 		let learnsets;
 		try {
-			learnsets = require(this.dataFilePath + "learnsets.js").BattleLearnsets;
+			learnsets = require(`${this.dataFilePath}learnsets.js`).BattleLearnsets;
 		} catch (e) {
 			if (e.code !== "MODULE_NOT_FOUND") {
 				throw e;
@@ -205,7 +205,7 @@ class Tools {
 
 		let formatsData;
 		try {
-			formatsData = require(this.dataFilePath + "formats-data.js").BattleFormatsData;
+			formatsData = require(`${this.dataFilePath}formats-data.js`).BattleFormatsData;
 		} catch (e) {
 			if (e.code !== "MODULE_NOT_FOUND") {
 				throw e;
@@ -217,7 +217,7 @@ class Tools {
 	loadBadges() {
 		let badges;
 		try {
-			badges = require(this.dataFilePath + "badges.js").BattleBadges;
+			badges = require(`${this.dataFilePath}badges.js`).BattleBadges;
 		} catch (e) {
 			if (e.code !== "MODULE_NOT_FOUND") {
 				throw e;
@@ -229,7 +229,7 @@ class Tools {
 	loadCharacters() {
 		let characters;
 		try {
-			characters = require(this.dataFilePath + "characters.js").BattleCharacters;
+			characters = require(`${this.dataFilePath}characters.js`).BattleCharacters;
 		} catch (e) {
 			if (e.code !== "MODULE_NOT_FOUND") {
 				throw e;
@@ -241,7 +241,7 @@ class Tools {
 	loadTeams() {
 		let teams;
 		try {
-			teams = require(this.dataFilePath + "teams.js").BattlePokeTeams;
+			teams = require(`${this.dataFilePath}teams.js`).BattlePokeTeams;
 		} catch (e) {
 			if (e.code !== "MODULE_NOT_FOUND") {
 				throw e;
@@ -253,7 +253,7 @@ class Tools {
 	loadTrainerClasses() {
 		let trainerClasses;
 		try {
-			trainerClasses = require(this.dataFilePath + "trainer-classes.js").BattleTrainerClasses;
+			trainerClasses = require(`${this.dataFilePath}trainer-classes.js`).BattleTrainerClasses;
 		} catch (e) {
 			if (e.code !== "MODULE_NOT_FOUND") {
 				throw e;
@@ -271,7 +271,7 @@ class Tools {
 		const type = typeof text;
 		if (type !== "string") {
 			if (type === "number") {
-				text = "" + text;
+				text = `${text}`;
 			} else {
 				if (text.id) {
 					text = text.id;
@@ -298,7 +298,7 @@ class Tools {
 		const type = typeof text;
 		if (type !== "string") {
 			if (type === "number") {
-				text = "" + text;
+				text = `${text}`;
 			} else {
 				if (text.name) {
 					text = text.name;
@@ -321,7 +321,7 @@ class Tools {
 	toString(text) {
 		const type = typeof text;
 		if (type === "string") return text;
-		if (type === "number") return "" + text;
+		if (type === "number") return `${text}`;
 		if (!text) return "";
 		return (text.toString ? text.toString() : JSON.stringify(text));
 	}
@@ -387,10 +387,10 @@ class Tools {
 		if (list.length === 1) {
 			return formatting + list[0] + formatting;
 		} else if (list.length === 2) {
-			return formatting + list[0] + formatting + " and " + formatting + list[1] + formatting;
+			return `${formatting + list[0] + formatting} and ${formatting}${list[1]}${formatting}`;
 		} else {
 			const len = list.length - 1;
-			return formatting + list.slice(0, len).join(formatting + ", " + formatting) + formatting + ", and " + formatting + list[len] + formatting;
+			return `${formatting + list.slice(0, len).join(`${formatting}, ${formatting}`) + formatting}, and ${formatting}${list[len]}${formatting}`;
 		}
 	}
 
@@ -402,14 +402,14 @@ class Tools {
 	joinListHtml(list, tag) {
 		if (!list.length) return "";
 		const openingTag = tag;
-		const closingTag = "</" + tag.substr(1);
+		const closingTag = `</${tag.substr(1)}`;
 		if (list.length === 1) {
 			return openingTag + list[0] + closingTag;
 		} else if (list.length === 2) {
-			return openingTag + list[0] + closingTag + " and " + openingTag + list[1] + closingTag;
+			return `${openingTag + list[0] + closingTag} and ${openingTag}${list[1]}${closingTag}`;
 		} else {
 			const len = list.length - 1;
-			return openingTag + list.slice(0, len).join(closingTag + ", " + openingTag) + closingTag + ", and " + openingTag + list[len] + closingTag;
+			return `${openingTag + list.slice(0, len).join(`${closingTag}, ${openingTag}`) + closingTag}, and ${openingTag}${list[len]}${closingTag}`;
 		}
 	}
 
@@ -419,7 +419,7 @@ class Tools {
   */
 	escapeHTML(str) {
 		if (!str) return "";
-		return ("" + str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&apos;").replace(/\//g, "&#x2f;");
+		return (`${str}`).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&apos;").replace(/\//g, "&#x2f;");
 	}
 
 	/**
@@ -428,7 +428,7 @@ class Tools {
   */
 	unescapeHTML(str) {
 		if (!str) return "";
-		return ("" + str).replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, "\"").replace(/&apos;/g, "'").replace(/&#x2f;/g, "/").replace(/&#39;/g, "'").replace(/&#34;/g, "\"");
+		return (`${str}`).replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, "\"").replace(/&apos;/g, "'").replace(/&#x2f;/g, "/").replace(/&#39;/g, "'").replace(/&#34;/g, "\"");
 	}
 
 	/**
@@ -440,12 +440,12 @@ class Tools {
 		text = this.toString(text);
 		if (!text) return "";
 		text = text.trim();
-		if (text.startsWith("/wall ")) text = "/announce " + text.substr(6);
+		if (text.startsWith("/wall ")) text = `/announce ${text.substr(6)}`;
 		if (text.startsWith("/announce ") && (!room || !Users.self.hasRank(room, "%"))) {
 			text = text.substr(10);
-			if (!text.includes("**") && text.length <= 296) text = "**" + text + "**";
+			if (!text.includes("**") && text.length <= 296) text = `**${text}**`;
 		}
-		if (text.length > 300) text = text.substr(0, 297) + "...";
+		if (text.length > 300) text = `${text.substr(0, 297)}...`;
 		return text;
 	}
 
@@ -532,7 +532,7 @@ class Tools {
 	}
 
 	uncacheDir(root) {
-		const absoluteRoot = path.resolve(__dirname, "../" + root);
+		const absoluteRoot = path.resolve(__dirname, `../${root}`);
 		for (const key in require.cache) {
 			if (key.startsWith(absoluteRoot)) {
 				delete require.cache[key];
@@ -556,14 +556,14 @@ class Tools {
 		if (id === "constructor") return null;
 		if (!(id in this.data.pokedex)) {
 			let aliasTo = "";
-			if (id.startsWith("mega") && this.data.pokedex[id.slice(4) + "mega"]) {
-				aliasTo = id.slice(4) + "mega";
-			} else if (id.startsWith("m") && this.data.pokedex[id.slice(1) + "mega"]) {
-				aliasTo = id.slice(1) + "mega";
-			} else if (id.startsWith("primal") && this.data.pokedex[id.slice(6) + "primal"]) {
-				aliasTo = id.slice(6) + "primal";
-			} else if (id.startsWith("p") && this.data.pokedex[id.slice(1) + "primal"]) {
-				aliasTo = id.slice(1) + "primal";
+			if (id.startsWith("mega") && this.data.pokedex[`${id.slice(4)}mega`]) {
+				aliasTo = `${id.slice(4)}mega`;
+			} else if (id.startsWith("m") && this.data.pokedex[`${id.slice(1)}mega`]) {
+				aliasTo = `${id.slice(1)}mega`;
+			} else if (id.startsWith("primal") && this.data.pokedex[`${id.slice(6)}primal`]) {
+				aliasTo = `${id.slice(6)}primal`;
+			} else if (id.startsWith("p") && this.data.pokedex[`${id.slice(1)}primal`]) {
+				aliasTo = `${id.slice(1)}primal`;
 			}
 			if (aliasTo) {
 				const pokemon = this.getPokemon(aliasTo);
@@ -599,7 +599,7 @@ class Tools {
   */
 	getExistingPokemon(name) {
 		const pokemon = this.getPokemon(name);
-		if (!pokemon) throw new Error("Expected Pokemon for '" + name + "'");
+		if (!pokemon) throw new Error(`Expected Pokemon for '${name}'`);
 		return pokemon;
 	}
 
@@ -628,7 +628,7 @@ class Tools {
   */
 	getExistingMove(name) {
 		const move = this.getMove(name);
-		if (!move) throw new Error("Expected move for '" + name + "'");
+		if (!move) throw new Error(`Expected move for '${name}'`);
 		return move;
 	}
 
@@ -657,7 +657,7 @@ class Tools {
   */
 	getExistingItem(name) {
 		const item = this.getItem(name);
-		if (!item) throw new Error("Expected item for '" + name + "'");
+		if (!item) throw new Error(`Expected item for '${name}'`);
 		return item;
 	}
 
@@ -686,7 +686,7 @@ class Tools {
   */
 	getExistingAbility(name) {
 		const ability = this.getAbility(name);
-		if (!ability) throw new Error("Expected ability for '" + name + "'");
+		if (!ability) throw new Error(`Expected ability for '${name}'`);
 		return ability;
 	}
 
@@ -701,8 +701,8 @@ class Tools {
 			name = this.data.aliases[id];
 			id = this.toId(name);
 		}
-		if ("gen" + this.gen + id in psMessageParser.formatsData) {
-			id = "gen" + this.gen + id;
+		if (`gen${this.gen}${id}` in psMessageParser.formatsData) {
+			id = `gen${this.gen}${id}`;
 		}
 		if (id === "constructor" || !(id in psMessageParser.formatsData)) return null;
 		let format = this.FormatCache.get(id);
@@ -718,7 +718,7 @@ class Tools {
   */
 	getExistingFormat(name) {
 		const format = this.getFormat(name);
-		if (!format) throw new Error("Expected format for '" + name + "'");
+		if (!format) throw new Error(`Expected format for '${name}'`);
 		return format;
 	}
 
@@ -805,8 +805,8 @@ class Tools {
 		const positiveIndex = parts.findIndex(elem => elem > 0);
 		const precision = (options && options.precision ? options.precision : parts.length);
 		if (options && options.hhmmss) {
-			const string = parts.slice(positiveIndex).map(value => value < 10 ? "0" + value : "" + value).join(":");
-			return string.length === 2 ? "00:" + string : string;
+			const string = parts.slice(positiveIndex).map(value => value < 10 ? `0${value}` : `${value}`).join(":");
+			return string.length === 2 ? `00:${string}` : string;
 		}
 		// round least significant displayed unit
 		if (positiveIndex + precision < parts.length && precision > 0 && positiveIndex >= 0) {
@@ -814,7 +814,7 @@ class Tools {
 				parts[positiveIndex + precision - 1]++;
 			}
 		}
-		return parts.slice(positiveIndex).reverse().map((value, index) => value ? value + " " + unitNames[index] + (value > 1 ? "s" : "") : "").reverse().slice(0, precision).join(" ").trim();
+		return parts.slice(positiveIndex).reverse().map((value, index) => value ? `${value} ${unitNames[index]}${value > 1 ? "s" : ""}` : "").reverse().slice(0, precision).join(" ").trim();
 	}
 
 	/**
@@ -843,16 +843,16 @@ class Tools {
 					key = pageData.key;
 				} catch (e) {
 					if (/^[^<]*<!DOCTYPE html>/.test(data)) {
-						return callback("Cloudflare-related error uploading to Hastebin: " + e.message);
+						return callback(`Cloudflare-related error uploading to Hastebin: ${e.message}`);
 					} else {
-						return callback("Unknown error uploading to Hastebin: " + e.message);
+						return callback(`Unknown error uploading to Hastebin: ${e.message}`);
 					}
 				}
-				callback("https://hastebin.com/raw/" + key);
+				callback(`https://hastebin.com/raw/${key}`);
 			});
 		});
 
-		request.on("error", error => console.log("Login error: " + error.stack));
+		request.on("error", error => console.log(`Login error: ${error.stack}`));
 
 		if (text) request.write(text);
 		request.end();
@@ -933,7 +933,7 @@ class Tools {
 				let d;
 				for (d = 0; d <= 3; d++) {
 					e = b >>> d * 8 & 255;
-					e = "0" + e.toString(16);
+					e = `0${e.toString(16)}`;
 					c += e.substr(e.length - 2, 2);
 				}
 				return c;
@@ -1081,7 +1081,7 @@ class Tools {
 
 	toHex(x) {
 		const hex = Math.round(x * 255).toString(16);
-		return hex.length === 1 ? "0" + hex : hex;
+		return hex.length === 1 ? `0${hex}` : hex;
 	}
 
 	hashColor(name, type = 0) {

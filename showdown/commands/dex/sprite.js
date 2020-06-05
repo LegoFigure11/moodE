@@ -57,7 +57,7 @@ module.exports = {
 			dir += "-shiny";
 		}
 		if (Tools.toId(args).includes("afd")) {
-			dir = "afd" + dir;
+			dir = `afd${dir}`;
 			return `${SPRITE_URL}${dir}/${spriteId}.png`;
 		}
 
