@@ -13,6 +13,7 @@ module.exports = {
 			try {
 				const oldRole = message.guild.roles.cache.find(role => role.id === db.customRoles[message.author.id].roleId);
 				if (oldRole) await oldRole.delete("Old custom color role");
+				message.channel.send(`${discordConfig.successEmoji} Successfully removed your custom role!`);
 			} catch (e) {
 				message.channel.send(`${discordConfig.failureEmoji} Something went wrong deleting your old role!`);
 			}
