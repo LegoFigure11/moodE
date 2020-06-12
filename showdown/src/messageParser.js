@@ -196,6 +196,27 @@ class MessageParser {
 			if (!user.alts.includes(Tools.toId(splitMessage[1]))) {
 				user.alts.push(Tools.toId(splitMessage[1]));
 			}
+			utilities.checkForDb("alts", "{}");
+			const alts = Storage.getDatabase("alts");
+			let match0 = false;
+			let match1 = false;
+			for (let id = 0; id < alts.length; id++) {
+				if (alts[id].includes(Tools.toId(splitMessage[0]))) {
+					match0 = true;
+				}
+				if (alts[id].includes(Tools.toId(splitMessage[1]))) {
+					match1 = true;
+				}
+			}
+			if (!match0) {
+				if (!alts[user.id]) alts[user.id] = [];
+				if (!alts[user.id].includes(Tools.toId(splitMessage[0]))) alts[user.id].push(Tools.toId(splitMessage[0]));
+			}
+			if (!match1) {
+				if (!alts[user.id]) alts[user.id] = [];
+				if (!alts[user.id].includes(Tools.toId(splitMessage[1]))) alts[user.id].push(Tools.toId(splitMessage[1]));
+			}
+			Storage.exportDatabase("alts");
 			room.onRename(user, splitMessage[0]);
 			utilities.checkForDb("mail", "{}");
 			const db = Storage.getDatabase("mail");
