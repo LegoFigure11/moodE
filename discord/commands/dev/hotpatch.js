@@ -17,6 +17,10 @@ module.exports = {
 		Storage.importDatabases();
 		global.Tools = require("../../../sources/tools.js");
 
+		global.DiscordEditRules = require("../../editRules.js");
+		global.discordEditRules = new DiscordEditRules();
+		await discordEditRules.init(true);
+
 		global.DiscordMessageParser = require("../../messageParser.js");
 		global.discordMessageParser = new DiscordMessageParser();
 		discordMessageParser.init(true);
