@@ -33,6 +33,10 @@ client.on("ready", (async () => {
 		console.log(`${Tools.discordText()}${"Backup".cyan} loaded!`);
 	} catch (e) {}
 
+	global.DiscordEditRules = require("./editRules.js");
+	global.discordEditRules = new DiscordEditRules();
+	await discordEditRules.init();
+
 	global.DiscordMessageParser = require("./messageParser.js");
 	global.discordMessageParser = new DiscordMessageParser();
 	await discordMessageParser.init();
@@ -116,6 +120,11 @@ client.on("messageDelete", async (message) => {
 client.on("messageUpdate", async (oldMessage, newMessage) => {
 	if (!listen) return;
 	if (newMessage.author.bot) return; // Don't log bot edits
+	// Run rules on edits
+	if (oldMessage.channel.type !== "dm") {
+		discordEditRules.process(oldMessage, newMessage);
+	}
+
 	const db = Storage.getDatabase(oldMessage.guild.id);
 	if (!db.config.logger || !db.config.logger.logEdits || !db.config.logger.editsChannel) return;
 	if (db.config.logger.ignoreChan && db.config.logger.ignoreChan.includes(oldMessage.channel.id)) return;

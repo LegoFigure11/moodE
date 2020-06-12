@@ -24,6 +24,8 @@ converter.js
 !/discord/rules/link-message.js
 !/discord/rules/get-ps-battle-info.js
 !/discord/rules/rule.js.example
+/discord/rules/editRules/*
+!/discord/rules/editRules/editRule.js.example
 
 /showdown/config.json
 /showdown/commands/private/*

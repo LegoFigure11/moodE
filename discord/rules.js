@@ -9,8 +9,10 @@ class Rule {
 		this.process = rule.process;
 	}
 
-	execute(message) {
-		return this.process(message);
+	// oldMessage will be run as `message` in MessageParser rules, but this way we
+	// Can use the same framework for editRules too
+	execute(oldMessage, newMessage) {
+		return this.process(oldMessage, newMessage);
 	}
 }
 
