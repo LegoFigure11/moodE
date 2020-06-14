@@ -1,8 +1,10 @@
 "use strict";
 
+const utilities = require("../../utilities.js");
+
 module.exports = {
 	desc: "Removes the user's custom role color.",
-	aliases: ["removecolour", "deletecolor", "deletecolour", "deletenamecolor", "deletenamecolour"],
+	aliases: ["removecolour", "deletecolor", "deletecolour", "deletenamecolor", "deletenamecolour", "removerole", "deleterole"],
 	async process(message, args) {
 		if (!message.guild.members.cache.get(client.user.id).hasPermission("MANAGE_ROLES")) return message.channel.send(`${discordConfig.failureEmoji} Insufficient permissions!`);
 		const db = Storage.getDatabase(message.guild.id);
@@ -11,7 +13,7 @@ module.exports = {
 		db.customRoles[message.author.id].name = `${message.author.username}#${message.author.discriminator}`;
 		if (db.customRoles[message.author.id].roleId) {
 			try {
-				const oldRole = message.guild.roles.cache.find(role => role.id === db.customRoles[message.author.id].roleId);
+				const oldRole = utilities.parseRoleId(message, db.customRoles[message.author.id].roleId);
 				if (oldRole) await oldRole.delete("Old custom color role");
 				message.channel.send(`${discordConfig.successEmoji} Successfully removed your custom role!`);
 			} catch (e) {
