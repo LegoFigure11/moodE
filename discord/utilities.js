@@ -86,7 +86,7 @@ class Utilities {
 
 	parseRoleId(message, input) {
 		if (input.includes("<")) {
-			return message.guild.roles.get(input.match(/^<@&?(\d+)>$/)[1]);
+			return message.guild.roles.cache.get(input.match(/^<@&?(\d+)>$/)[1]);
 		} else {
 			let name = message.guild.roles.cache.find(r => Tools.toId(r.name) === Tools.toId(input));
 			if (!name) name = message.guild.roles.cache.get(input);
