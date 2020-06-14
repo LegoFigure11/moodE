@@ -21,6 +21,7 @@ module.exports = {
 		color = color.replace("0x", "#");
 		if (!color.startsWith("#")) color = `#${color}`;
 		color = color.toUpperCase();
+		if (color.includes("36393E")) return message.channel.send(`${discordConfig.failureEmoji} Unable to set your custom color! Try a color that can be seen in all themes next time.`);
 		if (!(hexRegex.test(color.trim()))) return message.channel.send(`${discordConfig.failureEmoji} Unable to coerce "${args[0]}" as a hex code!`);
 
 		// Check for existing custom role
