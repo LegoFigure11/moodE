@@ -25,7 +25,7 @@ module.exports = {
 		if (!(hexRegex.test(color.trim()))) return message.channel.send(`${discordConfig.failureEmoji} Unable to coerce "${args[0]}" as a hex code!`);
 
 		// Check for existing custom role
-		if (db.customRoles[message.author.id].roleId && utilities.parseRoleId(message, db.customRoles[message.author.id].roleId)) {
+		if (db.customRoles[message.author.id].roleId && utilities.parseRoleId(message, db.customRoles[message.author.id].roleId) && !utilities.parseRoleId(message, db.customRoles[message.author.id].roleId).deleted) {
 			const role = utilities.parseRoleId(message, db.customRoles[message.author.id].roleId);
 			await role.edit({
 				name: `${message.author.username} - ${color}`,
