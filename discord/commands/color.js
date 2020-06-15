@@ -14,12 +14,15 @@ module.exports = {
 		}
 		color = color.replace("0x", "#");
 		if (!color.startsWith("#")) color = `#${color}`;
+		color = color.toUpperCase();
 		if (!(hexRegex.test(color.trim()))) return message.channel.send(`${discordConfig.failureEmoji} Unable to coerce "${args[0]}" as a hex code!`);
+		color = hexRegex.exec(color)[0];
 		const image = await nodeHtmlToImage({
+			puppeteerArgs: ["--no-sandbox", "--disable-setuid-sandbox"],
 			html: `
 <html>
 	<head>
-		<style>
+	<style>
 			body {
 				font-family: Arial, sans-serif;
 				width: 300px;
@@ -38,31 +41,51 @@ module.exports = {
 			.color {
 				width: 100px;
 				height: 100px;
-				background-color: ${hexRegex.exec(color)[0]};
+				background-color: ${color};
 			}
 			.dark {
 				width: 100px;
 				height: 100px;
 				background-color: #36393F;
-				color: ${hexRegex.exec(color)[0]};
+				color: ${color};
 			}
 			.light {
 				width: 100px;
 				height: 100px;
 				background-color: #FFFFFF;
-				color: ${hexRegex.exec(color)[0]};
+				color: ${color};
 			}
 		</style>
 	</head>
 	<body>
-		<div class="color"></div>
+		<div class="color" id="color"><b>${color}</b></div>
 		<div class="dark"><b>Dark Mode</b></div>
 		<div class="light"><b>Light Mode</b></div>
 	</body>
+
+	<script>
+		// From https://stackoverflow.com/a/41491220/13258354
+    function pickTextColorBasedOnBgColor(bgColor, lightColor, darkColor) {
+      const color = (bgColor.charAt(0) === "#") ? bgColor.substring(1, 7) : bgColor;
+      const r = parseInt(color.substring(0, 2), 16); // hexToR
+      const g = parseInt(color.substring(2, 4), 16); // hexToG
+      const b = parseInt(color.substring(4, 6), 16); // hexToB
+      const uicolors = [r / 255, g / 255, b / 255];
+      const c = uicolors.map((col) => {
+        if (col <= 0.03928) {
+          return col / 12.92;
+        }
+        return Math.pow((col + 0.055) / 1.055, 2.4);
+      });
+      const L = (0.2126 * c[0]) + (0.7152 * c[1]) + (0.0722 * c[2]);
+      return (L > 0.179) ? darkColor : lightColor;
+    }
+
+    document.getElementById("color").style.color = pickTextColorBasedOnBgColor("${color}", "#FFFFFF", "#000000");
+  </script>
 </html>`,
-			puppeteerArgs: ["--no-sandbox", "--disable-setuid-sandbox"],
 		});
 
-		return message.channel.send(args[0], {files: [image]});
+		return message.channel.send({files: [image]});
 	},
 };
