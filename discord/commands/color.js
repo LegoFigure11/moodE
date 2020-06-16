@@ -22,9 +22,10 @@ module.exports = {
 			html: `
 <html>
 	<head>
+	<link href="https://legofigure11.github.io/fonts-reference/Whitney-Medium/stylesheet.css" rel="stylesheet" />
 	<style>
 			body {
-				font-family: Arial, sans-serif;
+				font-family: whitneymedium, Arial, sans-serif;
 				width: 300px;
 				height: 100px;
 				display: flex;
@@ -81,7 +82,7 @@ module.exports = {
       return (L > 0.179) ? darkColor : lightColor;
     }
 
-    document.getElementById("color").style.color = pickTextColorBasedOnBgColor("${color}", "#FFFFFF", "#000000");
+    document.getElementById("color").style.color = pickTextColorBasedOnBgColor("${color}", "#FFFFFF", "#36393F");
   </script>
 </html>`,
 		});
