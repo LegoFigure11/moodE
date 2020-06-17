@@ -18,7 +18,8 @@ module.exports = {
 		if (!(hexRegex.test(color.trim()))) return message.channel.send(`${discordConfig.failureEmoji} Unable to coerce "${args[0]}" as a hex code!`);
 		color = hexRegex.exec(color)[0];
 		const image = await nodeHtmlToImage({
-			puppeteerArgs: ["--no-sandbox", "--disable-setuid-sandbox"],
+			// Hardcode `executablePath: "chromium-browser"` - Remove this if not running on Raspberry Pi!
+			puppeteerArgs: {executablePath: "chromium-browser", args: ["--no-sandbox", "--disable-setuid-sandbox"]},
 			html: `
 <html>
 	<head>
