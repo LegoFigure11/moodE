@@ -7,8 +7,8 @@ class Command {
 		this.desc = cmd.desc || "No description.";
 		this.longDesc = cmd.longDesc || this.desc;
 		this.adminOnly = cmd.adminOnly || false;
-		this.manager = cmd.manager || false;
-		this.elevated = cmd.elevated || false;
+		this.manager = cmd.isManager || false;
+		this.elevated = cmd.isElevated || false;
 		this.aliases = cmd.aliases || [];
 		this.disabled = cmd.disabled || false;
 		this.hasCustomFormatting = cmd.hasCustomFormatting || false;
