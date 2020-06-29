@@ -89,7 +89,7 @@ module.exports = {
 		let offsetFragment = "";
 		if (offset) offsetFragment += (offset > 0 ? ` + ${offset}` : offset);
 
-		if (diceQuantity === 1) return message.channel.send(`Rolling (1 to ${diceFaces})${offsetFragment}: ${rollSum}`);
+		if (diceQuantity === 1) return message.channel.send(`:game_die: Rolling (1 to ${diceFaces})${offsetFragment}: ${rollSum}`);
 		const outlierFragment = removeOutlier ? ` except ${removeOutlier > 0 ? "highest" : "lowest"}` : ``;
 		const rollsFragment = trackRolls ? `: ${rolls.join(", ")}` : "";
 		return message.channel.send(

@@ -6,6 +6,6 @@ module.exports = {
 	aliases: ["choose"],
 	async process(message, args) {
 		if (!(args[0])) return;
-		return message.channel.send(Tools.sampleOne(args));
+		return message.channel.send(`:game_die: I randomly selected... "${Tools.sampleOne(args)}"!`);
 	},
 };
