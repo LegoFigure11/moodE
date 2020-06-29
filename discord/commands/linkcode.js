@@ -4,7 +4,7 @@ const utilities = require("../utilities.js");
 
 module.exports = {
 	desc: "Generates a random Link Code.",
-	longDesc: "Generates a unique link code of the specified length, otherwise 4.",
+	longDesc: "Generates a unique link code of the specified length, otherwise 8.",
 	usage: "<length (optional)>",
 	aliases: ["code", "generaterandomlinkcode", "chooserandomlinkcode", "getrandomlinkcode"],
 	async process(message, args) {

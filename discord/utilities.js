@@ -55,7 +55,7 @@ class Utilities {
 	}
 
 	generateRandomLinkCode(len) {
-		const length = len > 0 ? len : 4;
+		const length = len > 0 ? len : 8;
 		if (!(fs.existsSync(path.resolve(__dirname, "../databases/linkCodes.json")))) {
 			fs.writeFileSync(path.resolve(__dirname, "../databases/linkCodes.json"), `{"linkCodes":[]}`);
 			Storage.importDatabase("linkCodes");
@@ -102,6 +102,10 @@ class Utilities {
 			if (!name) name = message.guild.channels.cache.get(input);
 			return name;
 		}
+	}
+
+	parseMessageId(message, input) {
+
 	}
 
 	oneIn(number) {

@@ -4,10 +4,10 @@ const utilities = require("../utilities.js");
 
 module.exports = {
 	usage: "<@user 1 | user id of user 1>, <@user 2 | user id of user 2> ... <@user x | user id of user x>",
-	desc: "Generates a random 4-digit link code and sends it to the author and provided users.",
-	longDesc: "Generates a random 4-digit link code and sends it to the author and provided users.\nPlease ensure you tag users or provide a valid user id (Right-Click/Long Press their username and press 'Copy ID' if you have developer tools enabled) as usernames alone are not understood.\nPlease also ensure that all involved parties are able to recieve Private Messages from the bot.",
+	desc: "Generates a random 8-digit link code and sends it to the author and provided users.",
+	longDesc: "Generates a random 8-digit link code and sends it to the author and provided users.\nPlease ensure you tag users or provide a valid user id (Right-Click/Long Press their username and press 'Copy ID' if you have developer tools enabled) as usernames alone are not understood.\nPlease also ensure that all involved parties are able to recieve Private Messages from the bot.",
 	async process(message, args) {
-		const code = utilities.generateRandomLinkCode(4);
+		const code = utilities.generateRandomLinkCode(8);
 
 		if (!(args[0])) {
 			return message.channel.send(`Your random link code is: **${code}**`);
