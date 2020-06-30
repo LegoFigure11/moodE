@@ -8,7 +8,7 @@ const util = require("util");
 const exec = util.promisify(child_process.exec);
 
 global.runDiscord = true;
-global.runShowdown = true;
+global.runShowdown = false;
 
 // set up globals
 global.colors = require("colors");
@@ -129,7 +129,7 @@ Storage.importDatabases();
 			console.log(`${Tools.discordText()}: Writing one with default values. Please fill it out with your own information!`);
 			fs.writeFileSync(path.resolve(__dirname, "./discord/config.json"), fs.readFileSync(path.resolve(__dirname, "./discord/config-example.json")));
 		}
-		global.client = new Discord.Client();
+		global.client = new Discord.Client({partials: ["MESSAGE", "CHANNEL", "REACTION"]});
 		global.discordConfig = require("./discord/config.json");
 		global.successEmoji = discordConfig.successEmoji || "\u2705";
 		global.failureEmoji = discordConfig.failureEmoji || "\u274C";

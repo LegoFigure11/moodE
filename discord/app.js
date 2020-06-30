@@ -83,7 +83,17 @@ client.on("messageDeleteBulk", async (messages) => {
 	if (!listen) return;
 
 	for (const msg of messages) {
-		const message = msg[1];
+		let message = msg[1];
+
+		if (message.partial) {
+			try {
+				message = await message.fetch();
+			} catch (e) {
+				console.log(`${Tools.discordText()}Unable to retreive a deleted message! ${(`(ID: ${message.id})`).grey}`);
+				continue;
+			}
+		}
+
 		const db = Storage.getDatabase(message.guild.id);
 		if (!db.config.logger || !db.config.logger.logDeletes || !db.config.logger.deletesChannel) return;
 		if (db.config.logger.ignoreChar && message.content.startsWith(db.config.logger.ignoreChar) && db.config.logger.ignoreChan && db.config.logger.ignoreChan.includes(message.channel.id)) return;
@@ -123,6 +133,15 @@ client.on("messageDeleteBulk", async (messages) => {
 
 client.on("messageDelete", async (message) => {
 	if (!listen) return;
+
+	if (message.partial) {
+		try {
+			message = await message.fetch();
+		} catch (e) {
+			return console.log(`${Tools.discordText()}Unable to retreive a deleted message! ${(`(ID: ${message.id})`).grey}`);
+		}
+	}
+
 	const db = Storage.getDatabase(message.guild.id);
 	if (!db.config.logger || !db.config.logger.logDeletes || !db.config.logger.deletesChannel) return;
 	if (db.config.logger.ignoreChar && message.content.startsWith(db.config.logger.ignoreChar) && db.config.logger.ignoreChan && db.config.logger.ignoreChan.includes(message.channel.id)) return;
@@ -161,6 +180,10 @@ client.on("messageDelete", async (message) => {
 
 client.on("messageUpdate", async (oldMessage, newMessage) => {
 	if (!listen) return;
+	if (oldMessage.partial || newMessage.partial) {
+		oldMessage = await oldMessage.fetch();
+		newMessage = await newMessage.fetch();
+	}
 	if (newMessage.author.bot) return; // Don't log bot edits
 	// Run rules on edits
 	if (oldMessage.channel.type !== "dm") {
