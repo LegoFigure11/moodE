@@ -213,6 +213,115 @@ client.on("messageUpdate", async (oldMessage, newMessage) => {
 	client.channels.cache.get(db.config.logger.editsChannel).send(descText, {embed});
 });
 
+client.on("messageReactionAdd", async (reaction, user) => {
+	if (!listen) return;
+
+	if (reaction.partial) {
+		try {
+			await reaction.fetch();
+		} catch (e) {
+			return console.log(`${Tools.discordText}Unable to retrieve reaction! ${(`(ID: ${reaction.message.id})`).grey}`);
+		}
+	}
+
+	const db = Storage.getDatabase(reaction.message.guild.id);
+	if (!db.starboard) return;
+	if (!db.starboard.emoji) db.starboard.emoji = "\u2B50";
+	if (!db.starboard.requiredStars) db.starboard.requiredStars = 3;
+	if (!db.starboard.stars) db.starboard.stars = {};
+	if (!db.starboard.channel) return Storage.exportDatabase(reaction.message.guild.id);
+
+	let emojiName = "";
+	if (reaction._emoji.id) {
+		emojiName = `<:${reaction._emoji.name}:${reaction._emoji.id}>`;
+	} else {
+		emojiName = reaction._emoji.name;
+	}
+
+	if (db.starboard.emoji === emojiName) {
+		if (reaction.count >= db.starboard.requiredStars) {
+			if (db.starboard.stars[reaction.message.id]) {
+				// Fetch the message and update the star count
+				const channel = client.channels.cache.get(db.starboard.channel);
+				channel.messages.fetch(db.starboard.stars[reaction.message.id]).then(msg => {
+					msg.edit(`:star: **${reaction.count}** - ${reaction.message.channel}`);
+				});
+			} else {
+				const embed = {
+					color: reaction.message.guild.members.cache.get(reaction.message.author.id).displayColor,
+					timestamp: new Date(),
+					author: {
+						name: reaction.message.author.username,
+						icon_url: reaction.message.author.avatarURL(),
+					},
+					fields: [
+						{name: "Link", value: `[Click me!](${reaction.message.url})`, inline: true},
+					],
+					footer: {
+						icon_url: client.user.avatarURL(),
+						text: "moodE",
+					},
+				};
+				const starInfo = `:star: **${reaction.count}** - ${reaction.message.channel}`;
+				if (reaction.message.content) embed.fields.push({name: "Message", value: reaction.message.content});
+				if (reaction.message.attachments.first()) {
+					embed.image = {};
+					embed.image.url = reaction.message.attachments.first().url;
+				}
+				const sent = await client.channels.cache.get(db.starboard.channel).send(starInfo, {embed});
+				db.starboard.stars[reaction.message.id] = sent.id;
+				Storage.exportDatabase(reaction.message.guild.id);
+			}
+		}
+	}
+});
+
+client.on("messageReactionRemove", async (reaction, user) => {
+	if (!listen) return;
+
+	if (reaction.partial) {
+		try {
+			await reaction.fetch();
+		} catch (e) {
+			return console.log(`${Tools.discordText}Unable to retrieve reaction! ${(`(ID: ${reaction.message.id})`).grey}`);
+		}
+	}
+
+	const db = Storage.getDatabase(reaction.message.guild.id);
+	if (!db.starboard) return;
+	if (!db.starboard.emoji) db.starboard.emoji = "\u2B50";
+	if (!db.starboard.requiredStars) db.starboard.requiredStars = 3;
+	if (!db.starboard.stars) db.starboard.stars = {};
+	if (!db.starboard.channel) return Storage.exportDatabase(reaction.message.guild.id);
+
+	let emojiName = "";
+	if (reaction._emoji.id) {
+		emojiName = `<:${reaction._emoji.name}:${reaction._emoji.id}>`;
+	} else {
+		emojiName = reaction._emoji.name;
+	}
+
+	if (db.starboard.emoji === emojiName) {
+		if (db.starboard.stars[reaction.message.id]) {
+			if (reaction.count >= db.starboard.requiredStars) {
+				const channel = client.channels.cache.get(db.starboard.channel);
+				channel.messages.fetch(db.starboard.stars[reaction.message.id]).then(msg => {
+					msg.edit(`:star: **${reaction.count}** - ${reaction.message.channel}`);
+				});
+			} else {
+				const channel = client.channels.cache.get(db.starboard.channel);
+				channel.messages.fetch(db.starboard.stars[reaction.message.id]).then(msg => {
+					try {
+						msg.delete();
+						delete db.starboard.stars[reaction.message.id];
+						Storage.exportDatabase(reaction.message.guild.id);
+					} catch (e) {}
+				});
+			}
+		}
+	}
+});
+
 // Legacy Support
 client.on("raw", async (event) => {
 	if (!listen) return;
