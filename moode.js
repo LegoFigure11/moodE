@@ -8,7 +8,7 @@ const util = require("util");
 const exec = util.promisify(child_process.exec);
 
 global.runDiscord = true;
-global.runShowdown = false;
+global.runShowdown = true;
 
 // set up globals
 global.colors = require("colors");
