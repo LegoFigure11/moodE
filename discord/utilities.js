@@ -85,6 +85,8 @@ class Utilities {
 	}
 
 	parseRoleId(message, input) {
+		if (!message) throw new Error("parseRoleId() requires a message object!");
+		if (!input) throw new Error("parseRoleId() requires a role id!");
 		if (input.includes("<")) {
 			return message.guild.roles.cache.get(input.match(/^<@&?(\d+)>$/)[1]);
 		} else {
@@ -95,6 +97,8 @@ class Utilities {
 	}
 
 	parseChannelId(message, input) {
+		if (!message) throw new Error("parseChannelId() requires a message object!");
+		if (!input) throw new Error("parseChannelId() requires a channel id!");
 		if (input.includes("<")) {
 			return message.guild.channels.cache.get(input.match(/^<#?(\d+)>$/)[1]);
 		} else {
@@ -102,10 +106,6 @@ class Utilities {
 			if (!name) name = message.guild.channels.cache.get(input);
 			return name;
 		}
-	}
-
-	parseMessageId(message, input) {
-
 	}
 
 	oneIn(number) {
