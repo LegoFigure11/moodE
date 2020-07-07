@@ -441,7 +441,7 @@ class Tools {
 		if (!text) return "";
 		text = text.trim();
 		if (text.startsWith("/wall ")) text = `/announce ${text.substr(6)}`;
-		if (text.startsWith("/announce ") && (!room || !psUsers.self.hasRank(room, "%"))) {
+		if (text.startsWith("/announce ") && (!room || !psUsers.self.hasRoomRank(room, "%"))) {
 			text = text.substr(10);
 			if (!text.includes("**") && text.length <= 296) text = `**${text}**`;
 		}
