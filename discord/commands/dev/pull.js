@@ -30,6 +30,8 @@ module.exports = {
 			console.log(`${Tools.moodeText()}Already up to date!`);
 			return message.channel.send(`${failureEmoji} Already up to date!`);
 		} else {
+			const moodeHash = await exec("git rev-parse --short HEAD");
+			global.hash = moodeHash.stdout.trim();
 			console.log(`${Tools.moodeText()}Pull completed!`);
 			return message.channel.send(`${successEmoji} Pull completed!`);
 		}

@@ -18,7 +18,7 @@
       "DiscordMessageParser": false, "discordMessageParser": false, "discordText": false, "moodeText": false, "showdownText": false,
       "pokemonShowdownText": false, "psClient": false, "psConfig": false, "psRooms": false, "psUsers": false, "PsCommandHandler": false,
       "psCommandHandler": false, "psMessageParser": false, "Tournaments": false, "runDiscord": false, "runShowdown": false, "DiscordEditRules":
-      false, "discordEditRules": false
+      false, "discordEditRules": false, "hash": false
     },
   "extends": "eslint:recommended",
   "rules": {
