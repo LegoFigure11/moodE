@@ -14,12 +14,12 @@ converter.js
 !/databases/.dummy
 
 /discord/config.json
-/discord/.twitchMonitor.js
-/discord/twitchMonitor.js
 /discord/commands/nsfw/*
 !/discord/commands/nsfw/command.js.example
 /discord/commands/joke/*
 !/discord/commands/joke/command.js.example
+/discord/plugins/*
+!/discord/plugins/backup.js
 /discord/rules/*
 !/discord/rules/link-message.js
 !/discord/rules/get-ps-battle-info.js

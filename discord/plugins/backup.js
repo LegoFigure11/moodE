@@ -4,21 +4,34 @@ const archiver = require("archiver");
 const fs = require("fs");
 const path = require("path");
 
-const utilities = require("./utilities.js");
+const utilities = require("../utilities.js");
 
-const databaseDirectory = path.resolve(__dirname, "../databases");
+const databaseDirectory = path.resolve(__dirname, "../../databases");
 
-const BACKUP_INTERVAL = discordConfig.backups.interval || 12 * 60 * 60 * 1000; // 12 hours
+const DEFAULT_TIME = 12 * 60 * 60 * 1000; // 12 hours
+
+const BACKUP_INTERVAL = discordConfig.backups ? discordConfig.backups.interval ? discordConfig.backups.interval : DEFAULT_TIME : DEFAULT_TIME;
 
 class Backup {
+	constructor() {
+		this.name = "Backup";
+		this.disabled = false;
+	}
+
+	async onLoad() {
+		console.log(`${Tools.discordText()}Loading ${(this.name).cyan} module...`);
+		this.databases();
+		console.log(`${Tools.discordText()}${(this.name).cyan} module loaded!`);
+	}
+
 	async databases() {
-		if (discordConfig.backups) {
+		if (discordConfig.backups && await client.channels.cache.get(discordConfig.backups.channel)) {
 			backupDatabases();
 			setInterval(function () {
 				backupDatabases();
 			}, BACKUP_INTERVAL);
 		} else {
-			console.log(`${Tools.discordText()}Automatic database backups disabled.`);
+			console.log(`${Tools.discordText()}${`${Backup.name} Module: `.cyan}Automatic database backups disabled.`);
 		}
 	}
 }
@@ -43,7 +56,7 @@ async function backupDatabases() {
 	});
 
 	file.on("close", async function () {
-		console.log(`${Tools.discordText()}Database backup complete! ${archive.pointer()} total bytes`);
+		console.log(`${Tools.discordText()}${`${Backup.name} Module: `.cyan}Database backup complete! ${archive.pointer()} total bytes`);
 		await client.channels.cache.get(discordConfig.backups.channel).send(filename, {files: [`${__dirname}/${filename}`]});
 		client.channels.cache.get(discordConfig.backups.channel).send(`Changes: ${message.length > 0 ? `\`\`\`${message.join("\n")}\`\`\`` : "None!"}`);
 		fs.unlinkSync(`${__dirname}/${filename}`);

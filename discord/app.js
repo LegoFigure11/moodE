@@ -1,5 +1,7 @@
 "use strict";
 
+const path = require("path");
+
 const discordConfig = require("./config.json");
 const utilities = require("./utilities.js");
 
@@ -17,21 +19,22 @@ client.on("ready", (async () => {
 		}
 	}
 
-	try {
-		fs.accessSync(path.resolve(__dirname, "./twitchMonitor.js"));
-		const twitchMonitor = require("./twitchMonitor.js");
-		console.log(`${Tools.discordText()}Loading ${"TwitchMonitor".cyan}...`);
-		twitchMonitor.monitorTwitch();
-		console.log(`${Tools.discordText()}${"TwitchMonitor".cyan} loaded!`);
-	} catch (e) {}
+	// From https://github.com/sirDonovan/Cassius/blob/master/app.js#L46
+	let pluginsList;
+	const plugins = fs.readdirSync(path.resolve(`${__dirname}/plugins`));
+	for (let i = 0, len = plugins.length; i < len; i++) {
+		const fileName = plugins[i];
+		if (!fileName.endsWith(".js")) continue;
+		if (!pluginsList) pluginsList = [];
+		const file = require(`./plugins/${fileName}`);
+		if (file.name && !file.disabled) {
+			global[file.name] = file;
+			if (typeof file.onLoad === "function") file.onLoad();
+		}
+		pluginsList.push(file);
+	}
 
-	try {
-		fs.accessSync(path.resolve(__dirname, "./backup.js"));
-		const Backup = require("./backup.js");
-		console.log(`${Tools.discordText()}Loading ${"Backup".cyan}...`);
-		Backup.databases();
-		console.log(`${Tools.discordText()}${"Backup".cyan} loaded!`);
-	} catch (e) {}
+	global.DiscordPlugins = pluginsList;
 
 	global.DiscordEditRules = require("./editRules.js");
 	global.discordEditRules = new DiscordEditRules();
