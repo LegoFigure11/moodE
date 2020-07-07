@@ -20,7 +20,7 @@ module.exports = {
 				{name: "Language", value: "JavaScript (discordjs)"},
 			],
 			footer: {
-				text: `moodE version ${packagejson.version}`,
+				text: `moodE version ${packagejson.version} @ ${hash}`,
 			},
 		}});
 	},

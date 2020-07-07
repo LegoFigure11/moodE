@@ -22,6 +22,9 @@ Storage.importDatabases();
 
 // Modified from https://github.com/sirDonovan/Lanette/blob/master/build.js
 (async (resolve, reject) => {
+	const moodeHash = await exec("git rev-parse --short HEAD");
+	global.hash = moodeHash.stdout.trim();
+
 	console.log(`${Tools.moodeText()}Checking pokemon-showdown remote...`);
 	const pokemonShowdown = path.join(__dirname, "pokemon-showdown");
 	const moodeRemote = "https://github.com/smogon/pokemon-showdown.git";
