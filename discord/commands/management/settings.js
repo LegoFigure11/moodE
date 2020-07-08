@@ -93,7 +93,7 @@ module.exports = {
 			case "add":
 			case "true":
 				db.config.nsfw.allowNSFW = true;
-				message.channel.send(`${discordConfig.successEmoji} NSFW commands enabled!`);
+				message.channel.send(`${discordSuccessEmoji} NSFW commands enabled!`);
 				Storage.exportDatabase(message.guild.id);
 				if (!(args[2])) return message.channel.send("Please mention/provide the id of the channel you would like to add!");
 				for (let i = 2; i < args.length; i++) {
@@ -109,7 +109,7 @@ module.exports = {
 			case "remove":
 			case "false":
 				db.config.nsfw.allowNSFW = false;
-				message.channel.send(`${discordConfig.successEmoji} NSFW commands disabled!`);
+				message.channel.send(`${discordSuccessEmoji} NSFW commands disabled!`);
 				Storage.exportDatabase(message.guild.id);
 				if (!(args[2])) return message.channel.send("Please mention/provide the id of the channel you would like to remove!");
 				for (let i = 2; i < args.length; i++) {

@@ -15,7 +15,7 @@ module.exports = {
 		color = color.replace("0x", "#");
 		if (!color.startsWith("#")) color = `#${color}`;
 		color = color.toUpperCase();
-		if (!(hexRegex.test(color.trim()))) return message.channel.send(`${discordConfig.failureEmoji} Unable to coerce "${args[0]}" as a hex code!`);
+		if (!(hexRegex.test(color.trim()))) return message.channel.send(`${discordFailureEmoji} Unable to coerce "${args[0]}" as a hex code!`);
 		color = hexRegex.exec(color)[0];
 		const image = await nodeHtmlToImage({
 			// Hardcode `executablePath: "chromium-browser"` - Remove this if not running on Raspberry Pi!

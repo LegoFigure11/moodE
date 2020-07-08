@@ -7,7 +7,7 @@ module.exports = {
 	usage: "<hex code>",
 	aliases: ["rolecolour", "customcolor", "customcolour", "namecolor", "namecolour"],
 	async process(message, args) {
-		if (!message.guild.members.cache.get(client.user.id).hasPermission("MANAGE_ROLES")) return message.channel.send(`${discordConfig.failureEmoji} Insufficient permissions!`);
+		if (!message.guild.members.cache.get(client.user.id).hasPermission("MANAGE_ROLES")) return message.channel.send(`${discordFailureEmoji} Insufficient permissions!`);
 		const db = Storage.getDatabase(message.guild.id);
 		if (!db.customRoles) db.customRoles = {};
 		if (!db.customRoles[message.author.id]) db.customRoles[message.author.id] = {};
@@ -21,8 +21,8 @@ module.exports = {
 		color = color.replace("0x", "#");
 		if (!color.startsWith("#")) color = `#${color}`;
 		color = color.toUpperCase();
-		if (color.includes("36393E")) return message.channel.send(`${discordConfig.failureEmoji} Unable to set your custom color! Try a color that can be seen in all themes next time.`);
-		if (!(hexRegex.test(color.trim()))) return message.channel.send(`${discordConfig.failureEmoji} Unable to coerce "${args[0]}" as a hex code!`);
+		if (color.includes("36393E")) return message.channel.send(`${discordFailureEmoji} Unable to set your custom color! Try a color that can be seen in all themes next time.`);
+		if (!(hexRegex.test(color.trim()))) return message.channel.send(`${discordFailureEmoji} Unable to coerce "${args[0]}" as a hex code!`);
 
 		// Check for existing custom role
 		if (db.customRoles[message.author.id].roleId && utilities.parseRoleId(message, db.customRoles[message.author.id].roleId) && !utilities.parseRoleId(message, db.customRoles[message.author.id].roleId).deleted) {
@@ -32,7 +32,7 @@ module.exports = {
 				color: color,
 				position: message.guild.members.cache.get(client.user.id).roles.highest.position - 1,
 			}, "Custom Role Color (Update)").catch(console.error);
-			message.channel.send(`${discordConfig.successEmoji} Successfully updated <@${message.author.id}>'s color to ${color}!`);
+			message.channel.send(`${discordSuccessEmoji} Successfully updated <@${message.author.id}>'s color to ${color}!`);
 		} else {
 			// Make a new custom role
 			await message.guild.roles.create({
@@ -49,10 +49,10 @@ module.exports = {
 
 			try {
 				await message.member.roles.add(role);
-				message.channel.send(`${discordConfig.successEmoji} Successfully added ${color} to <@${message.author.id}>`);
+				message.channel.send(`${discordSuccessEmoji} Successfully added ${color} to <@${message.author.id}>`);
 			} catch (e) {
 				role.delete();
-				message.channel.send(`${discordConfig.failureEmoji} Something went wrong creating your role!`);
+				message.channel.send(`${discordFailureEmoji} Something went wrong creating your role!`);
 			}
 		}
 		Storage.exportDatabase(message.guild.id);

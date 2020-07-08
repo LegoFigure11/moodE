@@ -11,7 +11,7 @@ module.exports = {
 	async process(message, args) {
 		if (!args[0]) return message.channel.send(`${discordConfig.commandCharacter}starboard ${this.usage}`);
 		const channel = utilities.parseChannelId(message, args[0]);
-		if (!channel) return message.channel.send(`${discordConfig.failureEmoji} Unable to parse "${args[0]}" as a channel!"`);
+		if (!channel) return message.channel.send(`${discordFailureEmoji} Unable to parse "${args[0]}" as a channel!"`);
 
 		const db = Storage.getDatabase(message.guild.id);
 		if (!db.starboard) db.starboard = {};

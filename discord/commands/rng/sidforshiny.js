@@ -9,10 +9,10 @@ module.exports = {
 		const decPid = parseInt(args[0], 16);
 		const decTid = parseInt(args[1]);
 
-		if (isNaN(decPid)) return message.channel.send(`${discordConfig.failureEmoji} Unable to coerce ${args[0]} as a Hex string!`);
-		if (isNaN(decTid)) return message.channel.send(`${discordConfig.failureEmoji} Unable to coerce ${args[1]} as a decimal!`);
-		if (decPid < 0 || decPid > 0xFFFFFFFF) return message.channel.send(`${discordConfig.failureEmoji} ${args[0]} is not a valid PID!`);
-		if (decTid < 0 || decTid > 65535) return message.channel.send(`${discordConfig.failureEmoji} ${args[1]} is not a valid TID!`);
+		if (isNaN(decPid)) return message.channel.send(`${discordFailureEmoji} Unable to coerce ${args[0]} as a Hex string!`);
+		if (isNaN(decTid)) return message.channel.send(`${discordFailureEmoji} Unable to coerce ${args[1]} as a decimal!`);
+		if (decPid < 0 || decPid > 0xFFFFFFFF) return message.channel.send(`${discordFailureEmoji} ${args[0]} is not a valid PID!`);
+		if (decTid < 0 || decTid > 65535) return message.channel.send(`${discordFailureEmoji} ${args[1]} is not a valid TID!`);
 
 		const pid16High = decPid >>> 16;
 		const pid16Low = decPid & 0xFFFF;
