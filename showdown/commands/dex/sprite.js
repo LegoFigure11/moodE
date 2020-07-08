@@ -1,7 +1,6 @@
 "use strict";
 
 const https = require("https");
-const probe = require("probe-image-size");
 
 const SPRITE_URL = "https://play.pokemonshowdown.com/sprites/";
 

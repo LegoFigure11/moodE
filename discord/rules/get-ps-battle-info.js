@@ -11,7 +11,8 @@ module.exports = {
 
 		const match = /https?:\/\/play\.pokemonshowdown\.com\/battle-(.+)-(\d+)/g.exec(message.content);
 		if (!match) return;
-		const [url, tier, match_id] = match;
+		match.shift();
+		const [tier, match_id] = match;
 		const battle_path = `battle-${tier}-${match_id}`;
 
 		for (let i = 0; i < 10; i++) {

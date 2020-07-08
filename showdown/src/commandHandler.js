@@ -5,7 +5,7 @@ const path = require("path");
 
 const Commands = require(path.resolve(__dirname, "./commands.js"));
 const Dex = require("../../pokemon-showdown/.sim-dist/dex.js").Dex;
-const utilities = require(path.resolve(__dirname, "./utilities.js"));
+// const utilities = require(path.resolve(__dirname, "./utilities.js"));
 
 const COMMANDS_DIRECTORY = path.resolve(__dirname, "../commands/");
 const CHINESE_COMMANDS_DIRECTORY = path.resolve(__dirname, "../commands/chinese/");
