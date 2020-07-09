@@ -71,11 +71,14 @@ client.on("guildCreate", guild => {
 
 client.on("message", message => {
 	if (!listen) return;
-	if (message.author.bot) return; // Don't respond to bots
+
+	if (message.author.id === client.user.id) return; // Don't respond to self
 
 	if (message.channel.type !== "dm") {
 		discordMessageParser.process(message);
 	}
+
+	if (message.author.bot) return; // Don't respond to bots
 
 	if (message.content.startsWith(discordConfig.commandCharacter)) {
 		resolveMessage(message);
