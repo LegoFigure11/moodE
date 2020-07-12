@@ -134,8 +134,8 @@ Storage.importDatabases();
 		}
 		global.client = new Discord.Client({partials: ["MESSAGE", "CHANNEL", "REACTION"]});
 		global.discordConfig = require("./discord/config.json");
-		global.successEmoji = discordConfig.successEmoji || "\u2705";
-		global.failureEmoji = discordConfig.failureEmoji || "\u274C";
+		global.discordSuccessEmoji = discordConfig.successEmoji || "\u2705";
+		global.discordFailureEmoji = discordConfig.failureEmoji || "\u274C";
 
 		if (!discordConfig.token) throw new Error(`${discordText}Please specify a token in config.json!`);
 
