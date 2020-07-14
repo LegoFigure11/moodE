@@ -250,7 +250,7 @@ client.on("messageReactionAdd", async (reaction, user) => {
 				// Fetch the message and update the star count
 				const channel = client.channels.cache.get(db.starboard.channel);
 				channel.messages.fetch(db.starboard.stars[reaction.message.id]).then(msg => {
-					msg.edit(`${reaction.count <= 5 ? ":star:" : reaction.count <= 10 ? ":star2:" : ":stars"} **${reaction.count}** - ${reaction.message.channel}`);
+					msg.edit(`${reaction.count <= 5 ? (db.starboard.level1 ? db.starboard.level1 : ":star:") : reaction.count <= 10 ? (db.starboard.level2 ? db.starboard.level2 : ":star2:") : (db.starboard.level2 ? db.starboard.level3 : ":stars:")} **${reaction.count}** - ${reaction.message.channel}`);
 				});
 			} else {
 				const embed = {
@@ -268,7 +268,7 @@ client.on("messageReactionAdd", async (reaction, user) => {
 						text: "moodE",
 					},
 				};
-				const starInfo = `:star: **${reaction.count}** - ${reaction.message.channel}`;
+				const starInfo = `${db.starboard.level1 ? db.starboard.level1 : ":star:"} **${reaction.count}** - ${reaction.message.channel}`;
 				if (reaction.message.content) embed.fields.push({name: "Message", value: reaction.message.content});
 				if (reaction.message.attachments.first()) {
 					embed.image = {};
