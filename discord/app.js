@@ -19,6 +19,18 @@ client.on("ready", (async () => {
 		}
 	}
 
+	global.DiscordEditRules = require("./editRules.js");
+	global.discordEditRules = new DiscordEditRules();
+	await discordEditRules.init();
+
+	global.DiscordMessageParser = require("./messageParser.js");
+	global.discordMessageParser = new DiscordMessageParser();
+	await discordMessageParser.init();
+
+	global.DiscordCommandHandler = require("./commandHandler.js");
+	global.discordCommandHandler = new DiscordCommandHandler();
+	await discordCommandHandler.init();
+
 	// From https://github.com/sirDonovan/Cassius/blob/master/app.js#L46
 	let pluginsList;
 	const plugins = fs.readdirSync(path.resolve(`${__dirname}/plugins`));
@@ -35,18 +47,6 @@ client.on("ready", (async () => {
 	}
 
 	global.DiscordPlugins = pluginsList;
-
-	global.DiscordEditRules = require("./editRules.js");
-	global.discordEditRules = new DiscordEditRules();
-	await discordEditRules.init();
-
-	global.DiscordMessageParser = require("./messageParser.js");
-	global.discordMessageParser = new DiscordMessageParser();
-	await discordMessageParser.init();
-
-	global.DiscordCommandHandler = require("./commandHandler.js");
-	global.discordCommandHandler = new DiscordCommandHandler();
-	await discordCommandHandler.init();
 
 	console.log(`${Tools.discordText()}--------------`);
 	console.log(`${Tools.discordText()}${"Ready!".green}`);
