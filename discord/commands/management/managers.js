@@ -18,13 +18,13 @@ module.exports = {
 				if (user) {
 					if (!db.config.botRanks.manager.includes(user.id)) {
 						db.config.botRanks.manager.push(user.id);
-						message.channel.send(`${successEmoji} Added <@${user.id}> as a Bot Manager!`);
+						message.channel.send(`${discordSuccessEmoji} Added <@${user.id}> as a Bot Manager!`);
 						Storage.exportDatabase(message.guild.id);
 					} else {
-						message.channel.send(`${failureEmoji} ${user.username}#${user.discriminator} is already a Bot Manager!`);
+						message.channel.send(`${discordFailureEmoji} ${user.username}#${user.discriminator} is already a Bot Manager!`);
 					}
 				} else {
-					message.channel.send(`${failureEmoji} User "${args[i]}" not found...`);
+					message.channel.send(`${discordFailureEmoji} User "${args[i]}" not found...`);
 				}
 			}
 			break;
@@ -35,13 +35,13 @@ module.exports = {
 				if (user) {
 					if (db.config.botRanks.manager.includes(user.id)) {
 						db.config.botRanks.manager.splice(db.config.botRanks.manager.indexOf(user.id), 1);
-						message.channel.send(`${successEmoji} Removed Bot Manager permission from <@${user.id}>.`);
+						message.channel.send(`${discordSuccessEmoji} Removed Bot Manager permission from <@${user.id}>.`);
 						Storage.exportDatabase(message.guild.id);
 					} else {
-						message.channel.send(`${failureEmoji} ${user.username}#${user.discriminator} is not a Bot Manager!`);
+						message.channel.send(`${discordFailureEmoji} ${user.username}#${user.discriminator} is not a Bot Manager!`);
 					}
 				} else {
-					message.channel.send(`${failureEmoji} User "${args[i]}" not found...`);
+					message.channel.send(`${discordFailureEmoji} User "${args[i]}" not found...`);
 				}
 			}
 			break;

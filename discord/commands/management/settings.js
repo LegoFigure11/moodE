@@ -23,10 +23,10 @@ module.exports = {
 				if (!(args[2])) return message.channel.send("Please mention/provide the id of the role you would like to add!");
 				for (let i = 2; i < args.length; i++) {
 					const role = utilities.parseRoleId(message, args[i]);
-					if (!role) return message.channel.send(`${failureEmoji} Role "${args[i]}" not found...`);
-					if (db.config.requiredRoles.includes(role.id)) return message.channel.send(`${failureEmoji} @${role.name} is already a Required Role!`);
+					if (!role) return message.channel.send(`${discordFailureEmoji} Role "${args[i]}" not found...`);
+					if (db.config.requiredRoles.includes(role.id)) return message.channel.send(`${discordFailureEmoji} @${role.name} is already a Required Role!`);
 					db.config.requiredRoles.push(role.id);
-					message.channel.send(`${successEmoji} Added @${role.name} as a required role!`);
+					message.channel.send(`${discordSuccessEmoji} Added @${role.name} as a required role!`);
 				}
 				Storage.exportDatabase(message.guild.id);
 				break;
@@ -35,10 +35,10 @@ module.exports = {
 				if (!(args[2])) return message.channel.send("Please mention/provide the id of the role you would like to remove!");
 				for (let i = 2; i < args.length; i++) {
 					const role = utilities.parseRoleId(message, args[i]);
-					if (!role) return message.channel.send(`${failureEmoji} Role "${args[i]}" not found...`);
-					if (!db.config.requiredRoles.includes(role.id)) return message.channel.send(`${failureEmoji} @${role.name} is not a Required Role!`);
+					if (!role) return message.channel.send(`${discordFailureEmoji} Role "${args[i]}" not found...`);
+					if (!db.config.requiredRoles.includes(role.id)) return message.channel.send(`${discordFailureEmoji} @${role.name} is not a Required Role!`);
 					db.config.requiredRoles.splice(db.config.requiredRoles.indexOf(role.id), 1);
-					message.channel.send(`${successEmoji} Removed @${role.name} as a required role!`);
+					message.channel.send(`${discordSuccessEmoji} Removed @${role.name} as a required role!`);
 				}
 				Storage.exportDatabase(message.guild.id);
 				break;
@@ -61,10 +61,10 @@ module.exports = {
 				if (!(args[2])) return message.channel.send("Please mention/provide the id of the channel you would like to ban!");
 				for (let i = 2; i < args.length; i++) {
 					const chan = utilities.parseChannelId(message, args[i]);
-					if (!chan) return message.channel.send(`${failureEmoji} Channel "${args[i]}" not found...`);
-					if (db.config.bannedChannels.includes(chan.id)) return message.channel.send(`${failureEmoji} #${chan.name} is already a Banned Channel!`);
+					if (!chan) return message.channel.send(`${discordFailureEmoji} Channel "${args[i]}" not found...`);
+					if (db.config.bannedChannels.includes(chan.id)) return message.channel.send(`${discordFailureEmoji} #${chan.name} is already a Banned Channel!`);
 					db.config.bannedChannels.push(chan.id);
-					message.channel.send(`${successEmoji} Added #${chan.name} as a banned channel!`);
+					message.channel.send(`${discordSuccessEmoji} Added #${chan.name} as a banned channel!`);
 				}
 				Storage.exportDatabase(message.guild.id);
 				break;
@@ -74,10 +74,10 @@ module.exports = {
 				if (!(args[2])) return message.channel.send("Please mention/provide the id of the channel you would like to unban!");
 				for (let i = 2; i < args.length; i++) {
 					const chan = utilities.parseChannelId(message, args[i]);
-					if (!chan) return message.channel.send(`${failureEmoji} Channel "${args[i]}" not found...`);
-					if (!db.config.bannedChannels.includes(chan.id)) return message.channel.send(`${failureEmoji} #${chan.name} is not a Banned Channel!`);
+					if (!chan) return message.channel.send(`${discordFailureEmoji} Channel "${args[i]}" not found...`);
+					if (!db.config.bannedChannels.includes(chan.id)) return message.channel.send(`${discordFailureEmoji} #${chan.name} is not a Banned Channel!`);
 					db.config.bannedChannels.splice(db.config.bannedChannels.indexOf(chan.id), 1);
-					message.channel.send(`${successEmoji} Removed #${chan.name} as a banned channel!`);
+					message.channel.send(`${discordSuccessEmoji} Removed #${chan.name} as a banned channel!`);
 				}
 				Storage.exportDatabase(message.guild.id);
 				break;
@@ -98,10 +98,10 @@ module.exports = {
 				if (!(args[2])) return message.channel.send("Please mention/provide the id of the channel you would like to add!");
 				for (let i = 2; i < args.length; i++) {
 					const chan = utilities.parseChannelId(message, args[i]);
-					if (!chan) return message.channel.send(`${failureEmoji} Channel "${args[i]}" not found...`);
-					if (db.config.nsfw.nsfwChannels.includes(chan.id)) return message.channel.send(`${failureEmoji} #${chan.name} already has NSFW commands available!`);
+					if (!chan) return message.channel.send(`${discordFailureEmoji} Channel "${args[i]}" not found...`);
+					if (db.config.nsfw.nsfwChannels.includes(chan.id)) return message.channel.send(`${discordFailureEmoji} #${chan.name} already has NSFW commands available!`);
 					db.config.nsfw.nsfwChannels.push(chan.id);
-					message.channel.send(`${successEmoji} Enabled NSFW commands in #${chan.name}!`);
+					message.channel.send(`${discordSuccessEmoji} Enabled NSFW commands in #${chan.name}!`);
 				}
 				Storage.exportDatabase(message.guild.id);
 				break;
@@ -114,10 +114,10 @@ module.exports = {
 				if (!(args[2])) return message.channel.send("Please mention/provide the id of the channel you would like to remove!");
 				for (let i = 2; i < args.length; i++) {
 					const chan = utilities.parseChannelId(message, args[i]);
-					if (!chan) return message.channel.send(`${failureEmoji} Channel "${args[i]}" not found...`);
-					if (!db.config.nsfw.nsfwChannels.includes(chan.id)) return message.channel.send(`${failureEmoji} #${chan.name} is not an NSFW Channel!`);
+					if (!chan) return message.channel.send(`${discordFailureEmoji} Channel "${args[i]}" not found...`);
+					if (!db.config.nsfw.nsfwChannels.includes(chan.id)) return message.channel.send(`${discordFailureEmoji} #${chan.name} is not an NSFW Channel!`);
 					db.config.nsfw.nsfwChannels.splice(db.config.nsfw.nsfwChannels.indexOf(chan.id), 1);
-					message.channel.send(`${successEmoji} Disabled NSFW commands in #${chan.name}!`);
+					message.channel.send(`${discordSuccessEmoji} Disabled NSFW commands in #${chan.name}!`);
 				}
 				Storage.exportDatabase(message.guild.id);
 				break;
@@ -139,10 +139,10 @@ module.exports = {
 				if (!(args[2])) return message.channel.send("Please mention/provide the id of the user you would like to ban!");
 				for (let i = 2; i < args.length; i++) {
 					const user = utilities.parseUserId(args[i]);
-					if (!user) return message.channel.send(`${failureEmoji} User "${args[i]}" not found...`);
-					if (db.config.bannedUsers.includes(user.id)) return message.channel.send(`${failureEmoji} ${user.username}#${user.discriminator} is already banned from using bot commands!`);
+					if (!user) return message.channel.send(`${discordFailureEmoji} User "${args[i]}" not found...`);
+					if (db.config.bannedUsers.includes(user.id)) return message.channel.send(`${discordFailureEmoji} ${user.username}#${user.discriminator} is already banned from using bot commands!`);
 					db.config.bannedUsers.push(user.id);
-					message.channel.send(`${successEmoji} Banned ${user.username}#${user.discriminator} from using commands in this server!`);
+					message.channel.send(`${discordSuccessEmoji} Banned ${user.username}#${user.discriminator} from using commands in this server!`);
 				}
 				Storage.exportDatabase(message.guild.id);
 				break;
@@ -152,10 +152,10 @@ module.exports = {
 				if (!(args[2])) return message.channel.send("Please mention/provide the id of the user you would like to unban!");
 				for (let i = 2; i < args.length; i++) {
 					const user = utilities.parseUserId(args[i]);
-					if (!user) return message.channel.send(`${failureEmoji} User "${args[i]}" not found...`);
-					if (!db.config.bannedUsers.includes(user.id)) return message.channel.send(`${failureEmoji} ${user.username}#${user.discriminator} is not banned from using bot commands!`);
+					if (!user) return message.channel.send(`${discordFailureEmoji} User "${args[i]}" not found...`);
+					if (!db.config.bannedUsers.includes(user.id)) return message.channel.send(`${discordFailureEmoji} ${user.username}#${user.discriminator} is not banned from using bot commands!`);
 					db.config.bannedUsers.splice(db.config.bannedUsers.indexOf(user.id), 1);
-					message.channel.send(`${successEmoji} Un-banned ${user.username}#${user.discriminator} from using commands in this server!`);
+					message.channel.send(`${discordSuccessEmoji} Un-banned ${user.username}#${user.discriminator} from using commands in this server!`);
 				}
 				Storage.exportDatabase(message.guild.id);
 				break;

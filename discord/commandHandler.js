@@ -91,28 +91,28 @@ class CommandHandler {
 			if (command.trigger(cmd)) {
 				const permissions = message.channel.type !== "dm" ? utilities.checkPermissions(message, command.name) : undefined;
 				if (permissions) {
-					if (command.isNSFW && (permissions.config.nsfw.allowNSFW === false || !(permissions.config.nsfw.nsfwChannels.includes(message.channel.id)))) return message.author.send(`${failureEmoji} NSFW commands are not available in this ${permissions.config.nsfw.allowNSFW ? "channel" : "server"}.`);
+					if (command.isNSFW && (permissions.config.nsfw.allowNSFW === false || !(permissions.config.nsfw.nsfwChannels.includes(message.channel.id)))) return message.author.send(`${discordFailureEmoji} NSFW commands are not available in this ${permissions.config.nsfw.allowNSFW ? "channel" : "server"}.`);
 
 					// Admins should skip permission checks
 					if (!isAdmin(message.author.id)) {
-						if (!command.override && (permissions.config.requiredRoles.length > 0 && !(message.member.roles.cache.some(r => permissions.config.requiredRoles.includes(r.id)))) || (permissions.config.commands[command.name].requiredRoles.length > 0 && !(message.member.roles.cache.some(r => permissions.config.commands[command.name].requiredRoles.includes(r.id))))) return message.author.send(`${failureEmoji} You don't have the required roles to use that command.`);
-						if (!command.override && permissions.config.bannedChannels.includes(message.channel.id)) return message.author.send(`${failureEmoji} Commands are not permitted in that channel!`);
-						if (!command.override && permissions.config.bannedUsers.includes(message.author.id)) return message.author.send(`${failureEmoji} You are not permitted to use bot commands in ${message.guild.name}.`);
-						if (!command.override && permissions.config.commands[command.name].bannedChannels.includes(message.channel.id)) return message.author.send(`${failureEmoji} Commands are not permitted in that channel!`);
-						if (!command.override && permissions.config.commands[command.name].bannedUsers.includes(message.author.id)) return message.author.send(`${failureEmoji} You are not permitted to the \`\`${discordConfig.commandCharacter}${command.name}\`\` command in ${message.guild.name}.`);
-						if ((permissions.config.commands[command.name].isElevated || command.elevated) && (!isAdmin(message.author.id) && !isElevated(message.author.id) && !permissions.config.botRanks.manager.includes(message.author.id) && !permissions.config.botRanks.elevated.includes(message.author.id))) return message.author.send(`${failureEmoji} You lack the required permissions to use \`\`${discordConfig.commandCharacter}${command.name}\`\` in ${message.guild.name}.`);
-						if ((permissions.config.commands[command.name].isManager || command.manager) && (!isAdmin(message.author.id) && !permissions.config.botRanks.manager.includes(message.author.id))) return message.author.send(`${failureEmoji} You lack the required permissions to use \`\`${discordConfig.commandCharacter}${command.name}\`\` in ${message.guild.name}.`);
+						if (!command.override && (permissions.config.requiredRoles.length > 0 && !(message.member.roles.cache.some(r => permissions.config.requiredRoles.includes(r.id)))) || (permissions.config.commands[command.name].requiredRoles.length > 0 && !(message.member.roles.cache.some(r => permissions.config.commands[command.name].requiredRoles.includes(r.id))))) return message.author.send(`${discordFailureEmoji} You don't have the required roles to use that command.`);
+						if (!command.override && permissions.config.bannedChannels.includes(message.channel.id)) return message.author.send(`${discordFailureEmoji} Commands are not permitted in that channel!`);
+						if (!command.override && permissions.config.bannedUsers.includes(message.author.id)) return message.author.send(`${discordFailureEmoji} You are not permitted to use bot commands in ${message.guild.name}.`);
+						if (!command.override && permissions.config.commands[command.name].bannedChannels.includes(message.channel.id)) return message.author.send(`${discordFailureEmoji} Commands are not permitted in that channel!`);
+						if (!command.override && permissions.config.commands[command.name].bannedUsers.includes(message.author.id)) return message.author.send(`${discordFailureEmoji} You are not permitted to the \`\`${discordConfig.commandCharacter}${command.name}\`\` command in ${message.guild.name}.`);
+						if ((permissions.config.commands[command.name].isElevated || command.elevated) && (!isAdmin(message.author.id) && !isElevated(message.author.id) && !permissions.config.botRanks.manager.includes(message.author.id) && !permissions.config.botRanks.elevated.includes(message.author.id))) return message.author.send(`${discordFailureEmoji} You lack the required permissions to use \`\`${discordConfig.commandCharacter}${command.name}\`\` in ${message.guild.name}.`);
+						if ((permissions.config.commands[command.name].isManager || command.manager) && (!isAdmin(message.author.id) && !permissions.config.botRanks.manager.includes(message.author.id))) return message.author.send(`${discordFailureEmoji} You lack the required permissions to use \`\`${discordConfig.commandCharacter}${command.name}\`\` in ${message.guild.name}.`);
 					}
 				}
 
 				if (command.adminOnly && !isAdmin(message.author.id)) {
-					return message.channel.send(`${failureEmoji} You do not have permission to do that!`);
+					return message.channel.send(`${discordFailureEmoji} You do not have permission to do that!`);
 				}
 				if (command.elevated && !isAdmin(message.author.id) && !isElevated(message.author.id)) {
-					return message.channel.send(`${failureEmoji} You do not have permission to do that!`);
+					return message.channel.send(`${discordFailureEmoji} You do not have permission to do that!`);
 				}
 				if (command.noPm && message.channel.type === "dm") {
-					return message.channel.send(`${failureEmoji} This command is not available in PMs!`);
+					return message.channel.send(`${discordFailureEmoji} This command is not available in PMs!`);
 				}
 
 				if (command.commandType === "DexCommand") {
@@ -265,7 +265,7 @@ class CommandHandler {
 			if (command.name === lookup || (command.aliases && command.aliases.includes(lookup))) matched = true;
 		}
 
-		if (!matched) return message.author.send(`${failureEmoji} No command "${lookup}" found!`);
+		if (!matched) return message.author.send(`${discordFailureEmoji} No command "${lookup}" found!`);
 
 		if (command.adminOnly && !isAdmin(message.author.id)) {
 			return `\`\`\`${command.name} is an admin-only command.\`\`\``;

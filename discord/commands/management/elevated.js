@@ -18,13 +18,13 @@ module.exports = {
 				if (user) {
 					if (!db.config.botRanks.elevated.includes(user.id)) {
 						db.config.botRanks.elevated.push(user.id);
-						message.channel.send(`${successEmoji} Game <@${user.id}> elevated permissions!`);
+						message.channel.send(`${discordSuccessEmoji} Game <@${user.id}> elevated permissions!`);
 						Storage.exportDatabase(message.guild.id);
 					} else {
-						message.channel.send(`${failureEmoji} ${user.username}#${user.discriminator} already has elevated permissions!`);
+						message.channel.send(`${discordFailureEmoji} ${user.username}#${user.discriminator} already has elevated permissions!`);
 					}
 				} else {
-					message.channel.send(`${failureEmoji} User "${args[i]}" not found...`);
+					message.channel.send(`${discordFailureEmoji} User "${args[i]}" not found...`);
 				}
 			}
 			break;
@@ -34,13 +34,13 @@ module.exports = {
 				if (user) {
 					if (db.config.botRanks.elevated.includes(user.id)) {
 						db.config.botRanks.elevated.splice(db.config.botRanks.elevated.indexOf(user.id), 1);
-						message.channel.send(`${successEmoji} Removed elevated permissions from <@${user.id}>.`);
+						message.channel.send(`${discordSuccessEmoji} Removed elevated permissions from <@${user.id}>.`);
 						Storage.exportDatabase(message.guild.id);
 					} else {
-						message.channel.send(`${failureEmoji} ${user.username}#${user.discriminator} does not have elevated permissions!`);
+						message.channel.send(`${discordFailureEmoji} ${user.username}#${user.discriminator} does not have elevated permissions!`);
 					}
 				} else {
-					message.channel.send(`${failureEmoji} User "${args[i]}" not found...`);
+					message.channel.send(`${discordFailureEmoji} User "${args[i]}" not found...`);
 				}
 			}
 			break;

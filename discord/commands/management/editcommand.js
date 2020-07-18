@@ -119,14 +119,14 @@ module.exports = {
 				case "add":
 					db.isElevated = true;
 					Storage.exportDatabase(message.guild.id);
-					message.channel.send(`${successEmoji} \`${discordConfig.commandCharacter}${command.name}\` - isElevated set to: **true**`);
+					message.channel.send(`${discordSuccessEmoji} \`${discordConfig.commandCharacter}${command.name}\` - isElevated set to: **true**`);
 					break;
 				case "false":
 				case "remove":
 				case "delete":
 					db.isElevated = false;
 					Storage.exportDatabase(message.guild.id);
-					message.channel.send(`${successEmoji} \`${discordConfig.commandCharacter}${command.name}\` - isElevated set to: **false**`);
+					message.channel.send(`${discordSuccessEmoji} \`${discordConfig.commandCharacter}${command.name}\` - isElevated set to: **false**`);
 					break;
 				default:
 					message.channel.send(`\`${discordConfig.commandCharacter}${command.name}\` - isElevated: ${db.isElevated}`);
@@ -142,14 +142,14 @@ module.exports = {
 				case "add":
 					db.isManager = true;
 					Storage.exportDatabase(message.guild.id);
-					message.channel.send(`${successEmoji} \`${discordConfig.commandCharacter}${command.name}\` - isManager set to: **true**`);
+					message.channel.send(`${discordSuccessEmoji} \`${discordConfig.commandCharacter}${command.name}\` - isManager set to: **true**`);
 					break;
 				case "false":
 				case "remove":
 				case "delete":
 					db.isManager = false;
 					Storage.exportDatabase(message.guild.id);
-					message.channel.send(`${successEmoji} \`${discordConfig.commandCharacter}${command.name}\` - isManager set to: **false**`);
+					message.channel.send(`${discordSuccessEmoji} \`${discordConfig.commandCharacter}${command.name}\` - isManager set to: **false**`);
 					break;
 				default:
 					message.channel.send(`\`${discordConfig.commandCharacter}${command.name}\` - isManager: ${db.isManager}`);
@@ -161,7 +161,7 @@ module.exports = {
 			}
 			return true;
 		} else {
-			return message.channel.send(`${failureEmoji} Command: "${Tools.toId(args[0])}" not found!`);
+			return message.channel.send(`${discordFailureEmoji} Command: "${Tools.toId(args[0])}" not found!`);
 		}
 	},
 };
@@ -199,11 +199,11 @@ function add(message, cmd, area, args) {
 		if (area === "bannedChannels") id = utilities.parseChannelId(message, arg);
 		if (id && !(db[area].includes(id.id))) {
 			db[area].push(id.id);
-			message.channel.send(`${successEmoji} Added "${arg}" to **${area}** for command \`${discordConfig.commandCharacter}${cmd}\`!`);
+			message.channel.send(`${discordSuccessEmoji} Added "${arg}" to **${area}** for command \`${discordConfig.commandCharacter}${cmd}\`!`);
 		} else {
 			const text = db[area].includes(id.id) ?
-				`${failureEmoji} "${arg}" is already in the group: ${area} for \`${discordConfig.commandCharacter}${cmd}\`!` :
-				`${failureEmoji} Unable to find a match for "${arg}".`;
+				`${discordFailureEmoji} "${arg}" is already in the group: ${area} for \`${discordConfig.commandCharacter}${cmd}\`!` :
+				`${discordFailureEmoji} Unable to find a match for "${arg}".`;
 			message.channel.send(text);
 		}
 	}
@@ -219,11 +219,11 @@ function remove(message, cmd, area, args) {
 		if (area === "bannedChannels") id = utilities.parseChannelId(message, arg);
 		if (id && (db[area].includes(id.id))) {
 			db[area].splice(db[area].indexOf(id.id), 1);
-			message.channel.send(`${successEmoji} Removed "${arg}" from **${area}** for command \`${discordConfig.commandCharacter}${cmd}\`!`);
+			message.channel.send(`${discordSuccessEmoji} Removed "${arg}" from **${area}** for command \`${discordConfig.commandCharacter}${cmd}\`!`);
 		} else {
 			const text = db[area].includes(id.id) ?
-				`${failureEmoji} Unable to find a match for "${arg}".` :
-				`${failureEmoji} "${arg}" is not in the group: ${area} for \`${discordConfig.commandCharacter}${cmd}\`!`;
+				`${discordFailureEmoji} Unable to find a match for "${arg}".` :
+				`${discordFailureEmoji} "${arg}" is not in the group: ${area} for \`${discordConfig.commandCharacter}${cmd}\`!`;
 			message.channel.send(text);
 		}
 	}
