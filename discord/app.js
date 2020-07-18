@@ -19,6 +19,10 @@ client.on("ready", (async () => {
 		}
 	}
 
+	global.DiscordCommandHandler = require("./commandHandler.js");
+	global.discordCommandHandler = new DiscordCommandHandler();
+	await discordCommandHandler.init();
+
 	global.DiscordEditRules = require("./editRules.js");
 	global.discordEditRules = new DiscordEditRules();
 	await discordEditRules.init();
@@ -26,10 +30,6 @@ client.on("ready", (async () => {
 	global.DiscordMessageParser = require("./messageParser.js");
 	global.discordMessageParser = new DiscordMessageParser();
 	await discordMessageParser.init();
-
-	global.DiscordCommandHandler = require("./commandHandler.js");
-	global.discordCommandHandler = new DiscordCommandHandler();
-	await discordCommandHandler.init();
 
 	// From https://github.com/sirDonovan/Cassius/blob/master/app.js#L46
 	let pluginsList;
