@@ -100,15 +100,15 @@ class CommandHandler {
 						if (!command.override && permissions.config.bannedUsers.includes(message.author.id)) return message.author.send(`${discordFailureEmoji} You are not permitted to use bot commands in ${message.guild.name}.`);
 						if (!command.override && permissions.config.commands[command.name].bannedChannels.includes(message.channel.id)) return message.author.send(`${discordFailureEmoji} Commands are not permitted in that channel!`);
 						if (!command.override && permissions.config.commands[command.name].bannedUsers.includes(message.author.id)) return message.author.send(`${discordFailureEmoji} You are not permitted to the \`\`${discordConfig.commandCharacter}${command.name}\`\` command in ${message.guild.name}.`);
-						if ((permissions.config.commands[command.name].isElevated || command.elevated) && (!isAdmin(message.author.id) && !isElevated(message.author.id) && !permissions.config.botRanks.manager.includes(message.author.id) && !permissions.config.botRanks.elevated.includes(message.author.id))) return message.author.send(`${discordFailureEmoji} You lack the required permissions to use \`\`${discordConfig.commandCharacter}${command.name}\`\` in ${message.guild.name}.`);
-						if ((permissions.config.commands[command.name].isManager || command.manager) && (!isAdmin(message.author.id) && !permissions.config.botRanks.manager.includes(message.author.id))) return message.author.send(`${discordFailureEmoji} You lack the required permissions to use \`\`${discordConfig.commandCharacter}${command.name}\`\` in ${message.guild.name}.`);
+						if ((permissions.config.commands[command.name].isElevated || command.elevated) && (!isAdmin(message.author.id) && !isElevated(message.author.id) && !permissions.config.botRanks.manager.includes(message.author.id) && !permissions.config.botRanks.elevated.includes(message.author.id) && !message.member.hasPermission("ADMINISTRATOR"))) return message.author.send(`${discordFailureEmoji} You lack the required permissions to use \`\`${discordConfig.commandCharacter}${command.name}\`\` in ${message.guild.name}.`);
+						if ((permissions.config.commands[command.name].isManager || command.manager) && (!isAdmin(message.author.id) && !permissions.config.botRanks.manager.includes(message.author.id) && !message.member.hasPermission("ADMINISTRATOR"))) return message.author.send(`${discordFailureEmoji} You lack the required permissions to use \`\`${discordConfig.commandCharacter}${command.name}\`\` in ${message.guild.name}.`);
 					}
 				}
 
 				if (command.adminOnly && !isAdmin(message.author.id)) {
 					return message.channel.send(`${discordFailureEmoji} You do not have permission to do that!`);
 				}
-				if (command.elevated && !isAdmin(message.author.id) && !isElevated(message.author.id)) {
+				if (command.elevated && !isAdmin(message.author.id) && !isElevated(message.author.id) && !message.member.hasPermission("ADMINISTRATOR")) {
 					return message.channel.send(`${discordFailureEmoji} You do not have permission to do that!`);
 				}
 				if (command.noPm && message.channel.type === "dm") {

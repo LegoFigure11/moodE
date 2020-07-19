@@ -56,7 +56,7 @@ module.exports = {
 				const user = utilities.parseUserId(db.config.botRanks.manager[i]);
 				buf += `\t${user.username}#${user.discriminator} (server)\n`;
 			}
-			buf += "```";
+			buf += "\nBy default, all user with the Server Administrator permission are also Bot Managers, even if not listed above.\n```";
 			message.channel.send(buf);
 			break;
 		}

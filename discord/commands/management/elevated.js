@@ -66,7 +66,7 @@ module.exports = {
 					buf += `\t${user.username}#${user.discriminator} (server)\n`;
 				}
 			}
-			buf += "```";
+			buf += "\nBy default, all user with the Server Administrator permission are also Bot Managers and have Elevated Permissions, even if not listed above.\n```";
 			message.channel.send(buf);
 			break;
 		}
