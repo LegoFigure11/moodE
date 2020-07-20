@@ -307,6 +307,10 @@ class MessageParser {
 					case "randombattle":
 						formatName = "随机对战";
 						break;
+
+					case "bssfactory":
+						formatName = "63工厂";
+						break;
 					}
 
 					const elim = splitMessage[2] === "Double Elimination" ? "（两条命）" : "";
@@ -409,6 +413,10 @@ class MessageParser {
 
 				case "randombattle":
 					formatName = "随机对战";
+					break;
+
+				case "bssfactory":
+					formatName = "63工厂";
 					break;
 				}
 
