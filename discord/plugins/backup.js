@@ -24,7 +24,7 @@ class Backup {
 		this.databases();
 		console.log(`${Tools.discordText()}${(this.name).cyan} module loaded!`);
 	}
-	
+
 	async onEnd() {
 		if (this.timer) clearInterval(this.timer);
 	}
