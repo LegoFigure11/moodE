@@ -373,7 +373,7 @@ class MessageParser {
 			}
 			break;
 		}
-		case "html": {
+		/* case "html": {
 			if (!this.tourRulesListeners || !this.tourRulesListeners[room.id]) this.tourRulesListeners[room.id] = false;
 			if (room.id !== "chinese") {
 				this.tourRulesListeners[room.id] = true;
@@ -426,7 +426,7 @@ class MessageParser {
 				room.say(`/tour name ${name}`);
 				this.tourRulesListeners[room.id] = true;
 			}
-		}
+		} */
 		}
 	}
 
