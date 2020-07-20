@@ -10,12 +10,37 @@ module.exports = {
 		if (args[0]) silent = true;
 		console.log(`${Tools.discordText()}Hot-patching ${silent ? "(silently)".grey : ""}...`);
 		console.log(`${Tools.discordText()}--------------`);
+
+		for (const plugin of DiscordPlugins) {
+			if (typeof plugin.onEnd === "function") {
+				console.log(`${Tools.discordText()}Unloading ${plugin.name.cyan} module...`);
+				plugin.onEnd();
+			}
+		}
+
 		Tools.uncacheDir("discord/");
 		Tools.uncacheDir("sources/");
 
 		global.Storage = require("../../../sources/storage.js");
 		Storage.importDatabases();
 		global.Tools = require("../../../sources/tools.js");
+
+		// From https://github.com/sirDonovan/Cassius/blob/master/app.js#L46
+		let pluginsList;
+		const plugins = fs.readdirSync(path.resolve(`${__dirname}/../../plugins`));
+		for (let i = 0, len = plugins.length; i < len; i++) {
+			const fileName = plugins[i];
+			if (!fileName.endsWith(".js")) continue;
+			if (!pluginsList) pluginsList = [];
+			const file = require(`../../plugins/${fileName}`);
+			if (file.name && !file.disabled) {
+				global[file.name] = file;
+				if (typeof file.onLoad === "function") file.onLoad();
+			}
+			pluginsList.push(file);
+		}
+
+		global.DiscordPlugins = pluginsList;
 
 		global.DiscordEditRules = require("../../editRules.js");
 		global.discordEditRules = new DiscordEditRules();

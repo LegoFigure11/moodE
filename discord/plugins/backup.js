@@ -16,12 +16,17 @@ class Backup {
 	constructor() {
 		this.name = "Backup";
 		this.disabled = false;
+		this.timer = null;
 	}
 
 	async onLoad() {
 		console.log(`${Tools.discordText()}Loading ${(this.name).cyan} module...`);
 		this.databases();
 		console.log(`${Tools.discordText()}${(this.name).cyan} module loaded!`);
+	}
+	
+	async onEnd() {
+		if (this.timer) clearInterval(this.timer);
 	}
 
 	async databases() {
