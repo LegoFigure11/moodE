@@ -32,3 +32,9 @@ converter.js
 !/showdown/commands/private/command.js.example
 /showdown/rules/*
 !/showdown/rules/rule.js.example
+
+/twitch/config.json
+/twitch/commands/private/*
+!/twitch/commands/private/command.js.example
+/twitch/rules/*
+!/twitch/rules/rule.js.example

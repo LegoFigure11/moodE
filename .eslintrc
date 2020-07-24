@@ -19,7 +19,8 @@
       "pokemonShowdownText": false, "psClient": false, "psConfig": false, "psRooms": false, "psUsers": false, "PsCommandHandler": false,
       "psCommandHandler": false, "psMessageParser": false, "Tournaments": false, "runDiscord": false, "runShowdown": false, "DiscordEditRules":
       false, "discordEditRules": false, "hash": false, "discordSuccessEmoji": false, "discordFailureEmoji": false, "runTwitch": false,
-      "twitch": false, "twitchConfig": false, "bot": false, "DiscordPlugins": false
+      "twitch": false, "twitchConfig": false, "bot": false, "DiscordPlugins": false, "TwitchCommandHandler": false, "twitchCommandHandler": false,
+      "TwitchMessageParser": false, "twitchMessageParser": false
     },
   "extends": "eslint:recommended",
   "rules": {
@@ -173,7 +174,7 @@
     "no-restricted-syntax": ["error", "WithStatement"],
 
     "prefer-const": "error",
-	"no-self-assign": ["error", {"props": false}],
+    "no-self-assign": ["error", {"props": false}],
 
     "no-constant-condition": ["error", {"checkLoops": false}]
   }
