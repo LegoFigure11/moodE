@@ -12,8 +12,8 @@ module.exports = {
 			output = eval(args);
 			output = JSON.stringify(output, null, 2);
 		} catch (e) {
-			return bot.say(channel, `Error while evaluating expression: ${e}`);
+			return bot.whisper(user.username, `Error while evaluating expression: ${e}`);
 		}
-		return bot.say(channel, output);
+		return user["message-type"] === "whisper" ? bot.whisper(user.username, output) : bot.say(channel, output);
 	},
 };

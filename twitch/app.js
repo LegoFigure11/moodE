@@ -53,12 +53,13 @@ bot.on("join", (channel, username, self) => {
 
 bot.on("message", (async (channel, user, message, self) => {
 	if (!listen) return;
-	console.log(channel);
+	/*console.log(channel);
 	console.log(user);
 	console.log(message);
-	console.log(self);
+	console.log(self);*/
+	if (self) return;
 
-	if (message.startsWith(twitchConfig.commandCharacter)) {
+	if (message.startsWith(twitchConfig.commandCharacter) || message.startsWith("!")) {
 		resolveMessage(channel, user, message, self);
 	}
 }));

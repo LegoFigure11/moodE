@@ -20,7 +20,7 @@
       "psCommandHandler": false, "psMessageParser": false, "Tournaments": false, "runDiscord": false, "runShowdown": false, "DiscordEditRules":
       false, "discordEditRules": false, "hash": false, "discordSuccessEmoji": false, "discordFailureEmoji": false, "runTwitch": false,
       "twitch": false, "twitchConfig": false, "bot": false, "DiscordPlugins": false, "TwitchCommandHandler": false, "twitchCommandHandler": false,
-      "TwitchMessageParser": false, "twitchMessageParser": false
+      "TwitchMessageParser": false, "twitchMessageParser": false, "TwitchPlugins": false
     },
   "extends": "eslint:recommended",
   "rules": {
