@@ -3,12 +3,14 @@
 // define constants
 const child_process = require("child_process");
 const Discord = require("discord.js");
+const Twitch = require("tmi.js");
 const util = require("util");
 
 const exec = util.promisify(child_process.exec);
 
 global.runDiscord = true;
 global.runShowdown = true;
+global.runTwitch = true;
 
 // set up globals
 global.colors = require("colors");
@@ -128,8 +130,8 @@ Storage.importDatabases();
 			fs.accessSync(path.resolve(__dirname, "./discord/config.json"));
 		} catch (e) {
 			if (e.code !== "ENOENT") throw e;
-			console.log(`${Tools.discordText()}: No discord configuration file found...`);
-			console.log(`${Tools.discordText()}: Writing one with default values. Please fill it out with your own information!`);
+			console.log(`${Tools.discordText()}No discord configuration file found...`);
+			console.log(`${Tools.discordText()}Writing one with default values. Please fill it out with your own information!`);
 			fs.writeFileSync(path.resolve(__dirname, "./discord/config.json"), fs.readFileSync(path.resolve(__dirname, "./discord/config-example.json")));
 		}
 		global.client = new Discord.Client({partials: ["MESSAGE", "CHANNEL", "REACTION"]});
@@ -151,13 +153,30 @@ Storage.importDatabases();
 			fs.accessSync(path.resolve(__dirname, "./showdown/config.json"));
 		} catch (e) {
 			if (e.code !== "ENOENT") throw e;
-			console.log(`${Tools.showdownText()}: No PS Bot configuration file found...`);
-			console.log(`${Tools.showdownText()}: Writing one with default values. Please fill it out with your own information!`);
+			console.log(`${Tools.showdownText()}No PS Bot configuration file found...`);
+			console.log(`${Tools.showdownText()}Writing one with default values. Please fill it out with your own information!`);
 			fs.writeFileSync(path.resolve(__dirname, "./showdown/config.json"), fs.readFileSync(path.resolve(__dirname, "./showdown/config-example.json")));
 		}
 		global.psBot = require("./showdown/app.js");
 	} else {
 		console.log(`${Tools.moodeText()}PS Bot disabled.`);
+	}
+
+	if (runTwitch) {
+		console.log(`${Tools.moodeText()}Launching Twitch Bot...`);
+		try {
+			fs.accessSync(path.resolve(__dirname, "./twitch/config.json"));
+		} catch (e) {
+			if (e.code !== "ENOENT") throw e;
+			console.log(`${Tools.twitchText()}No Twitch Bot configuration file found...`);
+			console.log(`${Tools.twitchText()}Writing one with default values. Please fill it out with your own information!`);
+			fs.writeFileSync(path.resolve(__dirname, "./twitch/config.json"), fs.readFileSync(path.resolve(__dirname, "./twitch/config-example.json")));
+		}
+		global.twitchConfig = require("./twitch/config.json");
+		global.bot = new Twitch.Client(twitchConfig);
+		global.twitch = require("./twitch/app.js");
+	} else {
+		console.log(`${Tools.moodeText()}Twitch Bot disabled.`);
 	}
 })();
 

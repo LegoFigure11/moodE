@@ -19,6 +19,7 @@
     "node-html-to-image": "^2.1.1",
     "probe-image-size": "^5.0.0",
     "system-sleep": "^1.3.6",
+    "tmi.js": "^1.5.0",
     "websocket": "^1.0.31",
     "wtf_wikipedia": "^8.1.2"
   },

@@ -342,6 +342,10 @@ class Tools {
 		return `[${new Date().toTimeString().split(" ")[0]}] `.grey + `PS-Bot: `.yellow;
 	}
 
+	twitchText() {
+		return `[${new Date().toTimeString().split(" ")[0]}] `.grey + `Twitch-Bot: `.yellow;
+	}
+
 	/**
   * @param {any} text
   * @return {string}
