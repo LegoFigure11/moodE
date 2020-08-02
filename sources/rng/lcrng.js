@@ -84,6 +84,26 @@ class LCRNG {
 		return ret;
 	}
 
+	calcMethodChannelSeedIVs(pid) {
+		const ret = [];
+		const first = (pid & 0xFFFF0000) ^ 0x80000000;
+		const second = (pid & 0xFFFF) << 16;
+		let fullFirst;
+
+		let t = ((second - 0x343fd * first) - 0x259ec4) & 0xFFFFFFFF;
+		t = t < 0 ? t + 0x100000000 : t;
+		const kmax = (0x343fabc02 - t) / 0x100000000;
+
+		for (let k = 0; k <= kmax; k++, t += 0x100000000) {
+			if (this.unsign(t % 0x343fd) < 0x10000) {
+				fullFirst = this.unsign(first | (t / 0x343fd));
+				const seed = this.reverseXD(this.reverseXD(fullFirst));
+				ret.push([`${converter.decToHex(`${seed}`)}`, this.unsign(this.unsign(fullFirst * 0x284A930D) + 0xA2974C77), 0, 1]);
+			}
+		}
+		return ret;
+	}
+
 	reverse(seed) {
 		seed = this.unsign(Math.imul(seed, 0xeeb9eb65));
 		seed = this.unsign(seed + 0xa3561a1);
@@ -112,7 +132,6 @@ class LCRNG {
 }
 
 // https://github.com/Admiral-Fish/RNGReporter/blob/master/RNGReporter/Objects/LCRNG.cs#L80
-
 class PokeRNG extends LCRNG {
 	constructor(add, mult) {
 		super(add, mult);
