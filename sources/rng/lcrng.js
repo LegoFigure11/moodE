@@ -74,7 +74,7 @@ class LCRNG {
 		const kmax = (0x343fabc02 - t) / 0x100000000;
 
 		for (let k = 0; k <= kmax; k++, t += 0x100000000) {
-			if ((t % 0x343fd) < 0x10000) {
+			if (this.unsign(t % 0x343fd) < 0x10000) {
 				fullFirst = this.unsign(first | (t / 0x343fd));
 				const iv2 = this.reverseXD(this.reverseXD(fullFirst));
 				const iv1 = this.reverseXD(iv2);

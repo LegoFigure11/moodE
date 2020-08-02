@@ -5,7 +5,7 @@ const RNG = new LCRNG.PokeRNG();
 const RNG2 = new LCRNG.XDRNG();
 
 module.exports = {
-	desc: "Provides the Nature Pair to a given PID",
+	desc: "Provides the Nature Pair for a given PID",
 	usage: "<PID (Hex)>",
 	aliases: ["pair"],
 	async process(message, args) {
