@@ -1,8 +1,6 @@
 "use strict";
 
-const utilities = require("../../utilities.js");
-
-const TIMEOUT = 60 * 1000;
+const TIMEOUT = 30 * 1000;
 
 module.exports = {
 	desc: "Bans a user from the server.",
