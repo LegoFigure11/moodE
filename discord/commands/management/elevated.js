@@ -18,7 +18,7 @@ module.exports = {
 				if (user) {
 					if (!db.config.botRanks.elevated.includes(user.id)) {
 						db.config.botRanks.elevated.push(user.id);
-						message.channel.send(`${discordSuccessEmoji} Game <@${user.id}> elevated permissions!`);
+						message.channel.send(`${discordSuccessEmoji} Gave <@${user.id}> elevated permissions!`);
 						Storage.exportDatabase(message.guild.id);
 					} else {
 						message.channel.send(`${discordFailureEmoji} ${user.username}#${user.discriminator} already has elevated permissions!`);
