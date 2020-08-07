@@ -11,7 +11,7 @@ module.exports = {
 		do {
 			const divisor = divisors.pop();
 			const unit = uptime % divisor;
-			buffer.push(unit !== 1 ? `${unit} ${units.pop()}s` : `${unit} ${units.pop()}`);
+			buffer.push(`${unit} ${units.pop()}${unit !== 1 ? "s" : ""}`);
 			uptime = ~~(uptime / divisor);
 		} while (uptime);
 
