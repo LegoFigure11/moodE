@@ -22,7 +22,7 @@ module.exports = {
 		for (const word of glyph.replace(removeDiacritics(message.content).replace(/[.]/g, "")).toLowerCase().split(" ")) {
 			if (banwordRegex.test(word)) {
 				try {
-					message.delete();
+					await message.delete();
 					message.channel.send(`${discordFailureEmoji} ${message.author}, you message contained terms that are not permitted in this server, and has been deleted.`);
 				} catch (e) {}
 			}

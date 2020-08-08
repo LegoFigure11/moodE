@@ -69,7 +69,7 @@ client.on("guildCreate", guild => {
 	}
 });
 
-client.on("message", message => {
+client.on("message", async (message) => {
 	if (!listen) return;
 
 	if (message.author.id === client.user.id) return; // Don't respond to self
@@ -82,6 +82,7 @@ client.on("message", message => {
 
 	// Messages can be deleted by messageParser rules, don't process commands containing banned words
 	// TODO: Fix this
+	message = await message.fetch();
 	if (message.deleted) return;
 
 	if (message.content.startsWith(discordConfig.commandCharacter)) {
