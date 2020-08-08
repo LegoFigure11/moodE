@@ -27,7 +27,7 @@ module.exports = {
 				message.channel.send(`${message.author} Are you sure you want to kick ${user.username}#${user.discriminator}? (Y/n):`).then(() => {
 					message.channel.awaitMessages(filter, {max: 1, time: TIMEOUT, errors: ["time"]}).then(collected => {
 						if (Tools.toId(collected.first().content) === "y") {
-							message.guild.members.ban(user, {reason: reason});
+							message.guild.members.kick(user, {reason: reason});
 							return message.channel.send(`${discordSuccessEmoji} ${user} was kicked${reason.length > 0 ? ` (${reason})` : ""}!`);
 						} else {
 							message.channel.send(`${user.username}#${user.discriminator} will not be kicked!`);
