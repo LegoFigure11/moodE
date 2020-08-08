@@ -80,6 +80,10 @@ client.on("message", message => {
 
 	if (message.author.bot) return; // Don't respond to bots
 
+	// Messages can be deleted by messageParser rules, don't process commands containing banned words
+	// TODO: Fix this
+	if (message.deleted) return;
+
 	if (message.content.startsWith(discordConfig.commandCharacter)) {
 		resolveMessage(message);
 	}
