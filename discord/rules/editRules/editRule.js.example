@@ -1,0 +1,14 @@
+"use strict";
+
+const utilities = require("../../utilities.js");
+
+module.exports = {
+	servers: ["array", "of", "IDs"], // Rule will only be run in these servers
+	channels: ["array", "of", "channels"], // Rule will only be run in these channels
+	users: ["array", "of", "users"], // Rule will only be run on messages authored by one of the provided users
+	async process(oldMessage, newMessage) {
+		// Prevent the rule from running if the message looks like a command
+		// Remove this next line if you want to rule to run on commands as well
+		if (Tools.toId(newMessage.content).includes("chicken") && utilities.oneIn(10)) return newMessage.channel.send("Did somebody say... CHICKEN!??!");
+	},
+};
