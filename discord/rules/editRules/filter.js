@@ -1,6 +1,6 @@
 "use strict";
 
-const glyph = require("../../sources/homoglyph.js");
+const glyph = require("../../../sources/homoglyph.js");
 const removeDiacritics = require("diacritics").remove;
 
 const KAOMOJI = ["(* ^ ω ^)", "(o^▽^o)", "(≧◡≦)", "☆⌒ヽ(*\"､^*)chu", "( ˘⌣˘)♡(˘⌣˘ )", "(눈_눈)", "ʕ º ᴥ ºʔ"];
