@@ -343,7 +343,9 @@ client.on("raw", async (event) => {
 
 		if (msg.author.id === client.user.id) {
 			const regex = `\\*\\*"(.+)?(?="\\*\\*)`;
-			const role = msg.content.match(regex)[1];
+			const mid = msg.content.match(regex);
+			if (!mid) return;
+			const role = mid[1];
 
 			if (user.id !== client.user.id) {
 				const roleObj = msg.guild.roles.cache.find(r => r.name === role);
