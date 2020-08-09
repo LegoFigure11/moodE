@@ -231,14 +231,15 @@ client.on("messageReactionAdd", async (reaction, user) => {
 		try {
 			await reaction.fetch();
 		} catch (e) {
-			return console.log(`${Tools.discordText}Unable to retrieve reaction! ${(`(ID: ${reaction.message.id})`).grey}`);
+			return console.log(`${Tools.discordText()}Unable to retrieve reaction! ${(`(ID: ${reaction.message.id})`).grey}`);
 		}
 	}
 
 	const db = Storage.getDatabase(reaction.message.guild.id);
 	if (!db.starboard) return;
-	if (!db.starboard.emoji) db.starboard.emoji = "\u2B50";
+	if (!db.starboard.emoji) db.starboard.emoji = "\u{2B50}";
 	if (!db.starboard.requiredStars) db.starboard.requiredStars = 3;
+	if (!db.starboard.roles) db.starboard.roles = [];
 	if (!db.starboard.stars) db.starboard.stars = {};
 	if (!db.starboard.channel) return Storage.exportDatabase(reaction.message.guild.id);
 
@@ -250,6 +251,16 @@ client.on("messageReactionAdd", async (reaction, user) => {
 	}
 
 	if (db.starboard.emoji === emojiName) {
+		if (db.starboard.roles.length > 0) {
+			let count = 0;
+			const users = await reaction.users.fetch();
+			await users.each(async (user) => {
+				if (await reaction.message.guild.members.cache.get(user.id).roles.cache.some(role => db.starboard.roles.includes(role.id))) {
+					count++;
+				}
+			});
+			reaction.count = count;
+		}
 		if (reaction.count >= db.starboard.requiredStars) {
 			if (db.starboard.stars[reaction.message.id]) {
 				// Fetch the message and update the star count
@@ -294,14 +305,15 @@ client.on("messageReactionRemove", async (reaction, user) => {
 		try {
 			await reaction.fetch();
 		} catch (e) {
-			return console.log(`${Tools.discordText}Unable to retrieve reaction! ${(`(ID: ${reaction.message.id})`).grey}`);
+			return console.log(`${Tools.discordText()}Unable to retrieve reaction! ${(`(ID: ${reaction.message.id})`).grey}`);
 		}
 	}
 
 	const db = Storage.getDatabase(reaction.message.guild.id);
 	if (!db.starboard) return;
-	if (!db.starboard.emoji) db.starboard.emoji = "\u2B50";
+	if (!db.starboard.emoji) db.starboard.emoji = "\u{2B50}";
 	if (!db.starboard.requiredStars) db.starboard.requiredStars = 3;
+	if (!db.starboard.roles) db.starboard.roles = [];
 	if (!db.starboard.stars) db.starboard.stars = {};
 	if (!db.starboard.channel) return Storage.exportDatabase(reaction.message.guild.id);
 
@@ -313,6 +325,16 @@ client.on("messageReactionRemove", async (reaction, user) => {
 	}
 
 	if (db.starboard.emoji === emojiName) {
+		if (db.starboard.roles.length > 0) {
+			let count = 0;
+			const users = await reaction.users.fetch();
+			await users.each(async (user) => {
+				if (await reaction.message.guild.members.cache.get(user.id).roles.cache.some(role => db.starboard.roles.includes(role.id))) {
+					count++;
+				}
+			});
+			reaction.count = count;
+		}
 		if (db.starboard.stars[reaction.message.id]) {
 			if (reaction.count >= db.starboard.requiredStars) {
 				const channel = client.channels.cache.get(db.starboard.channel);
