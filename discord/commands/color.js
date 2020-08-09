@@ -17,6 +17,7 @@ module.exports = {
 		color = color.toUpperCase();
 		if (!(hexRegex.test(color.trim()))) return message.channel.send(`${discordFailureEmoji} Unable to coerce "${args[0]}" as a hex code!`);
 		color = hexRegex.exec(color)[0];
+		message.channel.startTyping();
 		const image = await nodeHtmlToImage({
 			// Hardcode `executablePath: "chromium-browser"` - Remove this if not running on Raspberry Pi!
 			puppeteerArgs: {executablePath: "chromium-browser", args: ["--no-sandbox", "--disable-setuid-sandbox"]},
@@ -87,7 +88,7 @@ module.exports = {
   </script>
 </html>`,
 		});
-
+		message.channel.stopTyping();
 		return message.channel.send({files: [image]});
 	},
 };
