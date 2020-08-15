@@ -6,7 +6,6 @@ const removeDiacritics = require("diacritics").remove;
 const KAOMOJI = ["(* ^ ω ^)", "(o^▽^o)", "(≧◡≦)", "☆⌒ヽ(*\"､^*)chu", "( ˘⌣˘)♡(˘⌣˘ )", "(눈_눈)", "ʕ º ᴥ ºʔ"];
 
 module.exports = {
-	servers: ["614615934979801113"],
 	async process(message) {
 		if (message.author.bot) return;
 		const db = Storage.getDatabase(message.guild.id);
