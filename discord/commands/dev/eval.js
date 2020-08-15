@@ -2,6 +2,8 @@
 
 const LCRNG = require("../../../sources/rng/lcrng.js"); // eslint-disable-line
 const utilities = require("../../utilities.js"); // eslint-disable-line
+const homoglyph = require("../../../sources/homoglyph.js"); // eslint-disable-line
+const removeDiacritics = require("diacritics").remove; // eslint-disable-line
 
 module.exports = {
 	desc: "Evaluates arbitrary javascript.",

@@ -293,6 +293,10 @@ class Tools {
 		return text.toLowerCase().replace(/[^a-z0-9+-]/g, "");
 	}
 
+	toHomoglyphWord(text) {
+		return text.toLowerCase().replace(/[^a-z0-9 ?]/g, "");
+	}
+
 	/**
   * @param {any} text
   * @return {string}
