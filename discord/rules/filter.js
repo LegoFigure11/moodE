@@ -15,7 +15,7 @@ module.exports = {
 		// Mods should be immune
 		if (member.hasPermission("MANAGE_MESSAGES")) return;
 
-		const banwordRegex = new RegExp(`(?:\\b|(?!\\w))(?:${glyph.replace(removeDiacritics(db.filter.join("?"))).toLowerCase().replace(/[i|l]/g, "[i|l]").replace(/[ad]/g, "[ad]").replace(/\?/g, "|")})(?:\\b|\\B(?!\\w))`, "i");
+		const banwordRegex = new RegExp(`(?:\\b|(?!\\w))(?:${glyph.replace(removeDiacritics(db.filter.join("?"))).toLowerCase().replace(/[i|lj]/g, "[i|lj]").replace(/[ad]/g, "[ad]").replace(/[nx]/g, "[nx]").replace(/\?/g, "|")})(?:\\b|\\B(?!\\w))`, "i");
 
 		// Check for filtered words in the message
 		for (const word of glyph.replace(removeDiacritics(message.content).replace(/[.]/g, "")).toLowerCase().split(" ")) {
