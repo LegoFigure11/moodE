@@ -36,8 +36,8 @@ module.exports = {
 			});
 			const data = await def;
 			const definition = JSON.parse(data.toString()).list[0];
-			definition.definition = definition.definition.replace(/\[[a-zA-Z0-9 ]*\]/gi, replacer);
-			definition.example = definition.example.replace(/\[[a-zA-Z0-9 ]*\]/gi, replacer);
+			definition.definition = definition.definition.replace(/\[[a-zA-Z0-9. ]*\]/gi, replacer);
+			definition.example = definition.example.replace(/\[[a-zA-Z0-9. ]*\]/gi, replacer);
 			const embed = {
 				title: `"${definition.word}" on Urban Dictionary`,
 				url: definition.permalink,
@@ -58,6 +58,5 @@ module.exports = {
 
 function replacer(match) {
 	const words = match.replace(/[[|\]]/g, "").split(" ");
-	console.log(words);
-	return `[${words.join(" ")}](http://${words.join("-")}.urbanup.com)`;
+	return `[${words.join(" ")}](http://${words.join("-").replace(/\./g, "")}.urbanup.com)`;
 }
