@@ -44,10 +44,10 @@ module.exports = {
 				fields: [
 					{
 						name: "Example:",
-						value: definition.example,
+						value: definition.example || "(None)",
 					},
 				],
-				description: `${definition.definition}`,
+				description: definition.definition || "(None)",
 			};
 			return send ? message.channel.send({embed}) : message.channel.send("Looks like something went wrong...");
 		} catch (e) {
