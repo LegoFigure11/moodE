@@ -8,6 +8,7 @@ module.exports = {
 	usage: "<amount><from>, <to>\ne.g. 70km, mi\n",
 	aliases: ["converter", "conv"],
 	async process(message, args) {
+		if (!args[1]) return message.channel.send(`${discordFailureEmoji} Expected a unit to convert to!`);
 		try {
 			let i = 0;
 			for (i; i < args[0].length; i++) {
@@ -15,6 +16,7 @@ module.exports = {
 			}
 			const measure = args[0].trim().substring(0, i).trim() || 0;
 			const unit = args[0].trim().substring(i, args[0].trim().length).trim();
+			if (!unit) return message.channel.send(`${discordFailureEmoji} Expected a unit to convert from!`);
 			const conv = convert(measure).from(unit).to(args[1].trim());
 			return message.channel.send(`${measure}${unit} = ${conv}${args[1].trim()}`);
 		} catch (e) {
