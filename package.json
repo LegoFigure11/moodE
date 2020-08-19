@@ -1,6 +1,6 @@
 {
   "name": "moode-rewrite",
-  "version": "2.3.1",
+  "version": "2.3.2",
   "description": "re-write of discord chatbot",
   "main": "moode.js",
   "scripts": {
@@ -12,6 +12,7 @@
   "dependencies": {
     "archiver": "^4.0.1",
     "colors": "^1.4.0",
+    "convert-units": "^2.3.4",
     "diacritics": "^1.3.0",
     "discord.js": "^12.2.0",
     "hex2dec": "^1.1.2",
