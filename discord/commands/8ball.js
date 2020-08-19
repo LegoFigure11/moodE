@@ -26,6 +26,7 @@ const phrases = [
 module.exports = {
 	desc: "Asks the magic 8-Ball a question.",
 	usage: "<question>",
+	aliases: ["8"],
 	async process(message, args) {
 		return message.channel.send(`:8ball: ${Tools.sampleOne(phrases)}`);
 	},
