@@ -15,14 +15,14 @@ module.exports = {
 		// Mods should be immune
 		if (member.hasPermission("MANAGE_MESSAGES")) return;
 
-		const banwordRegex = new RegExp(`(?:\\b|(?!\\w))(?:${glyph.replace(removeDiacritics(db.filter.join("?"))).toLowerCase().replace(/[i|lj]/g, "[i|lj]").replace(/[ad]/g, "[ad]").replace(/[nx]/g, "[nx]").replace(/\?/g, "|")})(?:\\b|\\B(?!\\w))`, "i");
-
+		const banwordRegex = new RegExp(`(?:\\b|(?!\\w))(?:${db.filter.join("<<<sep>>>").toLowerCase().replace(/[i|lj]/g, "[i|lj]").replace(/[ad]/g, "[ad]").replace(/[nx]/g, "[nx]").replace(/<<<sep>>>/g, "|")})(?:\\b|\\B(?!\\w))`, "i");
 		// Check for filtered words in the message
 		for (const word of glyph.replace(removeDiacritics(message.content).replace(/[.]/g, "")).toLowerCase().split(" ")) {
 			if (banwordRegex.test(word)) {
 				try {
 					await message.delete();
 					message.channel.send(`${discordFailureEmoji} ${message.author}, your message contained terms that are not permitted in this server, and has been deleted.`);
+					break;
 				} catch (e) {
 					console.log(e);
 				}
