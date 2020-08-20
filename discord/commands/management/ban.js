@@ -14,7 +14,14 @@ module.exports = {
 		(args[0].includes("<") ? client.users.fetch(args[0].match(/^<@!?(\d+)>$/)[1]) : client.users.fetch(args[0])).then(user => {
 			if (!user) return message.channel.send(`${discordFailureEmoji} Unable to find user: ${args[0]}!`);
 			if (user.id === message.author.id) return message.channel.send(`${discordFailureEmoji} You cannot ban yourself!`);
-			if (!message.guild.members.cache.get(user.id).bannable) return message.channel.send(`${discordFailureEmoji} Unable to ban ${user.username}#${user.discriminator}: Insufficient permissions! Do they have a role higher than mine?`);
+
+			const member = message.guild.members.cache.get(user.id);
+			let banMessage = `${message.author} Are you sure you want to ban ${user.username}#${user.discriminator}? (Y/n):`;
+			if (member) {
+				if (!message.guild.members.cache.get(user.id).bannable) return message.channel.send(`${discordFailureEmoji} Unable to ban ${user.username}#${user.discriminator}: Insufficient permissions! Do they have a role higher than mine?`);
+			} else {
+				banMessage = `${message.author} It doesn't look like ${user.username}#${user.discriminator} is in this server. Would you like to ban them anyway? (Y/n):`;
+			}
 
 			args.shift();
 			const reason = args.join(", ");
@@ -24,11 +31,11 @@ module.exports = {
 			};
 
 			try {
-				message.channel.send(`${message.author} Are you sure you want to ban ${user.username}#${user.discriminator}? (Y/n):`).then(() => {
+				message.channel.send(banMessage).then(() => {
 					message.channel.awaitMessages(filter, {max: 1, time: TIMEOUT, errors: ["time"]}).then(collected => {
 						if (Tools.toId(collected.first().content) === "y") {
 							message.guild.members.ban(user, {reason: reason});
-							return message.channel.send(`${discordSuccessEmoji} ${user} was banned${reason.length > 0 ? ` (${reason})` : ""}!`);
+							return message.channel.send(`${discordSuccessEmoji} ${user} was banned${reason.length > 0 ? ` (Reason: ${reason})` : ""}!`);
 						} else {
 							message.channel.send(`${user.username}#${user.discriminator} will not be banned!`);
 						}
