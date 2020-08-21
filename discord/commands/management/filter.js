@@ -2,7 +2,7 @@
 
 module.exports = {
 	desc: "Allows configuration of the word filter.",
-	usage: "<+/-word1>, <+/- word2 (optional)>, <+/-word... (optional)>",
+	usage: "<+/-word1/regexp1>, <+/-word2/regexp2 (optional)>, <+/-word/regexp... (optional)>",
 	aliases: ["banword"],
 	isManager: true,
 	noPm: true,

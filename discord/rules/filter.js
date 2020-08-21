@@ -15,7 +15,41 @@ module.exports = {
 		// Mods should be immune
 		if (member.hasPermission("MANAGE_MESSAGES")) return;
 
-		const banwordRegex = new RegExp(`(?:\\b|(?!\\w))(?:${db.filter.join("<<<sep>>>").toLowerCase().replace(/[i|lj]/g, "[i|lj]").replace(/[ad]/g, "[ad]").replace(/[nx]/g, "[nx]").replace(/<<<sep>>>/g, "|")})(?:\\b|\\B(?!\\w))`, "i");
+		const filterWords = [];
+		for (const word of db.filter) {
+			const newWord = [];
+			const openIndexes = [];
+			const closeIndexes = [];
+			let lastChar = "";
+			let i = 0;
+			for (const char of word) {
+				if (char === "[" && lastChar !== "\\") openIndexes.push(i);
+				if (char === "]" && lastChar !== "\\") closeIndexes.push(i);
+				lastChar = char;
+				i++;
+			}
+			i = 0;
+			let j = 0;
+			for (let char of word) {
+				if (i > openIndexes[j] && i < closeIndexes[j]) {
+					if (char === "a" || char === "d") char = "a|d";
+					if (char === "i" || char === "l" || char === "j") char = "i|\||l|j"; // eslint-disable-line
+					if (char === "n" || char === "x") char = "n|x";
+					newWord.push(char);
+				} else {
+					if (char === "a" || char === "d") char = "[ad]";
+					if (char === "i" || char === "l" || char === "j") char = "[i|lj]";
+					if (char === "n" || char === "x") char = "[nx]";
+					newWord.push(char);
+				}
+				if (char === "]") j++;
+				i++;
+			}
+			filterWords.push(newWord.join(""));
+		}
+
+		const banwordRegex = new RegExp(`(?:\\b|(?!\\w))(?:${filterWords.join("<<<sep>>>").toLowerCase().replace(/<<<sep>>>/g, "|")/* .replace(/[ilj]/g, "[i|lj]").replace(/[ad]/g, "[ad]").replace(/[nx]/g, "[nx]").replace(/<<<sep>>>/g, "|")}*/})(?:\\b|\\B(?!\\w))`, "i");
+
 		// Check for filtered words in the message
 		for (const word of glyph.replace(removeDiacritics(message.content).replace(/[.]/g, "")).toLowerCase().split(" ")) {
 			if (banwordRegex.test(word)) {
