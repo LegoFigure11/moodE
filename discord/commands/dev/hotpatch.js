@@ -54,6 +54,10 @@ module.exports = {
 		global.discordCommandHandler = new DiscordCommandHandler();
 		discordCommandHandler.init(true);
 
+		global.DiscordReactionHandler = require("../../reactionHandler.js");
+		global.discordReactionHandler = new DiscordReactionHandler();
+		await discordReactionHandler.init(true);
+
 		if (!silent) {
 			return message.channel.send("Hotpatch completed!");
 		} else {

@@ -31,6 +31,10 @@ client.on("ready", (async () => {
 	global.discordMessageParser = new DiscordMessageParser();
 	await discordMessageParser.init();
 
+	global.DiscordReactionHandler = require("./reactionHandler.js");
+	global.discordReactionHandler = new DiscordReactionHandler();
+	await discordReactionHandler.init();
+
 	// From https://github.com/sirDonovan/Cassius/blob/master/app.js#L46
 	let pluginsList;
 	const plugins = fs.readdirSync(path.resolve(`${__dirname}/plugins`));
@@ -235,67 +239,7 @@ client.on("messageReactionAdd", async (reaction, user) => {
 		}
 	}
 
-	const db = Storage.getDatabase(reaction.message.guild.id);
-	if (!db.starboard) return;
-	if (!db.starboard.emoji) db.starboard.emoji = "\u{2B50}";
-	if (!db.starboard.requiredStars) db.starboard.requiredStars = 3;
-	if (!db.starboard.roles) db.starboard.roles = [];
-	if (!db.starboard.stars) db.starboard.stars = {};
-	if (!db.starboard.channel) return Storage.exportDatabase(reaction.message.guild.id);
-
-	let emojiName = "";
-	if (reaction._emoji.id) {
-		emojiName = `<:${reaction._emoji.name}:${reaction._emoji.id}>`;
-	} else {
-		emojiName = reaction._emoji.name;
-	}
-
-	if (db.starboard.emoji === emojiName) {
-		if (db.starboard.roles.length > 0) {
-			let count = 0;
-			const users = await reaction.users.fetch();
-			await users.each(async (user) => {
-				if (await reaction.message.guild.members.cache.get(user.id).roles.cache.some(role => db.starboard.roles.includes(role.id))) {
-					count++;
-				}
-			});
-			reaction.count = count;
-		}
-		if (reaction.count >= db.starboard.requiredStars) {
-			if (db.starboard.stars[reaction.message.id]) {
-				// Fetch the message and update the star count
-				const channel = client.channels.cache.get(db.starboard.channel);
-				channel.messages.fetch(db.starboard.stars[reaction.message.id]).then(msg => {
-					msg.edit(`${reaction.count <= 5 ? (db.starboard.level1 ? db.starboard.level1 : ":star:") : reaction.count <= 10 ? (db.starboard.level2 ? db.starboard.level2 : ":star2:") : (db.starboard.level2 ? db.starboard.level3 : ":stars:")} **${reaction.count}** - ${reaction.message.channel}`);
-				});
-			} else {
-				const embed = {
-					color: reaction.message.guild.members.cache.get(reaction.message.author.id).displayColor,
-					timestamp: new Date(),
-					author: {
-						name: reaction.message.author.username,
-						icon_url: reaction.message.author.avatarURL(),
-					},
-					fields: [
-						{name: "Link", value: `[Click me!](${reaction.message.url})`, inline: true},
-					],
-					footer: {
-						icon_url: client.user.avatarURL(),
-						text: "moodE",
-					},
-				};
-				const starInfo = `${db.starboard.level1 ? db.starboard.level1 : ":star:"} **${reaction.count}** - ${reaction.message.channel}`;
-				if (reaction.message.content) embed.fields.push({name: "Message", value: reaction.message.content});
-				if (reaction.message.attachments.first()) {
-					embed.image = {};
-					embed.image.url = reaction.message.attachments.first().url;
-				}
-				const sent = await client.channels.cache.get(db.starboard.channel).send(starInfo, {embed});
-				db.starboard.stars[reaction.message.id] = sent.id;
-				Storage.exportDatabase(reaction.message.guild.id);
-			}
-		}
-	}
+	discordReactionHandler.process(reaction, user, "Add");
 });
 
 client.on("messageReactionRemove", async (reaction, user) => {
@@ -309,50 +253,7 @@ client.on("messageReactionRemove", async (reaction, user) => {
 		}
 	}
 
-	const db = Storage.getDatabase(reaction.message.guild.id);
-	if (!db.starboard) return;
-	if (!db.starboard.emoji) db.starboard.emoji = "\u{2B50}";
-	if (!db.starboard.requiredStars) db.starboard.requiredStars = 3;
-	if (!db.starboard.roles) db.starboard.roles = [];
-	if (!db.starboard.stars) db.starboard.stars = {};
-	if (!db.starboard.channel) return Storage.exportDatabase(reaction.message.guild.id);
-
-	let emojiName = "";
-	if (reaction._emoji.id) {
-		emojiName = `<:${reaction._emoji.name}:${reaction._emoji.id}>`;
-	} else {
-		emojiName = reaction._emoji.name;
-	}
-
-	if (db.starboard.emoji === emojiName) {
-		if (db.starboard.roles.length > 0) {
-			let count = 0;
-			const users = await reaction.users.fetch();
-			await users.each(async (user) => {
-				if (await reaction.message.guild.members.cache.get(user.id).roles.cache.some(role => db.starboard.roles.includes(role.id))) {
-					count++;
-				}
-			});
-			reaction.count = count;
-		}
-		if (db.starboard.stars[reaction.message.id]) {
-			if (reaction.count >= db.starboard.requiredStars) {
-				const channel = client.channels.cache.get(db.starboard.channel);
-				channel.messages.fetch(db.starboard.stars[reaction.message.id]).then(msg => {
-					msg.edit(`${reaction.count <= 5 ? (db.starboard.level1 ? db.starboard.level1 : ":star:") : reaction.count <= 10 ? (db.starboard.level2 ? db.starboard.level2 : ":star2:") : (db.starboard.level2 ? db.starboard.level3 : ":stars:")} **${reaction.count}** - ${reaction.message.channel}`);
-				});
-			} else {
-				const channel = client.channels.cache.get(db.starboard.channel);
-				channel.messages.fetch(db.starboard.stars[reaction.message.id]).then(msg => {
-					try {
-						msg.delete();
-						delete db.starboard.stars[reaction.message.id];
-						Storage.exportDatabase(reaction.message.guild.id);
-					} catch (e) {}
-				});
-			}
-		}
-	}
+	discordReactionHandler.process(reaction, user, "Remove");
 });
 
 // Legacy Support
