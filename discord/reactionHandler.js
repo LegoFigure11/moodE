@@ -40,7 +40,7 @@ class ReactionEvents {
 								} else {
 									this.remove.push(event);
 								}
-								if (!(isReload)) console.log(`${Tools.discordText()}${isReload ? "Rel" : "L"}oaded rule ${name.green}`);
+								if (!(isReload)) console.log(`${Tools.discordText()}${isReload ? "Rel" : "L"}oaded reaction event ${name.green}`);
 							} catch (e) {
 								console.log(`${Tools.discordText()}${"reactionHandler loadDirectory() error: ".brightRed}${e.stack} while parsing ${name.yellow}${".js".yellow} in ${directory}`);
 							}

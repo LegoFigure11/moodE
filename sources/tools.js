@@ -16,6 +16,12 @@ const groups = require("../showdown/src/groups.json");
 const whitespaceRegex = new RegExp("\\s+", "g");
 const nullCharactersRegex = new RegExp("[\u0000\u200B-\u200F]+", "g");
 
+const dateOptions = {
+	year: "numeric",
+	month: "numeric",
+	day: "numeric",
+};
+
 /**
  * @typedef Learnset
  * @type {Object}
@@ -335,23 +341,28 @@ class Tools {
 	}
 
 	discordText() {
-		return `[${new Date().toTimeString().split(" ")[0]}] `.grey + `Discord-Bot: `.yellow;
+		const d = new Date();
+		return `[${d.toLocaleDateString("en-AU", dateOptions)} ${d.toTimeString().split(" ")[0]}] `.grey + `Discord-Bot: `.yellow;
 	}
 
 	moodeText() {
-		return `[${new Date().toTimeString().split(" ")[0]}] `.grey + `moodE: `.yellow;
+		const d = new Date();
+		return `[${d.toLocaleDateString("en-AU", dateOptions)} ${d.toTimeString().split(" ")[0]}] `.grey + `moodE: `.yellow;
 	}
 
 	pokemonShowdownText() {
-		return `[${new Date().toTimeString().split(" ")[0]}] `.grey + `pokemon-showdown: `.yellow;
+		const d = new Date();
+		return `[${d.toLocaleDateString("en-AU", dateOptions)} ${d.toTimeString().split(" ")[0]}] `.grey + `pokemon-showdown: `.yellow;
 	}
 
 	showdownText() {
-		return `[${new Date().toTimeString().split(" ")[0]}] `.grey + `PS-Bot: `.yellow;
+		const d = new Date();
+		return `[${d.toLocaleDateString("en-AU", dateOptions)} ${d.toTimeString().split(" ")[0]}] `.grey + `PS-Bot: `.yellow;
 	}
 
 	twitchText() {
-		return `[${new Date().toTimeString().split(" ")[0]}] `.grey + `Twitch-Bot: `.yellow;
+		const d = new Date();
+		return `[${d.toLocaleDateString("en-AU", dateOptions)} ${d.toTimeString().split(" ")[0]}] `.grey + `Twitch-Bot: `.yellow;
 	}
 
 	/**
