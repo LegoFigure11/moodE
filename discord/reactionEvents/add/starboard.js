@@ -40,11 +40,15 @@ module.exports = {
 						color: reaction.message.guild.members.cache.get(reaction.message.author.id).displayColor,
 						timestamp: new Date(),
 						author: {
-							name: `${reaction.message.author.username}#${reaction.message.author.discriminator} (${reaction.message.author.id})`,
+							name: `${reaction.message.author.username}`,
 							icon_url: reaction.message.author.avatarURL(),
 						},
 						fields: [
-							{name: "Link", value: `[Click me!](${reaction.message.url})`, inline: true},
+							{
+								name: "Link",
+								value: `[Click me!](${reaction.message.url})`,
+								inline: true,
+							},
 						],
 						footer: {
 							icon_url: client.user.avatarURL(),
@@ -58,6 +62,7 @@ module.exports = {
 						embed.image.url = reaction.message.attachments.first().url;
 					}
 					const sent = await client.channels.cache.get(db.starboard.channel).send(starInfo, {embed});
+					await sent.edit(`${starInfo} (${reaction.message.author})`);
 					db.starboard.stars[reaction.message.id] = sent.id;
 					Storage.exportDatabase(reaction.message.guild.id);
 				}
