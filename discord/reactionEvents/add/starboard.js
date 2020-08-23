@@ -40,7 +40,7 @@ module.exports = {
 						color: reaction.message.guild.members.cache.get(reaction.message.author.id).displayColor,
 						timestamp: new Date(),
 						author: {
-							name: `${reaction.message.author} (${reaction.message.author.id})`,
+							name: `${reaction.message.author.username}#${reaction.message.author.discriminator} (${reaction.message.author.id})`,
 							icon_url: reaction.message.author.avatarURL(),
 						},
 						fields: [
