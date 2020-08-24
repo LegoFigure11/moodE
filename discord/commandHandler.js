@@ -397,18 +397,19 @@ class CommandHandler {
 		let pageCounter = 3;
 		for (const key of Object.keys(commands)) {
 			if (skipTypes.includes(key)) continue;
+			const commandList = Object.values(commands[key].commandList);
 			let p = Object.assign({}, EMBED_TEMPLATE);
 			p.fields = [];
 			let j = 1;
 			let hasSetTitle = false;
-			for (const command of Object.values(commands[key].commandList)) {
+			for (const command of commandList) {
 				if (command.disabled) continue;
 				p.title = `Page ${pageCounter} - ${key}${!hasSetTitle ? "" : " (Cont.)"}`;
 				p.fields.push({
 					name: `${discordConfig.commandCharacter}${command.name}`,
 					value: `Usage: ${discordConfig.commandCharacter}${command.name} ${command.usage || ""}\n${command.desc}`,
 				});
-				if (j % 4 === 0 || j === Object.values(commands[key]).length) {
+				if (j % 4 === 0 || j === commandList.length) {
 					pageCounter++;
 					pages.push(p);
 					hasSetTitle = true;
