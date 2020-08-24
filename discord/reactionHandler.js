@@ -57,6 +57,7 @@ class ReactionEvents {
 		if (type === "Add") {
 			for (let i = 0; i < this.add.length; i++) {
 				const event = this.add[i];
+				if (event.noPm && reaction.message.channel.type === "dm") continue;
 				if (event.servers.length > 0 && !event.servers.includes(reaction.message.guild.id)) continue;
 				if (event.channels.length > 0 && !event.channels.includes(reaction.message.channel.id)) continue;
 				if (event.users.length > 0 && !event.users.includes(user.id)) continue;
@@ -65,6 +66,7 @@ class ReactionEvents {
 		} else {
 			for (let i = 0; i < this.remove.length; i++) {
 				const event = this.remove[i];
+				if (event.noPm && reaction.message.channel.type === "dm") continue;
 				if (event.servers.length > 0 && !event.servers.includes(reaction.message.guild.id)) continue;
 				if (event.channels.length > 0 && !event.channels.includes(reaction.message.channel.id)) continue;
 				if (event.users.length > 0 && !event.users.includes(user.id)) continue;

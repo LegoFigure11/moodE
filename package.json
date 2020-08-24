@@ -1,6 +1,6 @@
 {
   "name": "moode-rewrite",
-  "version": "2.3.2",
+  "version": "2.4.0",
   "description": "re-write of discord chatbot",
   "main": "moode.js",
   "scripts": {

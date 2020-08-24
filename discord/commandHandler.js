@@ -18,6 +18,14 @@ const RNG_COMMANDS_DIRECTORY = path.resolve(__dirname, "./commands/rng/");
 
 const databaseDirectory = path.resolve(__dirname, "../databases");
 
+const EMBED_TEMPLATE = {
+	author: {
+		name: `${client.user.username} Help`,
+		icon_url: client.user.avatarURL(),
+	},
+	title: "Page {{{page}}}",
+};
+
 class CommandHandler {
 	constructor() {
 		this.commands = [];
@@ -212,84 +220,205 @@ class CommandHandler {
 		}
 	}
 
-	helpCommand(cmd, message) {
+	async createHelpCommand(cmd, message) {
 		const hrStart = process.hrtime();
 		console.log(`${Tools.discordText()}Executing command: ${"help".cyan}`);
-		const botCommands = [];
-		const devCommands = [];
-		const dexCommands = [];
-		const fcCommands = [];
-		const managementCommands = [];
-		let sendMsg = [];
-		if (!(cmd[0])) {
-			message.author.send(`List of commands; use \`${discordConfig.commandCharacter}help <command name>\` for more information:`);
-			for (let i = 0; i < this.commands.length; i++) {
-				const command = this.commands[i];
-				if (!command.disabled && !command.isNSFW && command.commandType !== "JokeCommand") {
-					const cmdText = `${discordConfig.commandCharacter}${command.name}${command.desc ? ` - ${command.desc}` : ""}`;
-					switch (command.commandType) {
-					case "BotCommand":
-						botCommands.push(cmdText);
-						break;
-					case "DevCommand":
-						devCommands.push(cmdText);
-						break;
-					case "DexCommand":
-						dexCommands.push(cmdText);
-						break;
-					case "FcCommand":
-						fcCommands.push(cmdText);
-						break;
-					case "ManagementCommand":
-						managementCommands.push(cmdText);
-						break;
-					}
+		const target = message.guild && message.guild.members.cache.get(client.user.id).hasPermission("ADD_REACTIONS") ? message.channel : message.author;
+		if (cmd[0]) {
+			// Specific Help Command
+			let c;
+			for (const command of this.commands) {
+				if ([command.name, ...command.aliases].includes(Tools.toId(cmd[0]))) {
+					c = command;
+					break;
 				}
 			}
-			const hrEnd = process.hrtime(hrStart);
-			const timeString = hrEnd[0] > 3 ? `${hrEnd[0]}s ${hrEnd[1]}ms`.brightRed : `${hrEnd[0]}s ${hrEnd[1]}ms`.grey;
-			console.log(`${Tools.discordText()}Executed command: ${"help".green} in ${timeString}`);
-			if (botCommands.length > 0) message.author.send(`Bot Commands:\n\`\`\`${botCommands.join("\n")}\`\`\``);
-			if (devCommands.length > 0) message.author.send(`Dev Commands:\n\`\`\`${devCommands.join("\n")}\`\`\``);
-			if (dexCommands.length > 0) message.author.send(`Dex Commands:\n\`\`\`${dexCommands.join("\n")}\`\`\``);
-			if (fcCommands.length > 0) message.author.send(`FC Commands:\n\`\`\`${fcCommands.join("\n")}\`\`\``);
-			if (managementCommands.length > 0) message.author.send(`Management Commands:\n\`\`\`${managementCommands.join("\n")}\`\`\``);
-			return true;
-		}
-		const lookup = Tools.toId(cmd[0]);
-		let command;
-		let matched = false;
-		for (let i = 0; i < this.commands.length; i++) {
-			if (matched) break;
-			command = this.commands[i];
-			if (command.name === lookup || (command.aliases && command.aliases.includes(lookup))) matched = true;
-		}
+			if (!c) {
+				target.send(`${discordFailureEmoji} No command "${cmd[0]}" found!`);
+			} else {
+				let db;
+				if (message.guild) {
+					db = Storage.getDatabase(message.guild.id).config.commands[c.name];
+				}
 
-		if (!matched) return message.author.send(`${discordFailureEmoji} No command "${lookup}" found!`);
+				const embed = Object.assign({}, EMBED_TEMPLATE);
+				embed.title = `${discordConfig.commandCharacter}${c.name}`;
+				embed.description = `**About**: ${c.longDesc || c.desc || "No info available."}`;
+				embed.fields = [
+					{
+						name: "Usage:",
+						value: `${discordConfig.commandCharacter}${c.name} ${c.usage || ""}`,
+					},
+					{
+						name: "isElevated",
+						value: db ? db.isElevated : c.isElevated,
+						inline: true,
+					},
+					{
+						name: "isManager",
+						value: db ? db.isManager : c.isManager,
+						inline: true,
+					},
+				];
+				const hrEnd = process.hrtime(hrStart);
+				const timeString = hrEnd[0] > 3 ? `${hrEnd[0]}s ${hrEnd[1]}ms`.brightRed : `${hrEnd[0]}s ${hrEnd[1]}ms`.grey;
+				console.log(`${Tools.discordText()}Executed command: ${"help".green} in ${timeString}`);
+				return target.send({embed});
+			}
+		}
+		// Generic Help Command
+		const embeds = await this.buildPages(message, message.author, 1);
+		const embed = embeds[0];
 
-		if (command.adminOnly && !isAdmin(message.author.id)) {
-			return `\`\`\`${command.name} is an admin-only command.\`\`\``;
-		}
-		if (command.elevated && !isElevated(message.author.id)) {
-			return `\`\`\`${command.name} is an elevated-only command.\`\`\``;
-		}
-
-		sendMsg = [
-			command.name,
-			`${discordConfig.commandCharacter}${command.name}${command.usage.length > 0 ? ` ${command.usage}` : ""}`,
-			command.longDesc,
-			"",
-			`${command.aliases.length > 0 ? `Aliases: ${command.aliases.join(", ")}` : ""}`,
-		];
-		for (let i = 0; i < command.options.length; i++) {
-			sendMsg.push(`  ${command.options[i].toString()}: ${command.options[i].desc}`);
-		}
-		sendMsg = sendMsg.join("\n");
-		sendMsg = `\`\`\`${sendMsg}\`\`\``;
 		const hrEnd = process.hrtime(hrStart);
 		const timeString = hrEnd[0] > 3 ? `${hrEnd[0]}s ${hrEnd[1]}ms`.brightRed : `${hrEnd[0]}s ${hrEnd[1]}ms`.grey;
 		console.log(`${Tools.discordText()}Executed command: ${"help".green} in ${timeString}`);
-		return message.channel.send(sendMsg);
+
+		const msg = await target.send(`moodE Help (for ${message.author}): Page 1 of ${embeds.length}`, {embed});
+		await msg.react("\u{23EA}"); // ⏪ Rewind Emoji
+		await msg.react("\u{25C0}"); // ◀️ Back Emoji
+		await msg.react("\u{25B6}"); // ▶️ Play Emoji
+		await msg.react("\u{23E9}"); // ⏩ Fast Forward Emoji
+		await msg.react("\u{1F522}"); // 🔢 1234 Emoji
+		await msg.react("\u{1F4D8}"); // 📘 Blue Book Emoji
+	}
+
+	async changeHelpPage(message, user, page, maxPage) {
+		const embeds = await this.buildPages(message, user, maxPage);
+		const embed = embeds[page - 1];
+		await message.edit(`moodE Help (for ${user}): Page ${page} of ${embeds.length}`, {embed});
+	}
+
+	// Returns an array of embeds
+	async buildPages(message, user) {
+		const pages = [];
+		// Page 1 should always be the welcome page
+		const pageOne = Object.assign({}, EMBED_TEMPLATE);
+		pageOne.description = "Hello! Welcome to the help page.";
+		pageOne.title = pageOne.title.replace("{{{page}}}", "1 - Welcome");
+		pageOne.fields = [
+			{
+				name: "How does this work?",
+				value: `I'm glad you asked! You can control the help page using the reactions below.
+								\u{23EA} takes you back to the first page (this one!)
+								\u{25C0} takes you to the previous page
+								\u{25B6} takes you to the next page
+								\u{23E9} takes you to the last page
+								\u{1F522} lets you type a page number to go to
+								\u{1F4D8} takes you to the contents page
+
+								Don't worry! This command can only be controlled by reactions from the user.
+								Pages contain information about how to use the bot, and its commands.
+								Click \u{25B6} to get started!`.replace(/\t/g, ""),
+			},
+		];
+		pages.push(pageOne);
+
+		// Populate contents page and get a nice list of commands that we can use for the rest of the pages
+		const commands = {
+			"Bot Commands": {
+				desc: "Core, non-specific bot commands.",
+				perPage: 4,
+			},
+			"Dev Commands": {
+				desc: "Commands for bot developers.",
+				perPage: 4,
+			},
+			"Dex Commands": {
+				desc: "Pokedex commands.",
+				perPage: 4,
+			},
+			"Fc Commands": {
+				desc: "Commands for accessing and using the Friend Code database.",
+				perPage: 4,
+			},
+			"Management Commands": {
+				desc: "Commands for server, bot, and user management.",
+				perPage: 4,
+			},
+			"Nsfw Commands": {
+				desc: "Commands that are Not Safe For Work.",
+				perPage: 4,
+			},
+		};
+		for (let i = 0; i < this.commands.length; i++) {
+			const command = this.commands[i];
+			const type = `${command.commandType.split("Command")[0]} Commands`;
+			 if (!commands[type]) commands[type] = {};
+			 if (!commands[type].commandList) commands[type].commandList = {};
+			 commands[type].commandList[command.name] = command;
+		}
+
+		const pageTwo = Object.assign({}, EMBED_TEMPLATE);
+		pageTwo.title = pageTwo.title.replace("{{{page}}}", "2 - Contents & How-To");
+		pageTwo.description = "This page goes over how to use the bot, and acts as a contents page for the Help command.";
+		pageTwo.fields = [
+			{
+				name: "How-To",
+				value: `moodE commands are prefixed with \`${discordConfig.commandCharacter}\`. It will attempt to parse any message starting with this character as a command.
+								In the following pages is a list of all of moodE's commands, and for specific, more detailed help with a command, you can use \`${discordConfig.commandCharacter}help <command name>\` (without the brackets!)`.replace(/\t/g, ""),
+			},
+			{
+				name: "Contents",
+				value: `React with \u{1F522} below to quickly jump to one of these pages!`,
+			},
+		];
+
+		const skipTypes = ["Joke Commands", "Nsfw Commands"];
+		if (message.channel.type !== "dm") {
+			const db = Storage.getDatabase(message.guild.id);
+			if (message.channel.nsfw || (db.config.nsfw && db.config.nsfw.allowNSFW && db.config.nsfw.nsfwChannels.includes(message.channel.id))) {
+				skipTypes.splice(1, 1);
+			}
+		}
+
+		let lastPage = 3;
+		for (const key of Object.keys(commands)) {
+			if (skipTypes.includes(key)) continue;
+			let count = 0;
+			const field = {
+				name: `${key} - Page {{{page}}}`,
+				value: "",
+			};
+			const cmdList = [`${commands[key].desc} List:`];
+			for (const command of Object.values(commands[key].commandList)) {
+				if (command.disabled) continue;
+				count++;
+				cmdList.push(command.name);
+			}
+			commands[key].count = count;
+			field.name = field.name.replace("{{{page}}}", lastPage);
+			lastPage += Math.ceil(count / commands[key].perPage);
+			field.value = cmdList.join(", ").replace(", ,", "").replace(" , ", " ");
+			pageTwo.fields.push(field);
+		}
+		pages.push(pageTwo);
+
+		let pageCounter = 3;
+		for (const key of Object.keys(commands)) {
+			if (skipTypes.includes(key)) continue;
+			let p = Object.assign({}, EMBED_TEMPLATE);
+			p.fields = [];
+			let j = 1;
+			let hasSetTitle = false;
+			for (const command of Object.values(commands[key].commandList)) {
+				if (command.disabled) continue;
+				p.title = `Page ${pageCounter} - ${key}${!hasSetTitle ? "" : " (Cont.)"}`;
+				p.fields.push({
+					name: `${discordConfig.commandCharacter}${command.name}`,
+					value: `Usage: ${discordConfig.commandCharacter}${command.name} ${command.usage || ""}\n${command.desc}`,
+				});
+				if (j % 4 === 0 || j === Object.values(commands[key]).length) {
+					pageCounter++;
+					pages.push(p);
+					hasSetTitle = true;
+					p = Object.assign({}, EMBED_TEMPLATE);
+					p.fields = [];
+				}
+				j++;
+			}
+		}
+		return pages;
 	}
 }
 

@@ -261,7 +261,9 @@ client.on("raw", async (event) => {
 	if (!listen) return;
 	if (!["MESSAGE_REACTION_ADD", "MESSAGE_REACTION_REMOVE"].includes(event.t)) return;
 	const channel = client.channels.cache.get(event.d.channel_id);
+	if (!channel.messages) return;
 	channel.messages.fetch(event.d.message_id).then(msg => {
+		if (!msg.guild) return;
 		const user = msg.guild.members.cache.get(event.d.user_id);
 
 		if (msg.author.id === client.user.id) {
@@ -298,7 +300,7 @@ async function resolveMessage(message) {
 	let args = message.content.slice(cmd.length + 1).split(",");
 	args = args.map(element => element.trim());
 
-	if (cmd === "help") return discordCommandHandler.helpCommand(args, message);
+	if (cmd === "help") return await discordCommandHandler.createHelpCommand(args, message);
 
 	discordCommandHandler.executeCommand(cmd, message, args);
 }

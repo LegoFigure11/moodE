@@ -1,6 +1,7 @@
 "use strict";
 
 module.exports = {
+	noPm: true,
 	async process(reaction, user) {
 		const db = Storage.getDatabase(reaction.message.guild.id);
 		if (!db.starboard) return;
