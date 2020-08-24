@@ -251,12 +251,12 @@ class CommandHandler {
 					},
 					{
 						name: "isElevated",
-						value: db ? db.isElevated : c.isElevated,
+						value: db ? db.isElevated : c.elevated,
 						inline: true,
 					},
 					{
 						name: "isManager",
-						value: db ? db.isManager : c.isManager,
+						value: db ? db.isManager : c.manager,
 						inline: true,
 					},
 				];
