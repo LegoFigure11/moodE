@@ -13,6 +13,9 @@ const phrases = [
 	"将军", // army general
 	"小姐", // lass
 	"大哥", // big brother
+	"少爷", // sama (alt)
+	"老弟", // big younger brother
+	"女士", // lass (alt)
 ];
 
 module.exports = {
