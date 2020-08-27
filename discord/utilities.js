@@ -108,6 +108,22 @@ class Utilities {
 		}
 	}
 
+
+	async parseMessageId(message, input) {
+		if (!message) throw new Error("parseMessageId() requires a message object!");
+		if (!input) throw new Error("parseMessageId() requires a message id!");
+		let msg;
+		for (const channel of message.guild.channels.cache) {
+			if (!channel[1].messages) continue;
+			msg = await channel[1].messages.fetch(input).catch(e => {
+				msg = undefined;
+			});
+			if (msg) break;
+		}
+		if (!msg) throw new Error(`No message ${input} found on this guild!`);
+		return msg;
+	}
+
 	oneIn(number) {
 		const rand = Tools.random(number);
 		if (rand === 0) return true;
