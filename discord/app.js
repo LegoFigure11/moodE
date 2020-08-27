@@ -256,38 +256,6 @@ client.on("messageReactionRemove", async (reaction, user) => {
 	discordReactionHandler.process(reaction, user, "Remove");
 });
 
-// Legacy Support
-client.on("raw", async (event) => {
-	if (!listen) return;
-	if (!["MESSAGE_REACTION_ADD", "MESSAGE_REACTION_REMOVE"].includes(event.t)) return;
-	const channel = client.channels.cache.get(event.d.channel_id);
-	if (!channel.messages) return;
-	channel.messages.fetch(event.d.message_id).then(msg => {
-		if (!msg.guild) return;
-		const user = msg.guild.members.cache.get(event.d.user_id);
-
-		if (msg.author.id === client.user.id) {
-			const regex = `\\*\\*"(.+)?(?="\\*\\*)`;
-			const mid = msg.content.match(regex);
-			if (!mid) return;
-			const role = mid[1];
-
-			if (user.id !== client.user.id) {
-				const roleObj = msg.guild.roles.cache.find(r => r.name === role);
-				const memberObj = msg.guild.members.cache.get(user.id);
-
-				if (event.t === "MESSAGE_REACTION_ADD") {
-					memberObj.roles.add(roleObj);
-					console.log(`${roleObj.name} added to ${memberObj.user.username}`);
-				} else {
-					memberObj.roles.remove(roleObj);
-					console.log(`${roleObj.name} removed from ${memberObj.user.username}`);
-				}
-			}
-		}
-	});
-});
-
 client.on("disconnect", (errMsg, code) => {
 	console.log(`${Tools.discordText()}Bot disconnected with code ${code} for reason: ${errMsg}`);
 	client.connect();
