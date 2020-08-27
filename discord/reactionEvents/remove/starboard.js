@@ -11,12 +11,7 @@ module.exports = {
 		if (!db.starboard.stars) db.starboard.stars = {};
 		if (!db.starboard.channel) return Storage.exportDatabase(reaction.message.guild.id);
 
-		let emojiName = "";
-		if (reaction._emoji.id) {
-			emojiName = `<:${reaction._emoji.name}:${reaction._emoji.id}>`;
-		} else {
-			emojiName = reaction._emoji.name;
-		}
+		const emojiName = reaction._emoji.id ? `<:${reaction._emoji.name}:${reaction._emoji.id}>` : reaction._emoji.name;
 
 		if (db.starboard.emoji === emojiName) {
 			if (db.starboard.roles.length > 0) {
