@@ -19,7 +19,8 @@ module.exports = {
 					}
 				}
 				if (emojis.includes(emojiName)) {
-					const role = await utilities.parseRoleId(reaction.message, db.reactionRoles[messageId][emojiName.startsWith("<") ? emojiName : String.fromCodePoint(`0x${emojiName}`)]).catch(e => { console.log(`${Tools.discordText()}${`Reaction Role Error`.brightRed}: Unable to retrieve role: ${db.reactionRoles[messageId][emojiName.startsWith("<") ? emojiName : String.fromCodePoint(`0x${emojiName}`)]}`); });
+					const role = await utilities.parseRoleId(reaction.message, db.reactionRoles[messageId][emojiName.startsWith("<") ? emojiName : String.fromCodePoint(`0x${emojiName}`)]);
+					if (!role) return console.log(`${Tools.discordText()}${`Reaction Role Error`.brightRed}: Unable to retrieve role: ${db.reactionRoles[messageId][emojiName.startsWith("<") ? emojiName : String.fromCodePoint(`0x${emojiName}`)]}`);
 					const member = await reaction.message.guild.members.fetch(user.id);
 					if (!member._roles.includes(role.id)) {
 						try {
