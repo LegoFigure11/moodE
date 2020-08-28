@@ -79,15 +79,13 @@ client.on("message", async (message) => {
 	if (message.author.id === client.user.id) return; // Don't respond to self
 
 	if (message.channel.type !== "dm") {
-		discordMessageParser.process(message);
+		message = await discordMessageParser.process(message);
 	}
 
-	if (message.author.bot) return; // Don't respond to bots
-
-	// Messages can be deleted by messageParser rules, don't process commands containing banned words
-	// TODO: Fix this
-	message = await message.fetch();
+	// Messages can be deleted by messageParser rules, don't process commands containing banned words or messages that have been otherwise deleted
 	if (message.deleted) return;
+
+	if (message.author.bot) return; // Don't respond to bots
 
 	if (message.content.startsWith(discordConfig.commandCharacter)) {
 		resolveMessage(message);

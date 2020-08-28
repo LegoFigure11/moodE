@@ -7,13 +7,13 @@ const KAOMOJI = ["(* ^ ω ^)", "(o^▽^o)", "(≧◡≦)", "☆⌒ヽ(*\"､^*)c
 
 module.exports = {
 	async process(message) {
-		if (message.author.bot) return;
+		if (message.author.bot) return message;
 		const db = Storage.getDatabase(message.guild.id);
-		if (!db.filter || db.filter.length === 0) return;
+		if (!db.filter || db.filter.length === 0) return message;
 
 		const member = await client.guilds.cache.get(message.guild.id).members.cache.get(message.author.id);
 		// Mods should be immune
-		if (member.hasPermission("MANAGE_MESSAGES")) return;
+		if (member.hasPermission("MANAGE_MESSAGES")) return message;
 
 		const filterWords = [];
 		for (const word of db.filter) {
@@ -55,6 +55,7 @@ module.exports = {
 			if (banwordRegex.test(word)) {
 				try {
 					await message.delete();
+					message.deleted = true;
 					message.channel.send(`${discordFailureEmoji} ${message.author}, your message contained terms that are not permitted in this server, and has been deleted.`);
 					break;
 				} catch (e) {
@@ -95,5 +96,7 @@ module.exports = {
 		}
 
 		if (inapUsername || inapNickname)	message.channel.send(`${discordFailureEmoji} ${message.author}, your user/nickname contained terms that are not permitted in this server, so your nickname has been reset.`);
+
+		return message;
 	},
 };

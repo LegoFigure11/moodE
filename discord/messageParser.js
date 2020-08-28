@@ -53,14 +53,16 @@ class MessageParser {
 		throw new Error(`messageParser error: Rule "${name}" not found!`);
 	}
 
-	process(message) {
+	async process(message) {
 		for (let i = 0; i < this.rules.length; i++) {
 			const rule = this.rules[i];
+			if (message.deleted) break;
 			if (rule.servers.length > 0 && !rule.servers.includes(message.guild.id)) continue;
 			if (rule.channels.length > 0 && !rule.channels.includes(message.channel.id)) continue;
 			if (rule.users.length > 0 && !rule.users.includes(message.author.id)) continue;
-			rule.execute(message);
+			message = await rule.execute(message);
 		}
+		return message;
 	}
 }
 

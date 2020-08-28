@@ -9,7 +9,8 @@ module.exports = {
 	async process(message) {
 		// Prevent the rule from running if the message looks like a command
 		// Remove this next line if you want to rule to run on commands as well
-		if (message.content.startsWith(discordConfig.commandCharacter)) return;
-		if (Tools.toId(message.content).includes("chicken") && utilities.oneIn(10)) return message.channel.send("Did somebody say... CHICKEN!??!");
+		if (message.content.startsWith(discordConfig.commandCharacter)) return message;
+		if (Tools.toId(message.content).includes("chicken") && utilities.oneIn(10)) message.channel.send("Did somebody say... CHICKEN!??!");
+		return message;
 	},
 };

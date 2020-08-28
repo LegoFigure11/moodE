@@ -5,7 +5,7 @@ module.exports = {
 	channels: [],
 	users: [],
 	async process(message) {
-		if (message.author.bot) return;
+		if (message.author.bot) return message;
 		const regex = /https:\/\/discord(|app)\.com\/channels\/[0-9]*\/[0-9]*\/[0-9]*/g;
 		const matches = [...new Set(message.content.match(regex))]; // Remove duplicate entries
 		for (let match of matches) {
@@ -30,9 +30,13 @@ module.exports = {
 					}
 					const author = `${msg.author.username}#${msg.author.discriminator}`;
 
-					return message.channel.send(`Message from ${author}, posted in ${channel} on ${new Date(msg.createdTimestamp).toUTCString()}${attachmentNum > 0 ? ` (with ${attachmentNum} attachment${attachmentNum === 1 ? "" : "s"})` : ""}:\n${msg.content ? `>>> ${msg.content}` : ""}`, {files: attachments});
+					message.channel.send(`Message from ${author}, posted in ${channel} on ${new Date(msg.createdTimestamp).toUTCString()}${attachmentNum > 0 ? ` (with ${attachmentNum} attachment${attachmentNum === 1 ? "" : "s"})` : ""}:\n${msg.content ? `>>> ${msg.content}` : ""}`, {files: attachments});
+					return message;
 				});
-			} catch (e) {}
+			} catch (e) {
+				return message;
+			}
 		}
+		return message;
 	},
 };
