@@ -52,7 +52,10 @@ module.exports = {
 						},
 					};
 					const starInfo = `${db.starboard.level1 ? db.starboard.level1 : ":star:"} **${reaction.count}** - ${reaction.message.channel}`;
-					if (reaction.message.content) embed.fields.push({name: "Message", value: reaction.message.content});
+					if (reaction.message.content) {
+						embed.title = "Message:";
+						embed.description = reaction.message.content;
+					}
 					if (reaction.message.attachments.first()) {
 						embed.image = {};
 						embed.image.url = reaction.message.attachments.first().url;
