@@ -27,7 +27,7 @@ module.exports = {
 							await member.roles.remove(role);
 							break;
 						} catch (e) {
-							console.log(`${Tools.discordText()}${`Reaction Role Error`.brightRed}: Unable to remove ${role.name} ${`(${role.id})`.grey} from ${user.name}#${user.discriminator} ${`(${user.id})`.grey}`);
+							console.log(`${Tools.discordText()}${`Reaction Role Error`.brightRed}: Unable to remove ${role.name} ${`(${role.id})`.grey} from ${user.username}#${user.discriminator} ${`(${user.id})`.grey}`);
 						}
 					}
 				}
