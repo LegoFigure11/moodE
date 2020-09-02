@@ -7,7 +7,7 @@ const SPRITE_URL = "https://play.pokemonshowdown.com/sprites/";
 module.exports = {
 	desc: "Image link of a Pokémon, or link to sprite directory if no argument is given. Uses PokemonShowdown's sprite library.",
 	usage: "<Pokémon name>",
-	aliases: ["gif", "model"],
+	aliases: ["gif", "model", "sprit"],
 	options: ["shiny", "back", "female", "noani", "afd", "gen"],
 	hasCustomFormatting: true,
 	async process(message, args, dex) {
