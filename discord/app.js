@@ -95,7 +95,7 @@ client.on("message", async (message) => {
 client.on("messageDeleteBulk", async (messages) => {
 	if (!listen) return;
 
-	for (const msg of messages) {
+	/*for (const msg of messages) {
 		let message = msg[1];
 
 		if (message.partial) {
@@ -141,7 +141,33 @@ client.on("messageDeleteBulk", async (messages) => {
 		if (user) descText = `A message was deleted by ${user.tag}.`;
 		client.channels.cache.get(db.config.logger.deletesChannel).send(descText, {embed: embed});
 		if (attachmentNum > 0) client.channels.cache.get(db.config.logger.deletesChannel).send("Attachments:", {files: attachments});
+	}*/
+	const message = messages[0];
+	const db = Storage.getDatabase(message.guild.id);
+	if (!db.config.logger || !db.config.logger.logDeletes || !db.config.logger.deletesChannel) return;
+	if (db.config.logger.ignoreChar && message.content.startsWith(db.config.logger.ignoreChar) && db.config.logger.ignoreChan && db.config.logger.ignoreChan.includes(message.channel.id)) return;
+
+	let entry;
+	let user;
+	if (message.guild.me.hasPermission("VIEW_AUDIT_LOG")) {
+		entry = await message.guild.fetchAuditLogs({type: "MESSAGE_DELETE"}).then(audit => audit.entries.first());
+		if (entry && entry.createdTimestamp > (Date.now() - 5000)) user = utilities.parseUserId(entry.executor.id);
 	}
+	let descText = "Several messages were deleted.";
+	const embed = {
+		color: message.guild.members.cache.get(client.user.id).displayColor,
+		timestamp: new Date(),
+		fields: [
+			{name: "Number", value: messages.size, inline: true},
+			{name: "Channel", value: `${message.channel}`, inline: true},
+		],
+		footer: {
+			icon_url: client.user.avatarURL(),
+			text: "moodE",
+		},
+	};
+	if (user) descText = `Several messages were deleted by ${user.tag}.`;
+	client.channels.cache.get(db.config.logger.deletesChannel).send(descText, {embed: embed});
 });
 
 client.on("messageDelete", async (message) => {
