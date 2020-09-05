@@ -26,7 +26,7 @@ module.exports = {
 			}
 		}
 
-		num = Math.min(num, 100);
+		num = Math.min(Math.max(num, 1), 100);
 		// Get confirmation before proceeding
 		const filter = response => {
 			return response.author.id === message.author.id && response.channel.id === message.channel.id && (Tools.toId(response.content) === "y" || Tools.toId(response.content) === "n");
