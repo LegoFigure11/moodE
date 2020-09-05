@@ -33,7 +33,7 @@ module.exports = {
 			const moodeHash = await exec("git rev-parse --short HEAD");
 			global.hash = moodeHash.stdout.trim();
 			console.log(`${Tools.moodeText()}Pull completed!`);
-			return msg.edit(`${discordSuccessEmoji} Pull completed!\`\`\`${pull.stdout}\`\`\``);
+			return msg.edit(`${discordSuccessEmoji} Pull completed!\`\`\`diff\n${pull.stdout}\`\`\``);
 		}
 	},
 };
