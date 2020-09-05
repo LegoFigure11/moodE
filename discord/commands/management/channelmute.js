@@ -8,7 +8,7 @@ module.exports = {
 	isManager: true,
 	noPm: true,
 	async process(message, args) {
-		if (!args[0]) return message.channel.send(`Syntax: \`${discordConfig.commandCharacter}kick ${this.usage}\``);
+		if (!args[0]) return message.channel.send(`Syntax: \`${discordConfig.commandCharacter}channelmute ${this.usage}\``);
 
 		if (!message.guild.members.cache.get(client.user.id).hasPermission("MANAGE_ROLES")) return message.channel.send(`${discordFailureEmoji} Insufficient permissions! Bot does not have the required \`MANAGE_ROLES\` permission.`);
 		(args[0].includes("<") ? client.users.fetch(args[0].match(/^<@!?(\d+)>$/)[1]) : client.users.fetch(args[0])).then(user => {
