@@ -39,7 +39,7 @@ module.exports = {
 						if (users[0]) {
 							messages = messages.filter(m => m.author.id === users[0].id);
 						}
-						messages.array().slice(0, num);
+						messages = messages.array().slice(0, num);
 						try {
 							const deleted = await message.channel.bulkDelete(messages, true);
 							message.channel.send(`${discordSuccessEmoji} ${deleted.size} message${deleted.size === 1 ? "" : "s"} were deleted!`);
