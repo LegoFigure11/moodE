@@ -260,6 +260,12 @@ class CommandHandler {
 						inline: true,
 					},
 				];
+				if (c.aliases.length > 0) {
+					embed.fields.push({
+						name: "Aliases",
+						value: c.aliases.join(", "),
+					});
+				}
 				const hrEnd = process.hrtime(hrStart);
 				const timeString = hrEnd[0] > 3 ? `${hrEnd[0]}s ${hrEnd[1]}ms`.brightRed : `${hrEnd[0]}s ${hrEnd[1]}ms`.grey;
 				console.log(`${Tools.discordText()}Executed command: ${"help".green} in ${timeString}`);
