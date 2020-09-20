@@ -40,7 +40,6 @@ module.exports = {
 			if (entry[0] === user.id) break;
 		}
 		if (args[1]) args[1] = args[1].trim().split(" ").join(""); // Clear whitespace
-		console.log(args[1]);
 		if (!args[1] || isNaN(parseInt(args[1]))) {
 			// User points
 			return message.channel.send(`${user.username}#${user.discriminator}'s points: ${db.points[user.id] ? `${db.points[user.id]} | Position: ${position}` : 0}`);
