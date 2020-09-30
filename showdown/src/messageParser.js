@@ -293,7 +293,20 @@ class MessageParser {
 
 					switch (format.id.substring(4)) {
 					case "challengecup1v1":
+					case "challengecup":
 						formatName = "挑战杯";
+						break;
+
+					case "challengecup2v2":
+						formatName = "双打挑战杯";
+						break;
+
+					case "hackmonscup":
+						formatName = "BH杯";
+						break;
+
+					case "doubleshackmonscup":
+						formatName = "双打BH杯";
 						break;
 
 					case "monotyperandombattle":
@@ -306,6 +319,14 @@ class MessageParser {
 
 					case "randombattle":
 						formatName = "随机对战";
+						break;
+
+					case "randomdoublesbattle":
+						formatName = "双打随机对战";
+						break;
+
+					case "cap1v1":
+						formatName = "自创宝可梦杯";
 						break;
 
 					case "bssfactory":
@@ -400,7 +421,20 @@ class MessageParser {
 
 				switch (room.tour.format.id.substring(4)) {
 				case "challengecup1v1":
+				case "challengecup":
 					formatName = "挑战杯";
+					break;
+
+				case "challengecup2v2":
+					formatName = "双打挑战杯";
+					break;
+
+				case "hackmonscup":
+					formatName = "BH杯";
+					break;
+
+				case "doubleshackmonscup":
+					formatName = "双打BH杯";
 					break;
 
 				case "monotyperandombattle":
@@ -413,6 +447,14 @@ class MessageParser {
 
 				case "randombattle":
 					formatName = "随机对战";
+					break;
+
+				case "randomdoublesbattle":
+					formatName = "双打随机对战";
+					break;
+
+				case "cap1v1":
+					formatName = "自创宝可梦杯";
 					break;
 
 				case "bssfactory":
