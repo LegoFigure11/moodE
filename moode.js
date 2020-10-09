@@ -24,6 +24,12 @@ Storage.importDatabases();
 
 // Modified from https://github.com/sirDonovan/Lanette/blob/master/build.js
 (async (resolve, reject) => {
+	// Print welcome message
+	console.log(`${Tools.moodeText()}${"-------------------------------------".yellow}`);
+	console.log(`${Tools.moodeText()}${"|         Welcome to moodE!         |".yellow}`);
+	console.log(`${Tools.moodeText()}${"-------------------------------------".yellow}`);
+	console.log(Tools.moodeText());
+
 	const moodeHash = await exec("git rev-parse --short HEAD");
 	global.hash = moodeHash.stdout.trim();
 
