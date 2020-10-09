@@ -116,9 +116,7 @@ class CommandHandler {
 				if (command.adminOnly && !isAdmin(message.author.id)) {
 					return message.channel.send(`${discordFailureEmoji} You do not have permission to do that!`);
 				}
-				if (command.elevated && !isAdmin(message.author.id) && !isElevated(message.author.id) && !message.member.hasPermission("ADMINISTRATOR")) {
-					return message.channel.send(`${discordFailureEmoji} You do not have permission to do that!`);
-				}
+
 				if (command.noPm && message.channel.type === "dm") {
 					return message.channel.send(`${discordFailureEmoji} This command is not available in PMs!`);
 				}

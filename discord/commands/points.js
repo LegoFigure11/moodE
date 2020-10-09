@@ -13,6 +13,7 @@ module.exports = {
 			Object.entries(db.points).sort(([, a], [, b]) => b - a)
 		);
 		Storage.exportDatabase(message.guild.id);
+		if (args[0]) args[0] = args[0].trim().split(" ")[0];
 		if (!args[0] || !utilities.parseUserId(args[0])) {
 			// Server Leaderboard
 			const m = [`Current points leaderboard for ${message.guild.name}: \`\`\``];
