@@ -23,6 +23,7 @@ module.exports = {
 			for (let i = 0; i < 40; i++) {
 				if (!e[i] || e[i][1] === 0) break;
 				const thisUser = utilities.parseUserId(e[i][0]);
+				if (!thisUser) continue;
 				if (e[i][1] !== last) pos = i + 1;
 				m.push(`${pos}) ${e[i][1]} - ${thisUser.username}#${thisUser.discriminator}`);
 				last = e[i][1];
