@@ -123,7 +123,7 @@ class CommandHandler {
 
 				if (command.commandType === "DexCommand") {
 					for (let i = 0; i < args.length; i++) {
-						if (["lgpe", "gen7", "gen6", "gen5", "gen4", "gen3", "gen2", "gen1", "usum", "sm", "oras", "xy", "bw2", "bw", "hgss", "dppt", "adv", "rse", "frlg", "gsc", "rby"].includes(Tools.toId(args[i]))) {
+						if (["gen8", "swsh", "lgpe", "gen7", "gen6", "gen5", "gen4", "gen3", "gen2", "gen1", "usum", "sm", "oras", "xy", "bw2", "bw", "hgss", "dppt", "adv", "rse", "frlg", "gsc", "rby"].includes(Tools.toId(args[i]))) {
 							switch (Tools.toId(args[i])) {
 							case "lgpe":
 								passDex = Dex.mod("lgpe");
@@ -163,8 +163,6 @@ class CommandHandler {
 							case "rbyg":
 								passDex = Dex.mod("gen1");
 								break;
-							default:
-								passDex = Dex.mod("gen7");
 							}
 							args.splice(i, 1);
 							break;
