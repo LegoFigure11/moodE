@@ -34,6 +34,13 @@ module.exports = {
 				message.channel.send(banMessage).then(() => {
 					message.channel.awaitMessages(filter, {max: 1, time: TIMEOUT, errors: ["time"]}).then(collected => {
 						if (Tools.toId(collected.first().content) === "y") {
+							if (reason.length > 0) {
+								try {
+									user.send(`You have been banned from ${message.guild.name} ${reason.length > 0 ? `(${reason})` : `(No reason was provided)`}`);
+								} catch (e) {
+									message.channel.send("Unable to DM user.");
+								}
+							}
 							message.guild.members.ban(user, {reason: reason});
 							return message.channel.send(`${discordSuccessEmoji} ${user} was banned${reason.length > 0 ? ` (Reason: ${reason})` : ""}!`);
 						} else {
