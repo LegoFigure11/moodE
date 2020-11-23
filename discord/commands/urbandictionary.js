@@ -9,7 +9,6 @@ module.exports = {
 	usage: "<word>",
 	async process(message, args) {
 		const db = Storage.getDatabase(message.guild.id);
-		if (!message.channel.nsfw && (db.config.nsfw && (!db.config.nsfw.allowNSFW || !db.config.nsfw.nsfwChannels.includes(message.channel.id)))) return message.channel.send(`${discordFailureEmoji} This command can only be used in channels marked as NSFW!`);
 		if (!args[0]) return message.channel.send(`Usage: \`${discordConfig.commandCharacter}urbandictionary ${this.usage}\``);
 		try {
 			const options = {
