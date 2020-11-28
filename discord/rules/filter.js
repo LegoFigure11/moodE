@@ -13,7 +13,7 @@ module.exports = {
 
 		const member = await client.guilds.cache.get(message.guild.id).members.cache.get(message.author.id);
 		// Mods should be immune
-		if (member.hasPermission("MANAGE_MESSAGES")) return message;
+		if (member.hasPermission("MANAGE_MESSAGES") || discordConfig.admin.includes(message.author.id)) return message;
 
 		const filterWords = [];
 		for (const word of db.filter) {
