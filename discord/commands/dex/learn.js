@@ -120,10 +120,10 @@ module.exports = {
 				if (search.length === 0) {
 					search = learnset.findMove(move.id, null);
 					if (search.length === 0) {
-						sendMsg.push(`${pokemon.name} cannot obtain ${move.name} in gen${dex.gen}`);
+						sendMsg.push(`${pokemon.name} cannot learn ${move.name} in gen${dex.gen}`);
 						continue;
 					} else {
-						sendMsg.push(`${pokemon.name} can obtain ${move.name} in another generation.`);
+						sendMsg.push(`${pokemon.name} can learn ${move.name} in another generation.`);
 						continue;
 					}
 				}
