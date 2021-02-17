@@ -27,8 +27,6 @@ ReadyChecker.on("loaded", () => {
 });
 
 client.on("ready", () => {
-  // TODO Set up handlers
-
   const guilds = client.guilds.cache.map(g => [g.id, g.name]);
   for (const guild of guilds) {
     // Storage.getDatabase() creates a database if one doesn't already exist,
