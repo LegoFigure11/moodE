@@ -49,7 +49,7 @@ Storage.importDatabases();
 
 	if (!(fs.existsSync(moodeShaDir))) {
 		console.log(`${Tools.moodeText()}Creating pokemon-showdown.sha...`);
-		fs.writeFileSync(moodeShaDir);
+		fs.writeFileSync(moodeShaDir, " ");
 	}
 
 	process.chdir(pokemonShowdown);
