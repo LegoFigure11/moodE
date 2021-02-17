@@ -11,7 +11,7 @@ module.exports = {
   usage: "<Pok\u{00e9}mon or Type>, <Type (optional)>," +
     "<Generation (optional)>, <\"inverse\" (optional)>",
   async command(message, args) {
-    const [gen, newArgs, hadGenSpec] = Utilities.getGen(args!);
+    const [gen, newArgs, hadGenSpec] = Utilities.getGen(args);
     args = newArgs;
 
     const gens = new Generations(dex.Dex);

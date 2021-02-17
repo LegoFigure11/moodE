@@ -10,7 +10,7 @@ module.exports = {
   usage: "<species (optional)>, <move (optional)>" +
     ", <restriction [pentagon, plus, galar] (optional)>, <gen (optional)>",
   async command(message, args) {
-    const [gen, newArgs, hadGenSpec,, restriction] = Utilities.getGen(args!);
+    const [gen, newArgs, hadGenSpec,, restriction] = Utilities.getGen(args);
     args = newArgs;
 
     const gens = new Generations(dex.Dex);
