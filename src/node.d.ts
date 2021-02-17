@@ -1,5 +1,8 @@
 declare namespace NodeJS {
   interface Global {
+    __clientReady: boolean;
+    __commandsLoaded: boolean;
+    __messageDeleteHandlerLoaded: boolean;
     __listen: boolean;
     __reloadInProgress: boolean;
     __reloadModules: (message: import("discord.js").Message, args: string[]) => Promise<void>;
@@ -8,5 +11,6 @@ declare namespace NodeJS {
     DiscordConfig: Partial<typeof import("./discord/config-example")>;
     Storage: import("./storage").Storage;
     MessageDeleteHandler: import("./discord/handlers/messageDeleteHandler").MessageDeleteHandler;
+    ReadyChecker: import("events").EventEmitter;
   }
 }

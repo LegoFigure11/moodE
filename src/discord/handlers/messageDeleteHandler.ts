@@ -46,6 +46,8 @@ export class MessageDeleteHandler {
       events[priority][eventName] = event;
     }
     this.events = events;
+    __messageDeleteHandlerLoaded = true;
+    ReadyChecker.emit("loaded");
   }
 
 

@@ -1,5 +1,7 @@
 import * as path from "path";
 
+import {EventEmitter} from "events";
+
 import * as utilities from "./utilities";
 import * as storage from "./storage";
 import * as discordConfig from "./discord/config-example";
@@ -23,6 +25,9 @@ const moduleFilenames: KeyedDict<ReloadableModule, string> = {
 };
 
 module.exports = async (): Promise<void> => {
+  global.ReadyChecker = new EventEmitter();
+  global.__clientReady = false;
+
   utilities.instantiate();
   global.DiscordConfig = discordConfig;
   global.__listen = false;
@@ -33,9 +38,11 @@ module.exports = async (): Promise<void> => {
   console.log(Utilities.moodeText("Loading Databases..."));
   Storage.importDatabases();
 
+  global.__commandsLoaded = false;
   console.log(Utilities.moodeText("Loading Commands..."));
   await CommandHandler.loadCommandsDirectory();
 
+  global.__messageDeleteHandlerLoaded = false;
   console.log(Utilities.moodeText("Loading Message Delete Events..."));
   await MessageDeleteHandler.loadEvents();
 

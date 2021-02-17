@@ -45,6 +45,8 @@ export class CommandHandler {
       commands[commandName] = command;
     }
     this.commands = commands;
+    __commandsLoaded = true;
+    ReadyChecker.emit("loaded");
   }
 
 

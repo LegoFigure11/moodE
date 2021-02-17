@@ -1,7 +1,6 @@
 import * as Discord from "discord.js";
 import * as colors from "colors/safe";
 
-
 const client: Discord.Client = new Discord.Client({
   partials: ["MESSAGE", "CHANNEL", "REACTION", "GUILD_MEMBER"],
 });
@@ -16,6 +15,17 @@ const client: Discord.Client = new Discord.Client({
   }
 })();
 
+ReadyChecker.on("loaded", () => {
+  if (
+    __commandsLoaded &&
+    __clientReady &&
+    __messageDeleteHandlerLoaded
+  ) {
+    console.log(Utilities.discordText(colors.green("Ready!")));
+    __listen = true;
+  }
+});
+
 client.on("ready", () => {
   // TODO Set up handlers
 
@@ -29,8 +39,8 @@ client.on("ready", () => {
     Storage.exportDatabase(guild[0]);
   }
 
-  console.log(Utilities.discordText(colors.green("Ready!")));
-  __listen = true;
+  __clientReady = true;
+  ReadyChecker.emit("loaded");
 });
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
@@ -85,6 +95,6 @@ client.on("messageDelete", async (message: Discord.Message | Discord.PartialMess
         );
       }
     }
-    MessageDeleteHandler.executeEvents(message as Discord.Message);
+    MessageDeleteHandler.executeEvents(message as Discord.Message).catch(console.error);
   }
 });
