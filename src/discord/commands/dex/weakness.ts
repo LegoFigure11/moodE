@@ -49,7 +49,7 @@ module.exports = {
         )
       ).catch(e => console.error(e));
     }
-    const effectiveness = {
+    const effectiveness: {[k: string]: string[]} = {
       0: [],
       0.25: [],
       0.5: [],
@@ -59,10 +59,8 @@ module.exports = {
     };
 
     for (const t of Dex.types) {
-      const can = Dex.types.canDamage(t.name, types);
       const eff = Dex.types.totalEffectiveness(t.name, types);
-      // @ts-ignore
-      effectiveness[can ? eff : 0].push(t.name);
+      effectiveness[eff].push(t.name);
     }
 
     return message.channel.send(
