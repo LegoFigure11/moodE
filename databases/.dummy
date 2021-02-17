@@ -1,3 +1,0 @@
-This file forces the `/databases` directory to exist. If there are any other files present in this directory, it may be deleted.
-It is strongly suggested that the `.json` files in this directory are not manually edited - all of the required tools for accessing
-and writing are provided in the `Storage` module.

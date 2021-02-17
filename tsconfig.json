@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+		"target": "esnext",
+		"strict": true,
+		"incremental": true,
+		"outDir": "built",
+		"noEmitOnError": true,
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"importsNotUsedAsValues": "error",
+    "inlineSourceMap": true,
+		"types": ["node"],
+		"lib": [
+		    "esnext"
+		]
+	},
+	"include": [
+		"src/**/*.ts"
+	]
+}
