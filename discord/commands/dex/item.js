@@ -37,7 +37,7 @@ module.exports = {
 				name: item.name,
 				icon_url: `https://play.pokemonshowdown.com/sprites/itemicons/${(item.name.split(" ").join("-")).toLowerCase()}.png`,
 			},
-			color: message.channel.type === "dm" ? 0 : message.guild.members.cache.get(discordConfig.botID).displayColor,
+			color: message.channel.type === "dm" ? 0 : message.guild.members.cache.get(client.user.id).displayColor,
 			fields: [],
 			footer: {
 				text: `Introduced in Gen ${item.gen}`,
