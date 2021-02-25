@@ -1,2 +1,3 @@
 export type ReloadableModule =
-  "all" | "commands" | "config" | "storage" | "utilities" | "messagedeletehandler";
+  "all" | "commands" | "config" | "storage" | "utilities" | "messagedeletehandler" |
+  "messageupdatehandler";

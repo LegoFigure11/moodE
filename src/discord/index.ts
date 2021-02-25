@@ -19,7 +19,8 @@ ReadyChecker.on("loaded", () => {
   if (
     __commandsLoaded &&
     __clientReady &&
-    __messageDeleteHandlerLoaded
+    __messageDeleteHandlerLoaded &&
+    __messageUpdateHandlerLoaded
   ) {
     console.log(Utilities.discordText(colors.green("Ready!")));
     __listen = true;

@@ -7,17 +7,19 @@ import * as storage from "./storage";
 import * as discordConfig from "./discord/config-example";
 import * as commandHandler from "./discord/handlers/commandHandler";
 import * as messageDeleteHandler from "./discord/handlers/messageDeleteHandler";
+import * as messageUpdateHandler from "./discord/handlers/messageUpdateHandler";
 
 import type {ReloadableModule} from "./types/index";
 import type {Message} from "discord.js";
 
 const moduleOrder: ReloadableModule[] = [
-  "utilities", "config", "storage", "commands", "messagedeletehandler",
+  "utilities", "config", "storage", "commands", "messagedeletehandler", "messageupdatehandler",
 ];
 
 const moduleFilenames: KeyedDict<ReloadableModule, string> = {
   commands: path.join(__dirname, "discord", "handlers", "commandHandler.js"),
   messagedeletehandler: path.join(__dirname, "discord", "handlers", "messageDeleteHandler.js"),
+  messageupdatehandler: path.join(__dirname, "discord", "handlers", "messageUpdateHandler.js"),
   config: path.join(__dirname, "discord", "config-example.js"),
   storage: path.join(__dirname, "storage.js"),
   utilities: path.join(__dirname, "utilities.js"),
@@ -34,6 +36,7 @@ module.exports = async (): Promise<void> => {
   storage.instantiate();
   commandHandler.instantiate();
   messageDeleteHandler.instantiate();
+  messageUpdateHandler.instantiate();
 
   console.log(Utilities.moodeText("Loading Databases..."));
   Storage.importDatabases();
@@ -45,6 +48,10 @@ module.exports = async (): Promise<void> => {
   global.__messageDeleteHandlerLoaded = false;
   console.log(Utilities.moodeText("Loading Message Delete Events..."));
   await MessageDeleteHandler.loadEvents();
+
+  global.__messageUpdateHandlerLoaded = false;
+  console.log(Utilities.moodeText("Loading Message Update Events..."));
+  await MessageUpdateHandler.loadEvents();
 
   global.__reloadInProgress = false;
 
@@ -118,6 +125,12 @@ module.exports = async (): Promise<void> => {
               "./discord/handlers/messageDeleteHandler"
             );
           newMessageDeleteHandler.instantiate();
+        } else if (moduleName === "messageupdatehandler") {
+          const newMessageUpdateHandler = // eslint-disable-next-line
+            require(moduleFilenames[moduleName]) as typeof import(
+              "./discord/handlers/messageUpdateHandler"
+            );
+          newMessageUpdateHandler.instantiate();
         }
       }
 
