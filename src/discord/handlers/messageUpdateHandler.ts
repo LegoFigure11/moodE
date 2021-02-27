@@ -56,7 +56,8 @@ export class MessageUpdateHandler {
       if (!this.events[i]) continue;
       for (const event of Object.keys(this.events[i])) {
         if (this.events[i][event].disabled) continue;
-        const tempMsg = await this.events[i][event].process(oldMessage, newMessage).catch(console.error);
+        const tempMsg =
+          await this.events[i][event].process(oldMessage, newMessage).catch(console.error);
         if (tempMsg) newMessage = tempMsg;
       }
     }
