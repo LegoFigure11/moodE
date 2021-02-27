@@ -19,3 +19,19 @@ interface IEvent {
   process: (message: Message) => Promise<Message>;
   onLoad?: void;
 }
+
+interface IMessageUpdateEvent {
+  users?: string[];
+
+  priority?: number;
+  disabled?: boolean;
+
+  commandPermissions?: number[];
+  userPermissons?: number;
+
+  pmOnly?: boolean;
+  noPm?: boolean;
+
+  process: (oldMessage: Message, newMessage: Message) => Promise<Message>;
+  onLoad?: void;
+}

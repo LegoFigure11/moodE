@@ -97,3 +97,27 @@ client.on("messageDelete", async (message: Discord.Message | Discord.PartialMess
     MessageDeleteHandler.executeEvents(message as Discord.Message).catch(console.error);
   }
 });
+
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
+client.on("messageUpdate", async (
+  oldMessage: Discord.Message | Discord.PartialMessage,
+  newMessage: Discord.Message | Discord.PartialMessage
+) => {
+  if (__listen) {
+    if (oldMessage.partial || newMessage.partial) {
+      try {
+        oldMessage = await oldMessage.fetch();
+        newMessage = await newMessage.fetch();
+      } catch (e) {
+        console.log(
+          Utilities.discordText(
+            `Unable to resolve a message partial! ${colors.grey(`${oldMessage.id}`)}`
+          )
+        );
+      }
+    }
+    MessageUpdateHandler.executeEvents(
+      oldMessage as Discord.Message, newMessage as Discord.Message
+    ).catch(console.error);
+  }
+});
