@@ -6,14 +6,14 @@ module.exports = {
   async process(message): Promise<Message> {
     if (!message.guild) return message;
     const db = Storage.getDatabase(Utilities.toDatabaseId(message));
-    const log = db.events?.logger;
+    const log = db.events?.logger.logDeletes;
     const channel = Utilities.parseChannelId(message, db.events?.logger?.channel) as TextChannel;
     if (!log || !channel) return message;
     if (!channel) return message;
     if (
-      db.events?.logger?.ignoreChannels.includes(channel.id) ||
-      db.events?.logger?.ignoreAuthors.includes(message.author.id) ||
-      db.events?.logger?.ignoreMessagesStartingWith.includes(message.content.charAt(0))
+      db.events?.logger?.ignoreChannels?.includes(channel.id) ||
+      db.events?.logger?.ignoreAuthors?.includes(message.author.id) ||
+      db.events?.logger?.ignoreMessagesStartingWith?.includes(message.content.charAt(0))
     ) return message;
 
     let by;
@@ -33,7 +33,7 @@ module.exports = {
       .setTitle("Message:")
       .setDescription(message.content || "(None)");
 
-    if (message.attachments) {
+    if (message?.attachments.size > 0) {
       embed.addField("Attachents", message.attachments.size, true);
     }
 
