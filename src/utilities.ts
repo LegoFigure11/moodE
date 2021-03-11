@@ -52,7 +52,7 @@ const GALAR_ALIASES = [
   "galar",
 ];
 
-const dateOptions = {
+const dateOptions: {[k: string]: "numeric"} = {
   year: "numeric",
   month: "numeric",
   day: "numeric",
