@@ -27,31 +27,33 @@ const moduleFilenames: KeyedDict<ReloadableModule, string> = {
 };
 
 module.exports = async (): Promise<void> => {
+  global.__production = process.argv.includes("--production");
+
   global.ReadyChecker = new EventEmitter();
   global.__clientReady = false;
 
   utilities.instantiate();
   global.DiscordConfig = discordConfig;
   global.__listen = false;
-  storage.instantiate();
-  commandHandler.instantiate();
-  messageDeleteHandler.instantiate();
-  messageUpdateHandler.instantiate();
+  void storage.instantiate();
+  void commandHandler.instantiate();
+  void messageDeleteHandler.instantiate();
+  void messageUpdateHandler.instantiate();
 
   console.log(Utilities.moodeText("Loading Databases..."));
-  Storage.importDatabases();
+  void Storage.importDatabases();
 
   global.__commandsLoaded = false;
   console.log(Utilities.moodeText("Loading Commands..."));
-  await CommandHandler.loadCommandsDirectory();
+  void CommandHandler.loadCommandsDirectory();
 
   global.__messageDeleteHandlerLoaded = false;
   console.log(Utilities.moodeText("Loading Message Delete Events..."));
-  await MessageDeleteHandler.loadEvents();
+  void MessageDeleteHandler.loadEvents();
 
   global.__messageUpdateHandlerLoaded = false;
   console.log(Utilities.moodeText("Loading Message Update Events..."));
-  await MessageUpdateHandler.loadEvents();
+  void MessageUpdateHandler.loadEvents();
 
   global.__reloadInProgress = false;
 

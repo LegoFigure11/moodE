@@ -4,6 +4,7 @@ declare namespace NodeJS {
     __commandsLoaded: boolean;
     __messageDeleteHandlerLoaded: boolean;
     __messageUpdateHandlerLoaded: boolean;
+    __production: boolean;
     __listen: boolean;
     __reloadInProgress: boolean;
     __reloadModules: (message: import("discord.js").Message, args: string[]) => Promise<void>;

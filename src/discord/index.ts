@@ -42,8 +42,7 @@ client.on("ready", () => {
   ReadyChecker.emit("loaded");
 });
 
-// eslint-disable-next-line @typescript-eslint/no-misused-promises
-client.on("message", async (message: Discord.Message) => {
+client.on("message", (m) => void (async (message: Discord.Message) => {
   if (__listen) {
     if (message.partial) {
       try {
@@ -78,28 +77,29 @@ client.on("message", async (message: Discord.Message) => {
       CommandHandler.executeCommand(Utilities.toId(commandName), message, args);
     }
   }
-});
+})(m));
 
-// eslint-disable-next-line @typescript-eslint/no-misused-promises
-client.on("messageDelete", async (message: Discord.Message | Discord.PartialMessage) => {
-  if (__listen) {
-    if (message.partial) {
-      try {
-        message = await message.fetch();
-      } catch (e) {
-        console.log(
-          Utilities.discordText(
-            `Unable to resolve a message partial! ${colors.grey(`${message.id}`)}`
-          )
-        );
+client.on("messageDelete", (m) => void (
+  async (
+    message: Discord.Message | Discord.PartialMessage
+  ) => {
+    if (__listen) {
+      if (message.partial) {
+        try {
+          message = await message.fetch();
+        } catch (e) {
+          console.log(
+            Utilities.discordText(
+              `Unable to resolve a message partial! ${colors.grey(`${message.id}`)}`
+            )
+          );
+        }
       }
+      MessageDeleteHandler.executeEvents(message as Discord.Message).catch(console.error);
     }
-    MessageDeleteHandler.executeEvents(message as Discord.Message).catch(console.error);
-  }
-});
+  })(m));
 
-// eslint-disable-next-line @typescript-eslint/no-misused-promises
-client.on("messageUpdate", async (
+client.on("messageUpdate", (o, n) => void (async (
   oldMessage: Discord.Message | Discord.PartialMessage,
   newMessage: Discord.Message | Discord.PartialMessage
 ) => {
@@ -120,4 +120,4 @@ client.on("messageUpdate", async (
       oldMessage as Discord.Message, newMessage as Discord.Message
     ).catch(console.error);
   }
-});
+})(o, n));

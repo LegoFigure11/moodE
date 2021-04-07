@@ -14,6 +14,7 @@ declare global {
   let __messageDeleteHandlerLoaded: boolean;
   let __messageUpdateHandlerLoaded: boolean;
   let __listen: boolean;
+  let __production: boolean;
   let __reloadInProgress: boolean;
   let __reloadModules: (message: import("discord.js").Message, args: string[]) => Promise<void>;
   const CommandHandler: commandHandlerType;
