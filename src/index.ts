@@ -26,7 +26,7 @@ const moduleFilenames: KeyedDict<ReloadableModule, string> = {
   all: "", // Unsused
 };
 
-module.exports = async (): Promise<void> => {
+module.exports = (): void => {
   global.__production = process.argv.includes("--production");
 
   global.ReadyChecker = new EventEmitter();
