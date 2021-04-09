@@ -294,6 +294,15 @@ export class Utilities {
     }
   }
 
+  /**
+   * Generates a string of dashes equal to the length of a string
+   * @param string
+   * @returns the string followed by a linebreak and a string of dashes
+   */
+  generateDashes(string: String): String {
+    return `${string}\n${"-".repeat(string.length)}`;
+  }
+
   parseChannelId(message: Discord.Message, id: string | undefined):
   Discord.GuildChannel | undefined {
     if (!id) return;
@@ -510,6 +519,10 @@ export class Utilities {
       return "Egg Move";
     } else if (method === "T") {
       return "Move Tutor";
+    } else if (method === "X") {
+      return "Egg (Traded back)";
+    } else if (method === "Y") {
+      return "Event (Traded back)";
     } else { return `(Unknown, please report this as a bug - Move Type \`${method}\`)`; }
   }
 
