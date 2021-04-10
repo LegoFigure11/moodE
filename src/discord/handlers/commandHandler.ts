@@ -179,7 +179,16 @@ export class CommandHandler {
     try {
       command.command(message, args);
     } catch (e) {
-      console.error(e);
+      // TODO log errors to channel
+      message.channel.send(
+        Utilities.failureEmoji(
+          message,
+          `\`The command crashed!\`` +
+          `Your error has been logged and a fix will (hopefully) be on its way soon. \`\`\`xl\n${
+            Utilities.clean(e.stack)
+          }\n\`\`\``
+        )
+      ).catch(err => console.error(err));
     }
     return;
   }
@@ -188,7 +197,7 @@ export class CommandHandler {
     if (this.commands[command]) return this.commands[command];
     for (const c of Object.keys(this.commands)) {
       const cmd = this.commands[c];
-      const aliases = this.commands[c].aliases || [];
+      const aliases = cmd.aliases || [];
       if ([c, ...aliases].includes(command)) return cmd;
     }
     return null;
