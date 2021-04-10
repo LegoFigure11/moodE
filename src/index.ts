@@ -82,6 +82,9 @@ module.exports = (): void => {
       }
     }
     global.__reloadInProgress = true;
+    __commandsLoaded = false;
+    __messageDeleteHandlerLoaded = false;
+    __messageUpdateHandlerLoaded = false;
 
     const modules: ReloadableModule[] = [];
     for (let i = 0; i < hasModules.length; i++) {
