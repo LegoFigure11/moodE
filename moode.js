@@ -23,7 +23,7 @@ function moodeText(text) {
 }
 
 
-(async () => {
+void (async () => {
   require(path.join(__dirname, "build.js"))().then(() => {
     require(path.join(__dirname, "built", "index.js"))();
     // Launch Discord

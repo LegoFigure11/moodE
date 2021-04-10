@@ -5,7 +5,7 @@ const client: Discord.Client = new Discord.Client({
   partials: ["MESSAGE", "CHANNEL", "REACTION", "GUILD_MEMBER"],
 });
 
-(async () => {
+void (async () => {
   console.log(Utilities.discordText("Logging in..."));
   try {
     await client.login(DiscordConfig.token);

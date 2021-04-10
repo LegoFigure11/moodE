@@ -3,7 +3,8 @@
   "extends": "@pkmn",
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "ecmaVersion": 2021
+    "ecmaVersion": 2021,
+    "project": ["./tsconfig.json"]
   },
   "rules": {
     "quotes": ["error", "double", { "allowTemplateLiterals": true }],
@@ -11,6 +12,7 @@
     "prefer-template": "error",
 
     "@typescript-eslint/quotes": ["error", "double", { "allowTemplateLiterals": true }],
-    "@typescript-eslint/restrict-template-expressions": "off"
+    "@typescript-eslint/restrict-template-expressions": "off",
+    "@typescript-eslint/no-floating-promises": ["error", { "ignoreVoid": true }]
   }
 }
