@@ -14,7 +14,6 @@ module.exports = {
   commandPermissions: [Permissions.FLAGS.SEND_MESSAGES],
   userPermissions: "m",
   usage: "<character or string (optional)>",
-  aliases: ["js", "code"],
   async command(message, args) {
     const id = Utilities.toDatabaseId(message);
     const db = Storage.getDatabase(id);

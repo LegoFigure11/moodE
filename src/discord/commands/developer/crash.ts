@@ -6,7 +6,6 @@ module.exports = {
   commandPermissions: [Permissions.FLAGS.SEND_MESSAGES],
   userPermissions: "d",
   usage: "<text>",
-  aliases: ["send"],
   command() {
     throw new Error("Crash Command was used");
   },

@@ -27,7 +27,7 @@ export class CommandHandler {
       const commandName = path.basename(file).split(".")[0];
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       const command = require(file) as ICommand;
-      if (this.get(commandName)) {
+      if (this.get(commandName, commands)) {
         console.error(
           Utilities.discordText(
             `"${commandName}" is already defined or has an overlapping alias! Skipping...`
@@ -40,6 +40,23 @@ export class CommandHandler {
           Utilities.discordText(`"${commandName}" is not a valid command name! Skipping...`)
         );
         continue;
+      }
+      if (command?.aliases) {
+        let found = false;
+        for (let alias of command.aliases) {
+          if (this.get(alias, commands)) {
+            found = true;
+            break;
+          }
+        }
+        if (found) {
+          console.error(
+            Utilities.discordText(
+              `"${commandName}" has an alias that exists on another command! Skipping...`
+            )
+          );
+          continue;
+        }
       }
       if (file.includes("private")) this.privateCommands.push(commandName);
       commands[commandName] = command;
@@ -193,10 +210,11 @@ export class CommandHandler {
     return;
   }
 
-  get(command: string): ICommand | null {
-    if (this.commands[command]) return this.commands[command];
-    for (const c of Object.keys(this.commands)) {
-      const cmd = this.commands[c];
+  get(command: string, commands?: Dict<ICommand>): ICommand | null {
+    const list = commands || this.commands;
+    if (list[command]) return list[command];
+    for (const c of Object.keys(list)) {
+      const cmd = list[c];
       const aliases = cmd.aliases || [];
       if ([c, ...aliases].includes(command)) return cmd;
     }
