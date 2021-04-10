@@ -17,8 +17,6 @@ module.exports = {
 
     const move = Dex.moves.get(args[0]);
 
-    console.log(move);
-
     if (!move?.exists) {
       return message.channel.send(
         Utilities.failureEmoji(
@@ -32,20 +30,24 @@ module.exports = {
 
     const isMaxOrZ = move.maxMove || move.zMove;
     const isMaxAndZ = move.maxMove && move.zMove;
+    const zMoveText = move.zMove
+      ? move.zMove?.basePower ? move.zMove.basePower : move.zMove.boost
+        ? Utilities.processZmoveBoost(move.zMove.boost) : move.zMove.effect || ""
+        : "";
+    const acc = `${move.accuracy}` === "true" ? "--" : move.accuracy;
+    const pp = `${move.pp}/${Math.floor(move.pp * 1.6)}`;
     return message.channel.send(
       `\`\`\`${
         Utilities.generateDashes(`[Gen ${gen}] ${move.name}`)
       }\nBase Power: ${move.basePower} ${isMaxOrZ ? "(" : ""}${
         move.maxMove ? `Max Move: ${move.maxMove?.basePower}` : ""
       }${isMaxAndZ ? " | " : ""}${
-        move.zMove ? `Z-Move: ${move.zMove?.basePower ||
-        move.zMove.boost
-          ? Utilities.processZmoveBoost(move.zMove.boost!) : move.zMove.effect}` : ""
-      }${isMaxOrZ ? ")" : ""}\nType: ${
-        move.type
-      } | Acc: ${
-        `${move.accuracy}` === "true" ? "--" : move.accuracy
-      } | Category: ${move.category} | PP: ${move.pp}/${Math.floor(move.pp * 1.6)}\n${
+        move.zMove ? `Z-Move: ${
+          zMoveText
+        }${
+          isMaxOrZ ? ")" : ""
+        }` : ""
+      }\nType: ${move.type} | Acc: ${acc} | Category: ${move.category} | PP: ${pp}\n${
         move.desc || move.shortDesc
       }\n\n${
         Utilities.getMoveFlagDescriptions(move)
