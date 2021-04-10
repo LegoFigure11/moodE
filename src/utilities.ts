@@ -7,6 +7,8 @@ import * as https from "https";
 import {exec} from "child_process";
 import * as Discord from "discord.js";
 
+import type {Move} from "@pkmn/dex-types"
+
 const sh = util.promisify(exec);
 
 const ID_REGEX = /[^a-z0-9-]/g;
@@ -524,6 +526,40 @@ export class Utilities {
     } else if (method === "Y") {
       return "Event (Traded back)";
     } else { return `(Unknown, please report this as a bug - Move Type \`${method}\`)`; }
+  }
+
+  getMoveFlagDescriptions(move: Move): string {
+    const flags = [];
+    console.log(move);
+    if ("authentic" in move.flags) flags.push("\u{2705} Bypasses Substitute");
+    if ("bite" in move.flags) flags.push("\u{2705} Boosted by Strong Jaw");
+    if ("bullet" in move.flags) flags.push("\u{2705} Blocked by Bulletproof");
+    if ("charge" in move.flags) flags.push("\u{2705} Prevents the user from moving between turns");
+    if ("contact" in move.flags) flags.push("\u{2705} Makes contact");
+    if ("dance" in move.flags) flags.push("\u{2705} Can be copied by Dancer");
+    if ("defrost" in move.flags) flags.push("\u{2705} Thaws the user");
+    if ("distance" in move.flags) flags.push("\u{2705} Can target any potision in a Triple Battle");
+    if ("gravity" in move.flags) flags.push("\u{274E} Cannot be used in Gravity");
+    if ("heal" in move.flags) flags.push("\u{274E} Cannot be used after Heal Block");
+    if ("mirror" in move.flags) flags.push("\u{2705} Can be copied by Mirror Move");
+    // if ("mystery" in move.flags) flags.push("\u{2705} Unknown effect");
+    if ("nonsky" in move.flags) flags.push("\u{274E} Cannot be used in a Sky Battle");
+    if ("powder" in move.flags) flags.push(
+      "\u{2705} Blocked by Overcoat, Safety Goggles, and Grass Types"
+    );
+    if ("protect" in move.flags) flags.push(`\u{2705} Blocked by Detect, Protect, ${
+      move.category === "Status" ? " and Spiky Shield" : ", Spiky Shield, and King's Shield"
+    }`);
+    if ("pusle" in move.flags) flags.push("\u{2705} Boosted by Mega Launcher");
+    if ("punch" in move.flags) flags.push("\u{2705} Boosted by Iron Fist");
+    if ("recharge" in move.flags) flags.push(
+      "\u{2705} The user must recharge after using this move"
+    );
+    if ("reflectable" in move.flags) flags.push("\u{2705} Is bounced by Magic Coat/Magic Guard");
+    if ("snatch" in move.flags) flags.push("\u{2705} Can be stolen by Snatch");
+    if ("" in move.flags) flags.push("\u{2705} Blocked by Soundproof, boosted by Punk Rock");
+
+    return flags.join("\n");
   }
 
   // Yoinked from https://stackoverflow.com/a/45130990/13258354
