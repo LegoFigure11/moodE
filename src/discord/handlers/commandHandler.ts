@@ -196,7 +196,7 @@ export class CommandHandler {
     try {
       command.command(message, args);
     } catch (e) {
-      // TODO log errors to channel
+      // TODO: log errors to channel
       message.channel.send(
         Utilities.failureEmoji(
           message,

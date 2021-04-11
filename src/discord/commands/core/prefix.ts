@@ -8,8 +8,8 @@ module.exports = {
     "aracters (e.g. `!` or `m!`) though more will work.\n" +
     "Leading/Trailing spaces are ignored.\n" +
     "e.g. `prefix !` would make the bot only accept messages that start with `!` as commands.\n" +
-    "e.g. `prefix pwetty pweas` would make the bot only accept" +
-    "messages that start with `pwetty pweas` as commands.",
+    "e.g. `prefix pwetty pwease uwu` would make the bot only accept" +
+    "messages that start with `pwetty pwease uwu` as commands.",
 
   commandPermissions: [Permissions.FLAGS.SEND_MESSAGES],
   userPermissions: "m",
