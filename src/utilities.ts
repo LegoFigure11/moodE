@@ -161,6 +161,13 @@ export class Utilities {
     }
   }
 
+  async getFullVersionString(): Promise<string> {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const version = require(path.join(this.rootFolder, "package.json")).version;
+    const hash = await this.shortVersionHash;
+    return `moodE v${version}@${hash}`;
+  }
+
   /**
   * Writes a file to system asynchronosly avoiding race conditions,
   * Taken from https://git.io/JLhid

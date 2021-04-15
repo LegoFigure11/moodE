@@ -9,6 +9,7 @@
 		"moduleResolution": "node",
 		"importsNotUsedAsValues": "error",
     "inlineSourceMap": true,
+    "resolveJsonModule": true,
 		"types": ["node"],
 		"lib": [
 		    "esnext"

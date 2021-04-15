@@ -1,4 +1,4 @@
-import {Permissions} from "discord.js";
+import {Permissions, MessageEmbed} from "discord.js";
 import type {ICommand} from "../../../types/commands";
 import * as dex from "@pkmn/dex";
 import {Generations} from "@pkmn/data";
@@ -27,10 +27,24 @@ module.exports = {
         )
       ).catch(e => console.error(e));
     }
-    return message.channel.send(
-      `\`\`\`${
-        Utilities.generateDashes(`[Gen ${gen}] ${ability.name}`)
-      }\n\n${ability.desc || ability.shortDesc}\n\nIntroduced in Gen ${ability.gen}\`\`\``
-    ).catch(e => console.error(e));
+
+    if (Utilities.checkBotPermissions(message, Permissions.FLAGS.EMBED_LINKS)) {
+      const embed = new MessageEmbed()
+        .setTitle(`[Gen ${gen}] ${ability.name}`)
+        .setDescription(ability.desc || ability.shortDesc)
+        .setFooter(
+          `Introduced in Gen ${ability.gen} | ${await Utilities.getFullVersionString()}`
+        );
+
+
+      message.channel.send({embed: embed}).catch(console.error);
+    } else {
+      // Can't send embed, fall back to text only
+      return message.channel.send(
+        `\`\`\`${
+          Utilities.generateDashes(`[Gen ${gen}] ${ability.name}`)
+        }\n\n${ability.desc || ability.shortDesc}\n\nIntroduced in Gen ${ability.gen}\`\`\``
+      ).catch(e => console.error(e));
+    }
   },
 } as ICommand;
