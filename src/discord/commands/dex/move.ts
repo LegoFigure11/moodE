@@ -1,4 +1,4 @@
-import {Permissions} from "discord.js";
+import {MessageEmbed, Permissions} from "discord.js";
 import type {ICommand} from "../../../types/commands";
 import * as dex from "@pkmn/dex";
 import {Generations} from "@pkmn/data";
@@ -34,25 +34,40 @@ module.exports = {
       ? move.zMove?.basePower ? move.zMove.basePower : move.zMove.boost
         ? Utilities.processZmoveBoost(move.zMove.boost) : move.zMove.effect || ""
       : "";
+    const maxZmoveText = `${isMaxOrZ ? "(" : ""}${
+      move.maxMove ? `Max Move: ${move.maxMove?.basePower}` : ""
+    }${isMaxAndZ ? " | " : ""}${move.zMove ? `Z-Move: ${zMoveText}${isMaxOrZ ? ")" : ""}` : ""}`;
+    const bp = `${move.basePower} ${maxZmoveText}`;
     const acc = `${move.accuracy}` === "true" ? "--" : move.accuracy;
     const pp = `${move.pp}/${Math.floor(move.pp * 1.6)}`;
-    return message.channel.send(
-      `\`\`\`${
-        Utilities.generateDashes(`[Gen ${gen}] ${move.name}`)
-      }\nBase Power: ${move.basePower} ${isMaxOrZ ? "(" : ""}${
-        move.maxMove ? `Max Move: ${move.maxMove?.basePower}` : ""
-      }${isMaxAndZ ? " | " : ""}${
-        move.zMove ? `Z-Move: ${
-          zMoveText
-        }${
-          isMaxOrZ ? ")" : ""
-        }` : ""
-      }\nType: ${move.type} | Acc: ${acc} | Category: ${move.category} | PP: ${pp}\n${
-        move.desc || move.shortDesc
-      }\n\n${
-        Utilities.getMoveFlagDescriptions(move)
-          ? `${Utilities.getMoveFlagDescriptions(move)}\n\n` : ""
-      }Introduced in Gen ${move.gen}\`\`\``
-    ).catch(e => console.error(e));
+    const moveFlagDescriptions = Utilities.getMoveFlagDescriptions(move);
+
+    if (Utilities.checkBotPermissions(message, Permissions.FLAGS.EMBED_LINKS)) {
+      const embed = new MessageEmbed()
+        .setTitle(`[Gen ${gen}] ${move.name}`)
+        .setDescription(`Base Power: ${bp}
+Type: ${move.type} | Acc: ${acc} | Category: ${move.category} | PP: ${pp}
+
+${move.desc || move.shortDesc}
+
+${moveFlagDescriptions ? `${moveFlagDescriptions}\n` : ""}
+Introduced in Gen ${move.gen}`)
+        .setFooter(await Utilities.getFullVersionString());
+      message.channel.send({embed: embed}).catch(console.error);
+    } else {
+      // Can't send embed, fall back to text only
+      return message.channel.send(
+        `\`\`\`${
+          Utilities.generateDashes(`[Gen ${gen}] ${move.name}`)
+        }\nBase Power: ${bp}\nType: ${move.type} | Acc: ${
+          acc
+        } | Category: ${move.category} | PP: ${pp}\n${
+          move.desc || move.shortDesc
+        }\n\n${
+          moveFlagDescriptions
+            ? `${moveFlagDescriptions}\n\n` : ""
+        }Introduced in Gen ${move.gen}\`\`\``
+      ).catch(e => console.error(e));
+    }
   },
 } as ICommand;

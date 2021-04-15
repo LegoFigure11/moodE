@@ -31,10 +31,8 @@ module.exports = {
     if (Utilities.checkBotPermissions(message, Permissions.FLAGS.EMBED_LINKS)) {
       const embed = new MessageEmbed()
         .setTitle(`[Gen ${gen}] ${ability.name}`)
-        .setDescription(ability.desc || ability.shortDesc)
-        .setFooter(
-          `Introduced in Gen ${ability.gen} | ${await Utilities.getFullVersionString()}`
-        );
+        .setDescription(`${ability.desc || ability.shortDesc}\n\nIntroduced in Gen ${ability.gen}`)
+        .setFooter(await Utilities.getFullVersionString());
 
 
       message.channel.send({embed: embed}).catch(console.error);
