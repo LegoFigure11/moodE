@@ -43,7 +43,7 @@ export class CommandHandler {
       }
       if (command?.aliases) {
         let found = false;
-        for (let alias of command.aliases) {
+        for (const alias of command.aliases) {
           if (this.get(alias, commands)) {
             found = true;
             break;

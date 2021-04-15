@@ -33,7 +33,7 @@ module.exports = {
     const zMoveText = move.zMove
       ? move.zMove?.basePower ? move.zMove.basePower : move.zMove.boost
         ? Utilities.processZmoveBoost(move.zMove.boost) : move.zMove.effect || ""
-        : "";
+      : "";
     const acc = `${move.accuracy}` === "true" ? "--" : move.accuracy;
     const pp = `${move.pp}/${Math.floor(move.pp * 1.6)}`;
     return message.channel.send(
