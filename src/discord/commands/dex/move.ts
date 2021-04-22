@@ -9,23 +9,29 @@ module.exports = {
   aliases: ["pokemove"],
   usage: "<Pok\u{00e9}mon Move Name>",
   async command(message, args) {
-    const [gen, newArgs] = Utilities.getGen(args);
+    let [gen, newArgs, hadGenSpec] = Utilities.getGen(args);
     args = newArgs;
 
     const gens = new Generations(dex.Dex);
     const Dex = gens.get(gen as dex.GenerationNum);
 
-    const move = Dex.moves.get(args[0]);
+    let move = Dex.moves.get(args[0]);
 
     if (!move?.exists) {
-      return message.channel.send(
-        Utilities.failureEmoji(
-          message,
-          `Unable to find any Move matching "${
-            args[0]
-          }" for Generation ${gen}! (Check your spelling?)`
-        )
-      ).catch(e => console.error(e));
+      const Gen7Dex = gens.get(7);
+      move = Gen7Dex.moves.get(args[0]);
+      if (move?.exists && !hadGenSpec) {
+        if (gen === 8) gen = 7;
+      } else {
+        return message.channel.send(
+          Utilities.failureEmoji(
+            message,
+            `Unable to find any Move matching "${
+              args[0]
+            }" for Generation ${gen}! (Check your spelling?)`
+          )
+        ).catch(e => console.error(e));
+      }
     }
 
     const isMaxOrZ = move.maxMove || move.zMove;
