@@ -103,6 +103,15 @@ export class Utilities {
   }
 
   /**
+   * Returns a string with the first letter of each word capitalised
+   * @param input the string to capitalise
+   */
+  toTitleCase(input?: string): string {
+    if (!input) return "";
+    return input.replace(/\b\w/g, c => c.toUpperCase());
+  }
+
+  /**
    * Used for building the timestamp used in Utilities#timeStampString()
    * @returns Returns the current date and time in human-readable format
    */
