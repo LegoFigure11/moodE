@@ -11,7 +11,7 @@ module.exports = {
   usage: "<word>",
   command(message, args) {
     if (!args[0]) return message.channel.send(this.usage as string).catch(console.error);
-    const word = Utilities.toId(args[0]);
+    const word = encodeURIComponent(args[0].toLowerCase());
     Utilities.fetchURL(`https://api.dictionaryapi.dev/api/v2/entries/en_US/${word}`).then(data => {
       const response = JSON.parse(data as string)[0];
       if (!response?.word) {
