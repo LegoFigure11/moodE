@@ -5,7 +5,7 @@ import {Generations} from "@pkmn/data";
 
 module.exports = {
   desc: "Gets the information about a Pok\u{00e9}mon Item. Items without competitive" +
-    " implications may not be included.",
+    " relevance may not be included.",
   commandPermissions: [Permissions.FLAGS.SEND_MESSAGES],
   aliases: ["pokeitem"],
   usage: "<Pok\u{00e9}mon Item Name>",
