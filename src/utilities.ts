@@ -174,7 +174,7 @@ export class Utilities {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const version = require(path.join(this.rootFolder, "package.json")).version;
     const hash = await this.shortVersionHash;
-    return `moodE v${version}@${hash}`;
+    return `moodE v${version}#${hash}`;
   }
 
   /**
