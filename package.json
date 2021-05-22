@@ -2,12 +2,13 @@
   "name": "moode",
   "version": "3.0.0",
   "description": "Discord Chat Bot",
-  "main": "moode.ts",
+  "main": "moode.js",
   "scripts": {
     "fix": "eslint . --cache --ext .js,.ts --fix",
     "full-lint": "eslint . --cache --ext .js,.ts --max-warnings 0",
     "lint": "eslint . --cache --ext .js,.ts",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "prepare": "husky install"
   },
   "author": "",
   "license": "MIT",
@@ -31,11 +32,5 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jest": "^24.3.4",
     "husky": "^6.0.0"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint",
-      "pre-push": "npm run full-lint"
-    }
   }
 }
