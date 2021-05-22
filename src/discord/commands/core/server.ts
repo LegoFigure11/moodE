@@ -1,4 +1,5 @@
 import {Permissions, MessageEmbed} from "discord.js";
+import {UserPermissions} from "../../enums/userPermissions";
 import type {ICommand} from "../../../types/commands";
 
 const MAX_EMOJIS_TO_DISPLAY = 18;
@@ -6,6 +7,7 @@ const MAX_EMOJIS_TO_DISPLAY = 18;
 module.exports = {
   desc: "Prints information about a server.",
   commandPermissions: [Permissions.FLAGS.SEND_MESSAGES, Permissions.FLAGS.EMBED_LINKS],
+  userPermissons: UserPermissions.ELEVATED,
   aliases: ["guild"],
   usage: "<guild id (optional)>",
   noPm: true,

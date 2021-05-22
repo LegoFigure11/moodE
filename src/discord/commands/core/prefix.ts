@@ -1,4 +1,5 @@
 import {Permissions} from "discord.js";
+import {UserPermissions} from "../../enums/userPermissions";
 import type {ICommand} from "../../../types/commands";
 
 module.exports = {
@@ -12,7 +13,7 @@ module.exports = {
     "messages that start with `pwetty pwease uwu` as commands.",
 
   commandPermissions: [Permissions.FLAGS.SEND_MESSAGES],
-  userPermissions: "m",
+  userPermissions: UserPermissions.MANAGER,
   usage: "<character or string (optional)>",
   async command(message, args) {
     const id = Utilities.toDatabaseId(message);

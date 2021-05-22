@@ -3,9 +3,7 @@ import type {ICommand} from "../../../types/commands";
 
 module.exports = {
   desc: "Pays respects.",
-  commandPermissions: [
-    Permissions.FLAGS.SEND_MESSAGES,
-  ],
+  commandPermissions: [Permissions.FLAGS.SEND_MESSAGES],
   command(message) {
     const db = Storage.getDatabase("f");
     if (!db.global) db.global = 0;

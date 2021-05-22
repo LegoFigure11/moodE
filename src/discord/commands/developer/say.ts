@@ -1,4 +1,5 @@
 import {Permissions} from "discord.js";
+import {UserPermissions} from "../../enums/userPermissions";
 import type {ICommand} from "../../../types/commands";
 
 const compliments = [
@@ -9,7 +10,7 @@ const compliments = [
 module.exports = {
   desc: "Makes the bot send a message",
   commandPermissions: [Permissions.FLAGS.SEND_MESSAGES],
-  userPermissions: "d",
+  userPermissions: UserPermissions.DEVELOPER,
   usage: "<text>",
   aliases: ["send"],
   command(message, args) {

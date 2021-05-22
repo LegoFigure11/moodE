@@ -3,6 +3,7 @@ import * as dex from "@pkmn/dex";
 import * as data from "@pkmn/data";
 // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
 import * as mods from "@pkmn/mods";
+import {UserPermissions} from "../../enums/userPermissions";
 import type {ICommand} from "../../../types/commands";
 
 // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
@@ -11,7 +12,7 @@ const gens = new data.Generations(dex.Dex);
 module.exports = {
   desc: "Executes arbitrary javascript.",
   commandPermissions: [Discord.Permissions.FLAGS.SEND_MESSAGES],
-  userPermissions: "d",
+  userPermissions: UserPermissions.DEVELOPER,
   usage: "<expression>",
   aliases: ["js", "code"],
   command(message, args) {
