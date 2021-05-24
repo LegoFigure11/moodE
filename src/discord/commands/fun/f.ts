@@ -10,7 +10,7 @@ module.exports = {
     db.global += 1;
     Storage.exportDatabase("f");
     return message.channel.send(
-      `${message.author} paid their respects.\nTotal respects paid: ${db.global}`
+      `${message.author.username} paid their respects.\nTotal respects paid: ${db.global}`
     );
   },
 } as ICommand;
