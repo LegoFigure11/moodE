@@ -6,6 +6,7 @@ import * as utilities from "./utilities";
 import * as storage from "./storage";
 import * as discordConfig from "./discord/config-example";
 import * as commandHandler from "./discord/handlers/commandHandler";
+import * as guildMemberAddHandler from "./discord/handlers/guildMemberAddHandler";
 import * as messageDeleteHandler from "./discord/handlers/messageDeleteHandler";
 import * as messageUpdateHandler from "./discord/handlers/messageUpdateHandler";
 
@@ -14,10 +15,12 @@ import type {Message} from "discord.js";
 
 const moduleOrder: ReloadableModule[] = [
   "utilities", "config", "storage", "commands", "messagedeletehandler", "messageupdatehandler",
+  "guildmemberaddhandler",
 ];
 
 const moduleFilenames: KeyedDict<ReloadableModule, string> = {
   commands: path.join(__dirname, "discord", "handlers", "commandHandler.js"),
+  guildmemberaddhandler: path.join(__dirname, "discord", "handlers", "guildMemberAddHandler.js"),
   messagedeletehandler: path.join(__dirname, "discord", "handlers", "messageDeleteHandler.js"),
   messageupdatehandler: path.join(__dirname, "discord", "handlers", "messageUpdateHandler.js"),
   config: path.join(__dirname, "discord", "config-example.js"),
@@ -37,6 +40,7 @@ module.exports = (): void => {
   global.__listen = false;
   void storage.instantiate();
   void commandHandler.instantiate();
+  void guildMemberAddHandler.instantiate();
   void messageDeleteHandler.instantiate();
   void messageUpdateHandler.instantiate();
 
@@ -46,6 +50,10 @@ module.exports = (): void => {
   global.__commandsLoaded = false;
   console.log(Utilities.moodeText("Loading Commands..."));
   void CommandHandler.loadCommandsDirectory();
+
+  global.__guildMemberAddHandlerLoaded = false;
+  console.log(Utilities.moodeText("Loading Guild Member Add Events..."));
+  void GuildMemberAddHandler.loadEvents();
 
   global.__messageDeleteHandlerLoaded = false;
   console.log(Utilities.moodeText("Loading Message Delete Events..."));
@@ -83,6 +91,7 @@ module.exports = (): void => {
     }
     global.__reloadInProgress = true;
     __commandsLoaded = false;
+    __guildMemberAddHandlerLoaded = false;
     __messageDeleteHandlerLoaded = false;
     __messageUpdateHandlerLoaded = false;
 
@@ -124,6 +133,12 @@ module.exports = (): void => {
           // eslint-disable-next-line @typescript-eslint/no-var-requires
           const newUtilities = require(moduleFilenames[moduleName]) as typeof import("./utilities");
           newUtilities.instantiate();
+        } else if (moduleName === "guildmemberaddhandler") {
+          const newGuildMemberAddHandler = // eslint-disable-next-line
+            require(moduleFilenames[moduleName]) as typeof import(
+              "./discord/handlers/guildMemberAddHandler"
+            );
+          newGuildMemberAddHandler.instantiate();
         } else if (moduleName === "messagedeletehandler") {
           const newMessageDeleteHandler = // eslint-disable-next-line
             require(moduleFilenames[moduleName]) as typeof import(

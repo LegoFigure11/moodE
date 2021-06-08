@@ -1,4 +1,4 @@
-import type {Message} from "discord.js";
+import type {GuildMember, Message} from "discord.js";
 
 export interface IEventDefinition<IEvent> {
   event: Dict<IEvent>;
@@ -17,6 +17,22 @@ interface IEvent {
   noPm?: boolean;
 
   process: (message: Message) => Promise<Message>;
+  onLoad?: void;
+}
+
+interface IGuildMemberAddEvent {
+  users?: string[];
+
+  priority?: number;
+  disabled?: boolean;
+
+  commandPermissions?: number[];
+  userPermissons?: number;
+
+  pmOnly?: boolean;
+  noPm?: boolean;
+
+  process: (member: GuildMember) => Promise<GuildMember>;
   onLoad?: void;
 }
 
