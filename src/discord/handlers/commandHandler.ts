@@ -126,7 +126,7 @@ export class CommandHandler {
       userPermissions = Math.max(userPermissions,
         db?.elevated?.includes(message.author.id) ? UserPermissions.ELEVATED : 0);
       commandPermissions = Math.max(
-        db?.commands?.[commandName]?.permissions,
+        db?.commands?.[commandName]?.permissions || 0,
         commandPermissions
       );
 
