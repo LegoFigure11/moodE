@@ -92,7 +92,7 @@ export class CommandHandler {
       userPermissions,
       DiscordConfig.elevated?.includes(message.author.id) ? UserPermissions.ELEVATED : 0
     );
-    let commandPermissions = command.userPermissons || 0;
+    let commandPermissions = command.userPermissions || 0;
     if (message.channel.type === "dm") {
       // DM channel
       if (command.noPm && userPermissions < UserPermissions.ADMIN) {
