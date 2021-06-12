@@ -213,8 +213,8 @@ client.on("messageDelete", async (message) => {
 	};
 	if (attachmentNum > 0) embed.fields.push({name: "Attachments", value: `${attachmentNum}`, inline: true});
 	if (user) descText = `A message was deleted by ${user.tag}.`;
-	client.channels.cache.get(db.config.logger.deletesChannel).send(descText, {embed: embed});
-	if (attachmentNum > 0) client.channels.cache.get(db.config.logger.deletesChannel).send("Attachments:", {files: attachments});
+	client.channels.cache.get(db.config.logger.deletesChannel)?.send(descText, {embed: embed});
+	if (attachmentNum > 0) client.channels.cache.get(db.config.logger.deletesChannel)?.send("Attachments:", {files: attachments});
 });
 
 client.on("messageUpdate", async (oldMessage, newMessage) => {
