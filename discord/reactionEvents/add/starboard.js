@@ -61,7 +61,7 @@ module.exports = {
 						embed.image.url = reaction.message.attachments.first().url;
 					}
 					const sent = await client.channels.cache.get(db.starboard.channel).send(starInfo, {embed});
-					await sent.edit(`${starInfo} (${reaction.message.author})`);
+					await sent.edit(`${starInfo} (${reaction.message.author})`, {embed});
 					db.starboard.stars[reaction.message.id] = sent.id;
 					Storage.exportDatabase(reaction.message.guild.id);
 				}
