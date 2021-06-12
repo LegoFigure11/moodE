@@ -28,7 +28,9 @@ module.exports = {
 				if (reaction.count >= db.starboard.requiredStars) {
 					const channel = client.channels.cache.get(db.starboard.channel);
 					channel.messages.fetch(db.starboard.stars[reaction.message.id]).then(msg => {
-						msg.edit(`${reaction.count <= 5 ? (db.starboard.level1 ? db.starboard.level1 : ":star:") : reaction.count <= 10 ? (db.starboard.level2 ? db.starboard.level2 : ":star2:") : (db.starboard.level2 ? db.starboard.level3 : ":stars:")} **${reaction.count}** - ${reaction.message.channel} (${reaction.message.author})`);
+						let embed = {};
+						if (msg.embeds && msg.embeds[0]) embed = msg.embeds[0];
+						msg.edit(`${reaction.count <= 5 ? (db.starboard.level1 ? db.starboard.level1 : ":star:") : reaction.count <= 10 ? (db.starboard.level2 ? db.starboard.level2 : ":star2:") : (db.starboard.level2 ? db.starboard.level3 : ":stars:")} **${reaction.count}** - ${reaction.message.channel} (${reaction.message.author})`, {embed});
 					});
 				} else {
 					const channel = client.channels.cache.get(db.starboard.channel);
