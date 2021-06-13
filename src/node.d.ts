@@ -5,6 +5,8 @@ declare namespace NodeJS {
     __guildMemberAddHandlerLoaded: boolean;
     __messageDeleteHandlerLoaded: boolean;
     __messageUpdateHandlerLoaded: boolean;
+    __messageReactionAddHandlerLoaded: boolean;
+    __messageReactionRemoveHandlerLoaded: boolean;
     __production: boolean;
     __listen: boolean;
     __reloadInProgress: boolean;
@@ -16,6 +18,12 @@ declare namespace NodeJS {
     GuildMemberAddHandler: import("./discord/handlers/guildMemberAddHandler").GuildMemberAddHandler;
     MessageDeleteHandler: import("./discord/handlers/messageDeleteHandler").MessageDeleteHandler;
     MessageUpdateHandler: import("./discord/handlers/messageUpdateHandler").MessageUpdateHandler;
+    MessageReactionAddHandler: import(
+      "./discord/handlers/messageReactionAddHandler"
+    ).MessageReactionAddHandler;
+    MessageReactionRemoveHandler: import(
+      "./discord/handlers/messageReactionRemoveHandler"
+    ).MessageReactionRemoveHandler;
     ReadyChecker: import("events").EventEmitter;
   }
 }

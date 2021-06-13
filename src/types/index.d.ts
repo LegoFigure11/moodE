@@ -1,3 +1,4 @@
 export type ReloadableModule =
   "all" | "commands" | "config" | "storage" | "utilities" | "messagedeletehandler" |
-  "messageupdatehandler" | "guildmemberaddhandler";
+  "messageupdatehandler" | "guildmemberaddhandler" | "messagereactionaddhandler" |
+  "messagereactionremovehandler";

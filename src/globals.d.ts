@@ -9,6 +9,10 @@ import type {MessageDeleteHandler as messageDeleteHandlerType}
   from "./discord/handlers/messageDeleteHandler";
 import type {MessageUpdateHandler as messageUpdateHandlerType}
   from "./discord/handlers/messageUpdateHandler";
+import type {MessageReactionAddHandler as messageReactionAddHandlerType}
+  from "./discord/handlers/messageReactionAddHandler";
+import type {MessageReactionRemoveHandler as messageReactionRemoveHandlerType}
+  from "./discord/handlers/messageReactionRemoveHandler";
 
 declare global {
   let __clientReady: boolean;
@@ -16,6 +20,8 @@ declare global {
   let __guildMemberAddHandlerLoaded: boolean;
   let __messageDeleteHandlerLoaded: boolean;
   let __messageUpdateHandlerLoaded: boolean;
+  let __messageReactionAddHandlerLoaded: boolean;
+  let __messageReactionRemoveHandlerLoaded: boolean;
   let __listen: boolean;
   let __production: boolean;
   let __reloadInProgress: boolean;
@@ -24,6 +30,8 @@ declare global {
   const GuildMemberAddHandler: guildMemberAddHandlerType;
   const MessageDeleteHandler: messageDeleteHandlerType;
   const MessageUpdateHandler: messageUpdateHandlerType;
+  const MessageReactionAddHandler: messageReactionAddHandlerType;
+  const MessageReactionRemoveHandler: messageReactionRemoveHandlerType;
   const DiscordConfig: Partial<typeof discordConfig>;
   const Storage: storageType;
   const Utilities: utilitiesType;

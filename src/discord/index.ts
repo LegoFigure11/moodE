@@ -21,7 +21,9 @@ ReadyChecker.on("loaded", () => {
     __clientReady &&
     __guildMemberAddHandlerLoaded &&
     __messageDeleteHandlerLoaded &&
-    __messageUpdateHandlerLoaded
+    __messageUpdateHandlerLoaded &&
+    __messageReactionAddHandlerLoaded &&
+    __messageReactionRemoveHandlerLoaded
   ) {
     console.log(Utilities.discordText(colors.green("Ready!")));
     __listen = true;
@@ -119,6 +121,52 @@ client.on("messageDelete", (m) => void (
       MessageDeleteHandler.executeEvents(message as Discord.Message).catch(console.error);
     }
   })(m));
+
+client.on("messageReactionAdd", (r, u) => void (
+  async (
+    messageReaction: Discord.MessageReaction,
+    user: Discord.User | Discord.PartialUser
+  ) => {
+    if (__listen) {
+      if (user.partial) {
+        try {
+          user = await user.fetch();
+        } catch (e) {
+          console.log(
+            Utilities.discordText(
+              `Unable to resolve a user partial! ${colors.grey(`${user.id}`)}`
+            )
+          );
+        }
+      }
+      MessageReactionAddHandler.executeEvents(
+        messageReaction, user as Discord.User
+      ).catch(console.error);
+    }
+  })(r, u));
+
+client.on("messageReactionRemove", (r, u) => void (
+  async (
+    messageReaction: Discord.MessageReaction,
+    user: Discord.User | Discord.PartialUser
+  ) => {
+    if (__listen) {
+      if (user.partial) {
+        try {
+          user = await user.fetch();
+        } catch (e) {
+          console.log(
+            Utilities.discordText(
+              `Unable to resolve a user partial! ${colors.grey(`${user.id}`)}`
+            )
+          );
+        }
+      }
+      MessageReactionRemoveHandler.executeEvents(
+        messageReaction, user as Discord.User
+      ).catch(console.error);
+    }
+  })(r, u));
 
 client.on("messageUpdate", (o, n) => void (async (
   oldMessage: Discord.Message | Discord.PartialMessage,

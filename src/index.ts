@@ -9,13 +9,15 @@ import * as commandHandler from "./discord/handlers/commandHandler";
 import * as guildMemberAddHandler from "./discord/handlers/guildMemberAddHandler";
 import * as messageDeleteHandler from "./discord/handlers/messageDeleteHandler";
 import * as messageUpdateHandler from "./discord/handlers/messageUpdateHandler";
+import * as messageReactionAddHandler from "./discord/handlers/messageReactionAddHandler";
+import * as messageReactionRemoveHandler from "./discord/handlers/messageReactionRemoveHandler";
 
 import type {ReloadableModule} from "./types/index";
 import type {Message} from "discord.js";
 
 const moduleOrder: ReloadableModule[] = [
   "utilities", "config", "storage", "commands", "messagedeletehandler", "messageupdatehandler",
-  "guildmemberaddhandler",
+  "guildmemberaddhandler", "messagereactionaddhandler", "messagereactionremovehandler",
 ];
 
 const moduleFilenames: KeyedDict<ReloadableModule, string> = {
@@ -23,6 +25,12 @@ const moduleFilenames: KeyedDict<ReloadableModule, string> = {
   guildmemberaddhandler: path.join(__dirname, "discord", "handlers", "guildMemberAddHandler.js"),
   messagedeletehandler: path.join(__dirname, "discord", "handlers", "messageDeleteHandler.js"),
   messageupdatehandler: path.join(__dirname, "discord", "handlers", "messageUpdateHandler.js"),
+  messagereactionaddhandler: path.join(
+    __dirname, "discord", "handlers", "MessageReactionAddHandler.js"
+  ),
+  messagereactionremovehandler: path.join(
+    __dirname, "discord", "handlers", "MessageReactionRemoveHandler.js"
+  ),
   config: path.join(__dirname, "discord", "config-example.js"),
   storage: path.join(__dirname, "storage.js"),
   utilities: path.join(__dirname, "utilities.js"),
@@ -43,6 +51,8 @@ module.exports = (): void => {
   void guildMemberAddHandler.instantiate();
   void messageDeleteHandler.instantiate();
   void messageUpdateHandler.instantiate();
+  void messageReactionAddHandler.instantiate();
+  void messageReactionRemoveHandler.instantiate();
 
   console.log(Utilities.moodeText("Loading Databases..."));
   void Storage.importDatabases();
@@ -62,6 +72,14 @@ module.exports = (): void => {
   global.__messageUpdateHandlerLoaded = false;
   console.log(Utilities.moodeText("Loading Message Update Events..."));
   void MessageUpdateHandler.loadEvents();
+
+  global.__messageReactionAddHandlerLoaded = false;
+  console.log(Utilities.moodeText("Loading Message Reaction Add Events..."));
+  void MessageReactionAddHandler.loadEvents();
+
+  global.__messageReactionRemoveHandlerLoaded = false;
+  console.log(Utilities.moodeText("Loading Message Reaction Remove Events..."));
+  void MessageReactionRemoveHandler.loadEvents();
 
   global.__reloadInProgress = false;
 
@@ -94,6 +112,7 @@ module.exports = (): void => {
     __guildMemberAddHandlerLoaded = false;
     __messageDeleteHandlerLoaded = false;
     __messageUpdateHandlerLoaded = false;
+    __messageReactionAddHandlerLoaded = false;
 
     const modules: ReloadableModule[] = [];
     for (let i = 0; i < hasModules.length; i++) {
@@ -151,6 +170,18 @@ module.exports = (): void => {
               "./discord/handlers/messageUpdateHandler"
             );
           newMessageUpdateHandler.instantiate();
+        } else if (moduleName === "messagereactionaddhandler") {
+          const newMessageReactionAddHandler = // eslint-disable-next-line
+            require(moduleFilenames[moduleName]) as typeof import(
+              "./discord/handlers/messageReactionAddHandler"
+            );
+          newMessageReactionAddHandler.instantiate();
+        } else if (moduleName === "messagereactionremovehandler") {
+          const newMessageReactionRemoveHandler = // eslint-disable-next-line
+            require(moduleFilenames[moduleName]) as typeof import(
+              "./discord/handlers/messageReactionRemoveHandler"
+            );
+          newMessageReactionRemoveHandler.instantiate();
         }
       }
 
