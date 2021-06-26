@@ -7,7 +7,7 @@ import * as https from "https";
 import {exec} from "child_process";
 import * as Discord from "discord.js";
 
-import type {BoostID, BoostsTable, Move} from "@pkmn/dex-types";
+import type {BoostID, BoostsTable, Move, Species, GenerationNum} from "@pkmn/dex-types";
 
 const sh = util.promisify(exec);
 
@@ -610,6 +610,43 @@ export class Utilities {
       result.push(`+${boostObject[key as BoostID]} ${this.toStatName(key)}`);
     }
     return result.join(", ");
+  }
+
+  getEvoMethod(specie: Species | undefined): string {
+    let method = "";
+    if (specie?.evoLevel) method = ` (Lv. ${specie.evoLevel})`;
+    return method;
+  }
+
+  lowKickCalcs(weight: number): number {
+    if (weight < 100) return 20;
+    if (weight < 250) return 40;
+    if (weight < 500) return 60;
+    if (weight < 1000) return 80;
+    if (weight < 2000) return 100;
+    return 120;
+  }
+
+  genToSmogonGenString(gen: GenerationNum): string {
+    if (gen === 7) return "sm";
+    if (gen === 6) return "xy";
+    if (gen === 5) return "bw";
+    if (gen === 4) return "dp";
+    if (gen === 3) return "rs";
+    if (gen === 2) return "gs";
+    if (gen === 1) return "rb";
+    return "ss";
+  }
+
+  genToSerebiiGenString(gen: GenerationNum): string {
+    if (gen === 7) return "-sm";
+    if (gen === 6) return "-xy";
+    if (gen === 5) return "-bw";
+    if (gen === 4) return "-dp";
+    if (gen === 3) return "-rs";
+    if (gen === 2) return "-gs";
+    if (gen === 1) return "";
+    return "-swsh";
   }
 
   // Yoinked from https://stackoverflow.com/a/45130990/13258354
