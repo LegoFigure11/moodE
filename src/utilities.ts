@@ -7,7 +7,7 @@ import * as https from "https";
 import {exec} from "child_process";
 import * as Discord from "discord.js";
 
-import type {BoostName, BoostsTable, Move} from "@pkmn/dex-types";
+import type {BoostID, BoostsTable, Move} from "@pkmn/dex-types";
 
 const sh = util.promisify(exec);
 
@@ -607,7 +607,7 @@ export class Utilities {
   processZmoveBoost(boostObject: Partial<BoostsTable>): string {
     const result = [];
     for (const key of Object.keys(boostObject)) {
-      result.push(`+${boostObject[key as BoostName]} ${this.toStatName(key)}`);
+      result.push(`+${boostObject[key as BoostID]} ${this.toStatName(key)}`);
     }
     return result.join(", ");
   }
