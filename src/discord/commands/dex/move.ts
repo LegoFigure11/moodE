@@ -2,6 +2,7 @@ import {MessageEmbed, Permissions} from "discord.js";
 import type {ICommand} from "../../../types/commands";
 import * as dex from "@pkmn/dex";
 import {Generations} from "@pkmn/data";
+import {getAlias} from "../../../misc/dex-aliases";
 
 module.exports = {
   desc: "Gets the information about a Pok\u{00e9}mon Move.",
@@ -15,6 +16,7 @@ module.exports = {
     const gens = new Generations(dex.Dex);
     const Dex = gens.get(gen as dex.GenerationNum);
 
+    args[0] = getAlias(args[0]);
     let move = Dex.moves.get(args[0]);
 
     if (!move?.exists) {
