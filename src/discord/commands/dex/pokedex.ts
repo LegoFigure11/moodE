@@ -7,7 +7,7 @@ import {Sprites} from "@pkmn/img";
 module.exports = {
   desc: "Gets the information about a Pok\u{00e9}mon Species.",
   commandPermissions: [Permissions.FLAGS.SEND_MESSAGES],
-  aliases: ["dex", "pokemon", "mon"],
+  aliases: ["pokemon", "mon"],
   usage: "<Pok\u{00e9}mon Name>",
   async command(message, args) {
     let [gen, newArgs, hadGenSpec] = Utilities.getGen(args);
