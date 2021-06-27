@@ -1,5 +1,6 @@
 import {MessageEmbed, Permissions} from "discord.js";
 import type {ICommand} from "../../../types/commands";
+import {getAlias} from "../../../misc/dex-aliases";
 import * as dex from "@pkmn/dex";
 import {Generations} from "@pkmn/data";
 import {Sprites} from "@pkmn/img";
@@ -16,6 +17,7 @@ module.exports = {
     const gens = new Generations(dex.Dex);
     const Dex = gens.get(gen as dex.GenerationNum);
 
+    args[0] = getAlias(args[0]);
     let specie = Dex.species.get(args[0]);
 
     if (!specie?.exists) {

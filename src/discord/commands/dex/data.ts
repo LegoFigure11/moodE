@@ -1,5 +1,6 @@
 import {Permissions} from "discord.js";
 import type {ICommand} from "../../../types/commands";
+import {getAlias} from "../../../misc/dex-aliases";
 import * as dex from "@pkmn/dex";
 import {Generations} from "@pkmn/data";
 import * as dexts from "./pokedex";
@@ -19,6 +20,7 @@ module.exports = {
     const Dex = gens.get(gen as dex.GenerationNum);
     const Gen7Dex = gens.get(7);
 
+    args[0] = getAlias(args[0]);
     let specie = Dex.species.get(args[0]);
 
     // Species

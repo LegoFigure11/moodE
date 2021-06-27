@@ -3,6 +3,7 @@ import type {ICommand} from "../../../types/commands";
 import * as dex from "@pkmn/dex";
 import {Generations} from "@pkmn/data";
 import type {TypeName} from "@pkmn/types";
+import {getAlias} from "../../../misc/dex-aliases";
 
 module.exports = {
   desc: "Gets the weaknesses of a Pok\u{00e9}mon or type.",
@@ -19,6 +20,7 @@ module.exports = {
     let types: TypeName[] = [];
     let monName;
 
+    args[0] = getAlias(args[0]);
     const specie = Dex.species.get(args[0]);
     if (specie?.exists) {
       types = [...specie.types];

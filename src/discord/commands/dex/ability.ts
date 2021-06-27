@@ -1,4 +1,5 @@
 import {Permissions, MessageEmbed} from "discord.js";
+import {getAlias} from "../../../misc/dex-aliases";
 import type {ICommand} from "../../../types/commands";
 import * as dex from "@pkmn/dex";
 import {Generations} from "@pkmn/data";
@@ -15,6 +16,7 @@ module.exports = {
     const gens = new Generations(dex.Dex);
     const Dex = gens.get(gen as dex.GenerationNum);
 
+    args[0] = getAlias(args[0]);
     const ability = Dex.abilities.get(args[0]);
 
     if (!ability?.exists) {

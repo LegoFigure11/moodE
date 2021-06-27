@@ -2,6 +2,7 @@ import {Permissions} from "discord.js";
 import type {ICommand} from "../../../types/commands";
 import * as dex from "@pkmn/dex";
 import {Generations} from "@pkmn/data";
+import {getAlias} from "../../../misc/dex-aliases";
 
 module.exports = {
   desc: "Gets learnset information of a Pok\u{00e9}mon.",
@@ -16,6 +17,7 @@ module.exports = {
     const gens = new Generations(dex.Dex);
     const Dex = gens.get(gen as dex.GenerationNum);
 
+    args[0] = getAlias(args[0]);
     const specie = Dex.species.get(args[0]);
     if (!specie?.exists) {
       // All species that learn move
