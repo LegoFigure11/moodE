@@ -18,7 +18,7 @@ module.exports = {
     }
 
     const pull = await sh("git pull").catch(console.error);
-    if (!pull || pull.stderr) {
+    if (!pull || (pull.stderr && !pull.stdout)) {
       return msg.edit(Utilities.failureEmoji(message, "Could not pull origin."));
     }
     if (pull.stdout.replace("\n", "").replace(/-/g, " ") === "Already up to date.") {
