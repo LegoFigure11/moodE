@@ -26,10 +26,10 @@ const moduleFilenames: KeyedDict<ReloadableModule, string> = {
   messagedeletehandler: path.join(__dirname, "discord", "handlers", "messageDeleteHandler.js"),
   messageupdatehandler: path.join(__dirname, "discord", "handlers", "messageUpdateHandler.js"),
   messagereactionaddhandler: path.join(
-    __dirname, "discord", "handlers", "MessageReactionAddHandler.js"
+    __dirname, "discord", "handlers", "messageReactionAddHandler.js"
   ),
   messagereactionremovehandler: path.join(
-    __dirname, "discord", "handlers", "MessageReactionRemoveHandler.js"
+    __dirname, "discord", "handlers", "messageReactionRemoveHandler.js"
   ),
   config: path.join(__dirname, "discord", "config-example.js"),
   storage: path.join(__dirname, "storage.js"),
