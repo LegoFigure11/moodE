@@ -8,7 +8,7 @@ import {UserPermissions} from "../enums/userPermissions";
 
 export class CommandHandler {
   commandsDirectory: string = path.join(Utilities.discordFolder, "commands");
-  private privateCommands: string[] = [];
+  private privateCommands: Dict<ICommand> = {};
   private commands: Dict<ICommand> = {};
 
   onReload(previous: Partial<CommandHandler>): void {
@@ -27,7 +27,8 @@ export class CommandHandler {
       const commandName = path.basename(file).split(".")[0];
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       const command = require(file) as ICommand;
-      if (this.get(commandName, commands)) {
+      const isPrivate = file.includes("private");
+      if (!isPrivate && this.get(commandName, commands)) {
         console.error(
           Utilities.discordText(
             `"${commandName}" is already defined or has an overlapping alias! Skipping...`
@@ -49,7 +50,7 @@ export class CommandHandler {
             break;
           }
         }
-        if (found) {
+        if (!isPrivate && found) {
           console.error(
             Utilities.discordText(
               `"${commandName}" has an alias that exists on another command! Skipping...`
@@ -58,9 +59,14 @@ export class CommandHandler {
           continue;
         }
       }
-      if (file.includes("private")) this.privateCommands.push(commandName);
+      if (isPrivate) this.privateCommands[commandName] = command;
       commands[commandName] = command;
     }
+
+    for (const commandName of Object.keys(this.privateCommands)) {
+      this.commands[commandName] = this.privateCommands[commandName];
+    }
+
     this.commands = commands;
     __commandsLoaded = true;
     ReadyChecker.emit("loaded");
