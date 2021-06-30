@@ -10,23 +10,23 @@
   "author": "LegoFigure11",
   "license": "MIT",
   "dependencies": {
-    "archiver": "^4.0.1",
+    "archiver": "^5.3.0",
     "colors": "^1.4.0",
     "convert-units": "^2.3.4",
     "diacritics": "^1.3.0",
-    "discord.js": "^12.2.0",
+    "discord.js": "^12.5.3",
     "hex2dec": "^1.1.2",
-    "homoglyph-search": "^1.2.0",
-    "node-html-to-image": "^2.1.1",
-    "probe-image-size": "^5.0.0",
-    "system-sleep": "^1.3.6",
-    "tmi.js": "^1.5.0",
-    "websocket": "^1.0.31",
-    "wtf_wikipedia": "^8.1.2"
+    "homoglyph-search": "^1.2.1",
+    "node-html-to-image": "^3.2.0",
+    "probe-image-size": "^7.2.1",
+    "system-sleep": "^1.3.7",
+    "tmi.js": "^1.8.3",
+    "websocket": "^1.0.34",
+    "wtf_wikipedia": "^9.0.0"
   },
   "devDependencies": {
-    "eslint": "^6.8.0",
-    "husky": "^4.2.5"
+    "eslint": "^7.29.0",
+    "husky": "^6.0.0"
   },
   "husky": {
     "hooks": {
