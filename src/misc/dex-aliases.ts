@@ -4,11 +4,13 @@ export const Aliases: KeyedDict<string, string> = {
 
   // Cool people
   "archie": "jirachi",
+  "bluecake": "scorbunny",
   "lego": "eldegoss",
   "mica": "shaymin",
   "onion": "eldegoss",
   "psychicj": "gardevoir",
   "saiph": "gengar",
+  "taylor": "nidoking",
   "xen": "qwilfish",
 
   // Dex Numbers

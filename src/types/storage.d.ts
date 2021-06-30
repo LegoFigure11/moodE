@@ -4,6 +4,7 @@ interface IFriendCodeEntry {
 }
 
 export interface IDatabase {
+  [x: string]: any;
   commands?: any;
   managers?: string[];
   elevated?: string[];
