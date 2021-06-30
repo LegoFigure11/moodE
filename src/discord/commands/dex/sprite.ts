@@ -71,7 +71,7 @@ module.exports = {
       }
     }
 
-    args.map(a => Utilities.toId(a));
+    args = args.map(a => Utilities.toId(a));
 
     const sprite = Sprites.getPokemon(
       specie.name,
