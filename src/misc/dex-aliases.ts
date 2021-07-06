@@ -3,6 +3,7 @@ export const Aliases: KeyedDict<string, string> = {
   "delibirb": "delibird",
 
   // Cool people
+  "anubis": "corviknight",
   "archie": "jirachi",
   "bluecake": "scorbunny",
   "lego": "eldegoss",
@@ -11,10 +12,18 @@ export const Aliases: KeyedDict<string, string> = {
   "psychicj": "gardevoir",
   "saiph": "gengar",
   "taylor": "nidoking",
+  "tora": "luxray",
   "xen": "qwilfish",
+
+  // Memes
+  "boob": "rowlet",
+  "god": "bidoof",
 
   // Dex Numbers
   "360": "wynaut",
+
+  // Foreign Names
+  "boober": "magmar",
 };
 
 export function getAlias(args: string | undefined): string {
