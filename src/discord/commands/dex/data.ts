@@ -11,7 +11,7 @@ import * as itemts from "./item";
 module.exports = {
   desc: "Gets the information of a Pok\u{00e9}mon, ability, move, or item.",
   commandPermissions: [Permissions.FLAGS.SEND_MESSAGES],
-  aliases: ["dt", "datasearch", "dex"],
+  aliases: ["dt", "datasearch", "dex", "details", "detail", "dr"],
   usage: "<Pok\u{00e9}mon Name>",
   async command(message, args) {
     let [gen,, hadGenSpec] = Utilities.getGen(args);
