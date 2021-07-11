@@ -26,10 +26,11 @@ export const Aliases: KeyedDict<string, string> = {
   "boober": "magmar",
 
   // Adam Nicknames
-  "raijin": "shinx",
-  "chomei": "starly",
+  "raijin": "luxio",
+  "chomei": "staravia",
   "hmdog": "bidoof",
-  "mokuton": "turtwig",
+  "mokuton": "grotle",
+  "goryuka": "ponyta",
 };
 
 export function getAlias(args: string | undefined): string {
