@@ -47,9 +47,10 @@ module.exports = {
     } else {
       // Can't send embed, fall back to text only
       return message.channel.send(
-        `\`\`\`${
+        `${
           Utilities.generateDashes(`[Gen ${gen}] ${item.name}`)
-        }\n\n${item.desc || item.shortDesc}\n\nIntroduced in Gen ${item.gen}\`\`\``
+        }\n\n${item.desc || item.shortDesc}\n\nIntroduced in Gen ${item.gen}`,
+        {code: "XL"}
       ).catch(e => console.error(e));
     }
   },

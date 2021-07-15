@@ -68,7 +68,7 @@ module.exports = {
     return message.channel.send(
       `${hadGenSpec ? `[Gen ${gen}] ` : ""}Weaknesses for: ${
         monName ? `${monName} ` : ""
-      }[${types.join("/")}]\`\`\`xl
+      }[${types.join("/")}]
 0.00x: ${
   effectiveness[0].length ? effectiveness[0].join(", ") : "(None)"}
 0.25x: ${
@@ -86,7 +86,7 @@ module.exports = {
 4.00x: ${
   effectiveness[4].length ? effectiveness[4].join(", ") : "(None)"
 }
-\`\`\``
+`, {code: "XL"}
     ).catch(e => console.error(e));
   },
 } as ICommand;

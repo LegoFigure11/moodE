@@ -67,7 +67,7 @@ Introduced in Gen ${move.gen}`)
     } else {
       // Can't send embed, fall back to text only
       return message.channel.send(
-        `\`\`\`${
+        `${
           Utilities.generateDashes(`[Gen ${gen}] ${move.name}`)
         }\nBase Power: ${bp}\nType: ${move.type} | Acc: ${
           acc
@@ -76,7 +76,8 @@ Introduced in Gen ${move.gen}`)
         }\n\n${
           moveFlagDescriptions
             ? `${moveFlagDescriptions}\n\n` : ""
-        }Introduced in Gen ${move.gen}\`\`\``
+        }Introduced in Gen ${move.gen}`,
+        {code: "XL"}
       ).catch(e => console.error(e));
     }
   },

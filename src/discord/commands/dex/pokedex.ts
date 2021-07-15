@@ -152,12 +152,13 @@ module.exports = {
     } else {
       // Can't send embed, fall back to text only
       return message.channel.send(
-        `${`\`\`\`${
+        `${`${
           Utilities.generateDashes(`[Gen ${gen}] #${specie.num} - ${specie.name}`)
         }\n` +
         `${typeString}${statsString}${abilityString}${heightWeightString}\n` +
         `\nExtra Info: \n`}${
-          extraInfo.join("\n")}\`\`\``
+          extraInfo.join("\n")}`,
+        {code: "XL"}
       ).catch(e => console.error(e));
     }
   },
