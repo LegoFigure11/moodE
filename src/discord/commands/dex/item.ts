@@ -11,24 +11,30 @@ module.exports = {
   aliases: ["pokeitem"],
   usage: "<Pok\u{00e9}mon Item Name>",
   async command(message, args) {
-    const [gen, newArgs] = Utilities.getGen(args);
+    let [gen, newArgs, hadGenSpec] = Utilities.getGen(args);
     args = newArgs;
 
     const gens = new Generations(dex.Dex);
     const Dex = gens.get(gen as dex.GenerationNum);
 
     args[0] = getAlias(args[0]);
-    const item = Dex.items.get(args[0]);
+    let item = Dex.items.get(args[0]);
 
     if (!item?.exists) {
-      return message.channel.send(
-        Utilities.failureEmoji(
-          message,
-          `Unable to find any Item matching "${
-            args[0]
-          }" for Generation ${gen}! (Check your spelling?)`
-        )
-      ).catch(e => console.error(e));
+      const Gen7Dex = gens.get(7);
+      item = Gen7Dex.items.get(args[0]);
+      if (item?.exists && !hadGenSpec) {
+        if (gen === 8) gen = 7;
+      } else {
+        return message.channel.send(
+          Utilities.failureEmoji(
+            message,
+            `Unable to find any Item matching "${
+              args[0]
+            }" for Generation ${gen}! (Check your spelling?)`
+          )
+        ).catch(e => console.error(e));
+      }
     }
 
     if (Utilities.checkBotPermissions(message, Permissions.FLAGS.EMBED_LINKS)) {
@@ -36,7 +42,6 @@ module.exports = {
         .setTitle(`[Gen ${gen}] ${item.name}`)
         .setDescription(`${item.desc || item.shortDesc}\n\nIntroduced in Gen ${item.gen}`)
         .setFooter(await Utilities.getFullVersionString());
-
 
       message.channel.send({embed: embed}).catch(console.error);
     } else {

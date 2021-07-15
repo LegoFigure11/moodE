@@ -10,24 +10,30 @@ module.exports = {
   aliases: ["abil", "pokeability"],
   usage: "<Pok\u{00e9}mon Ability Name>",
   async command(message, args) {
-    const [gen, newArgs] = Utilities.getGen(args);
+    let [gen, newArgs, hadGenSpec] = Utilities.getGen(args);
     args = newArgs;
 
     const gens = new Generations(dex.Dex);
     const Dex = gens.get(gen as dex.GenerationNum);
 
     args[0] = getAlias(args[0]);
-    const ability = Dex.abilities.get(args[0]);
+    let ability = Dex.abilities.get(args[0]);
 
     if (!ability?.exists) {
-      return message.channel.send(
-        Utilities.failureEmoji(
-          message,
-          `Unable to find any Ability matching "${
-            args[0]
-          }" for Generation ${gen}! (Check your spelling?)`
-        )
-      ).catch(e => console.error(e));
+      const Gen7Dex = gens.get(7);
+      ability = Gen7Dex.abilities.get(args[0]);
+      if (ability?.exists && !hadGenSpec) {
+        if (gen === 8) gen = 7;
+      } else {
+        return message.channel.send(
+          Utilities.failureEmoji(
+            message,
+            `Unable to find any Ability matching "${
+              args[0]
+            }" for Generation ${gen}! (Check your spelling?)`
+          )
+        ).catch(e => console.error(e));
+      }
     }
 
     if (Utilities.checkBotPermissions(message, Permissions.FLAGS.EMBED_LINKS)) {
