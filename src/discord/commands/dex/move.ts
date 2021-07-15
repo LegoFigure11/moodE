@@ -36,15 +36,17 @@ module.exports = {
       }
     }
 
-    const isMaxOrZ = move.maxMove || move.zMove;
-    const isMaxAndZ = move.maxMove && move.zMove;
+    const isMaxOrZ = (gen >= 8 && move.maxMove) || (gen >= 7 && move.zMove);
+    const isMaxAndZ = (gen >= 8 && move.maxMove) && (gen >= 7 && move.zMove);
     const zMoveText = move.zMove
       ? move.zMove?.basePower ? move.zMove.basePower : move.zMove.boost
         ? Utilities.processZmoveBoost(move.zMove.boost) : move.zMove.effect || ""
       : "";
     const maxZmoveText = `${isMaxOrZ ? "(" : ""}${
-      move.maxMove ? `Max Move: ${move.maxMove?.basePower}` : ""
-    }${isMaxAndZ ? " | " : ""}${move.zMove ? `Z-Move: ${zMoveText}${isMaxOrZ ? ")" : ""}` : ""}`;
+      (move.maxMove && gen >= 8) ? `Max Move: ${move.maxMove?.basePower}` : ""
+    }${isMaxAndZ ? " | " : ""}${
+      (move.zMove && gen >= 7) ? `Z-Move: ${zMoveText}${isMaxOrZ ? ")" : ""}` : ""
+    }`;
     const bp = `${move.basePower} ${maxZmoveText}`;
     const acc = `${move.accuracy}` === "true" ? "--" : move.accuracy;
     const pp = `${move.pp}/${Math.floor(move.pp * 1.6)}`;
