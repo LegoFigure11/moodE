@@ -49,7 +49,7 @@ module.exports = {
         gen
       }${
         restriction ? ` (${restriction} restriction)` : ""
-      }:\n\`\`\`${learnable.join(", ")}\`\`\``, {
+      }:\n\`\`\`${learnable.sort().join(", ")}\`\`\``, {
         split: {char: ", ", prepend: "```", append: "```"},
       }).catch(e => console.error(e));
     }
@@ -131,7 +131,7 @@ module.exports = {
         }
         message.channel.send(
           `Full learnset for ${specie.name} in Generation ${gen}:\n\`\`\`${
-            learnable.join(", ")
+            learnable.sort().join(", ")
           }\`\`\``, {split: {char: ", ", prepend: "```", append: "```"}}
         ).catch(e => console.error(e));
       }).catch(e => console.error(e));
