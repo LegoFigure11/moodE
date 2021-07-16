@@ -541,7 +541,9 @@ export class Utilities {
       return "Egg (Traded back)";
     } else if (method === "Y") {
       return "Event (Traded back)";
-    } else { return `(Unknown, please report this as a bug - Move Type \`${method}\`)`; }
+    } else {
+      return `(Unknown, please report this as a bug - Move Type \`${method}\`)`;
+    }
   }
 
   getMoveFlagDescriptions(move: Move): string {
@@ -585,23 +587,24 @@ export class Utilities {
   }
 
   toStatName(stat: string): string {
-    if (stat === "hp") {
+    if (["h", "hp"].includes(stat)) {
       return "HP";
-    } else if (stat === "atk") {
+    } else if (["a", "atk"].includes(stat)) {
       return "Atk";
-    } else if (stat === "def") {
+    } else if (["b", "def"].includes(stat)) {
       return "Def";
-    } else if (stat === "spa") {
+    } else if (["c", "spa"].includes(stat)) {
       return "SpA";
-    } else if (stat === "spd") {
+    } else if (["d", "spd"].includes(stat)) {
       return "SpD";
-    } else if (stat === "spe") {
+    } else if (["s", "spe"].includes(stat)) {
       return "Spe";
     } else if (stat === "accuracy") {
       return "Accuracy";
     } else if (stat === "evasion") {
       return "Evasion";
-    } else { return stat; }
+    }
+    return stat;
   }
 
   processZmoveBoost(boostObject: Partial<BoostsTable>): string {
