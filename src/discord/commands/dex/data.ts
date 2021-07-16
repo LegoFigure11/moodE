@@ -7,6 +7,7 @@ import * as dexts from "./pokedex";
 import * as movets from "./move";
 import * as abilityts from "./ability";
 import * as itemts from "./item";
+import * as naturets from "./nature";
 
 module.exports = {
   desc: "Gets the information of a Pok\u{00e9}mon, ability, move, or item.",
@@ -45,14 +46,20 @@ module.exports = {
               const item = Dex.items.get(args[0]);
 
               if (!item?.exists) {
-                return message.channel.send(
-                  Utilities.failureEmoji(
-                    message,
-                    `Unable to find anything matching "${
-                      args[0]
-                    }" for Generation ${gen}! (Check your spelling?)`
-                  )
-                ).catch(e => console.error(e));
+                // Nature
+                const nature = Dex.natures.get(args[0]);
+
+                if (!nature?.exists) {
+                  return message.channel.send(
+                    Utilities.failureEmoji(
+                      message,
+                      `Unable to find anything matching "${
+                        args[0]
+                      }" for Generation ${gen}! (Check your spelling?)`
+                    )
+                  ).catch(e => console.error(e));
+                }
+                return (naturets as ICommand).command(message, args);
               }
               return (itemts as ICommand).command(message, args);
             }
