@@ -4,7 +4,7 @@ import * as dex from "@pkmn/dex";
 import {Generations} from "@pkmn/data";
 import type {TypeName} from "@pkmn/types";
 import {getAlias} from "../../../misc/dex-aliases";
-import {TypoChecker} from "./typoChecker";
+import {TypoChecker} from "../../../misc/typoChecker";
 
 
 module.exports = {
@@ -14,14 +14,6 @@ module.exports = {
   usage: "<Pok\u{00e9}mon or Type>, <Type (optional)>," +
     "<Generation (optional)>, <\"inverse\" (optional)>",
   async command(message, args) {
-    const db = Storage.getDatabase("currentGen");
-    if (!db.currentGen) db.currentGen = "8"; // If the database loses the variable, reset it to 8
-    Storage.exportDatabase("currentGen");
-
-    if (!args[1]) {
-      args.push(db.currentGen);
-    } // all this stuff is ignorable. It's just defaulting the generation to the gen I'm playing
-
     const [gen, newArgs, hadGenSpec] = Utilities.getGen(args);
     args = newArgs;
 
@@ -46,8 +38,9 @@ module.exports = {
       }
     }
 
+    // these 2 lines of code are ones I added because I wanted defense stats on \weak
     const bs = specie?.baseStats;
-    const defString = `HP: ${bs?.hp} / Def: ${bs?.def} / SpD: ${bs?.spd}`; // these 2 lines of code are ones I added because I wanted defense stats on \weak
+    const defString = `HP: ${bs?.hp} / Def: ${bs?.def} / SpD: ${bs?.spd}`;
 
     if (!types.length) {
       let index = 0;
@@ -60,11 +53,11 @@ module.exports = {
       }
     }
 
-    if (!specie?.exists) { // if it could not find a specie even after the gen7 check this executes
-      let msgString = `No pokemon found with the name \'${args[0]}\'. Did you mean:`; // This begins the string that will be sent as a message when it asks the user for input
+    if (!monName) { // if it could not find a specie even after the gen7 check this executes
+      let msgString = `No pokemon found with the name '${args[0]}'. Did you mean:`; // This begins the string that will be sent as a message when it asks the user for input
 
       const typoChecker = new TypoChecker(message, args); // creates a TypoChecker variable from the TypoChecker class
-      const possibleMons = typoChecker.getSimilarMons(); // getSimilarMons returns an array of all pokemon with similar-ish names to the argument. getSimilarMons is where levenshtein algorithm is implemented
+      const possibleMons = typoChecker.getSimilarPokemon(); // getSimilarMons returns an array of all pokemon with similar-ish names to the argument. getSimilarMons is where levenshtein algorithm is implemented
 
       for (let i = 0; i < possibleMons.length; i++) { // iterates through all the possible mons
         console.log(possibleMons[i]);
