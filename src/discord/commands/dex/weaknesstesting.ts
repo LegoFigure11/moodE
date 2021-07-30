@@ -4,7 +4,7 @@ import * as dex from "@pkmn/dex";
 import {Generations} from "@pkmn/data";
 import type {TypeName} from "@pkmn/types";
 import {getAlias} from "../../../misc/dex-aliases";
-import {TypoChecker} from "../../../misc/typoChecker";
+import {TypoChecker} from "../../../misc/typo-checker";
 
 
 module.exports = {
@@ -39,8 +39,8 @@ module.exports = {
     }
 
     // these 2 lines of code are ones I added because I wanted defense stats on \weak
-    const bs = specie?.baseStats;
-    const defString = `HP: ${bs?.hp} / Def: ${bs?.def} / SpD: ${bs?.spd}`;
+    let bs = specie?.baseStats;
+    let defString = `HP: ${bs?.hp} / Def: ${bs?.def} / SpD: ${bs?.spd}`;
 
     if (!types.length) {
       let index = 0;
@@ -54,52 +54,72 @@ module.exports = {
     }
 
     if (!monName) { // if it could not find a specie even after the gen7 check this executes
-      let msgString = `No pokemon found with the name '${args[0]}'. Did you mean:`; // This begins the string that will be sent as a message when it asks the user for input
+      let msgString = `No pokemon found with the name '${args[0]}'. Did you mean:`;
+      // This begins the string that will be sent as a message when it asks the user for input
 
-      const typoChecker = new TypoChecker(message, args); // creates a TypoChecker variable from the TypoChecker class
-      const possibleMons = typoChecker.getSimilarPokemon(); // getSimilarMons returns an array of all pokemon with similar-ish names to the argument. getSimilarMons is where levenshtein algorithm is implemented
+      const typoChecker = new TypoChecker(message, args);
+      // creates a TypoChecker variable from the TypoChecker class
+      const possibleMons = typoChecker.getSimilarResults();
+      // getSimilarMons returns an array of all pokemon with similar-ish names to the argument.
+      // getSimilarMons is where levenshtein algorithm is implemented
 
       for (let i = 0; i < possibleMons.length; i++) { // iterates through all the possible mons
         console.log(possibleMons[i]);
-        msgString = `${msgString}${`\n${i + 1}` + `: `}${possibleMons[i]}`; // adds mons to the message string that will be used when asking the user for input. It adds i + 1 because arrays start at 0
+        msgString = `${msgString}${`\n${i + 1}` + `: `}${possibleMons[i]}`;
+        // adds mons to the message string that will be used when asking the user for input.
+        // It adds i + 1 because arrays start at 0
       }
 
       let input; // the variable where user input will be stored
-      const filter = (msg: any) => msg.author.id === message.author.id; // creates a filter that will be used later when getting secondary input. This makes it so only the user that uses the command can give secondary input
+      const filter = (msg: any) => msg.author.id === message.author.id; // creates a filter that
+      // will be used later when getting secondary input. This makes it so only the user that uses
+      // the command can give secondary input
       message.channel.send( // sends the list of all pokemon mons and asks user to input a number.
         msgString, {code: "XL"}
       ).then(() => {
-        message.channel.awaitMessages(filter, { // starts listening for secondary command, should be a number. If it's not a number the command fails and must be re-entered
+        message.channel.awaitMessages(filter, {
+          // starts listening for secondary command, should be a number. If it's not a number the
+          // command fails and must be re-entered
           max: 1,
           time: 30000,
           errors: ["time"],
         })
           .then(msg => {
-            input = Number(`${msg.first()}`); // converts the input into an integer
-            if (input) { // this is not efficient code but I'm too lazy to change it. You could just if (!input) return 0;
-              console.log("Success"); // function that removes the pokemon at the specified input
+            input = Number(`${msg.first()}`);
+            // converts the input into an integer
+            if (input) {
+              // this is not efficient code but I'm too lazy to change it. You could just if
+              // (!input) return 0;
+              console.log("Success");
+              // function that removes the pokemon at the specified input
             } else { // if the user did not input a number, command fails
               console.log("Failure");
               return 0;
             }
             input--; // decrement input to match the input up with the array properly
 
-            const specie = Dex.species.get(possibleMons[input]); // gets a new specie based on what the user inputted
+            let newSpecie = Dex.species.get(possibleMons[input]);
+            // gets a new specie based on what the user inputted
 
-            if (specie?.exists) { // basically copy and paste all the code that would have been used if a proper pokemon name was inputted at the start of the command. There is probably a better way to do this but I am smooth brain
-              types = [...specie.types];
-              monName = specie.name;
+            if (newSpecie?.exists) {
+              // basically copy and paste all the code that would have been used if a proper pokemon
+              //  name was inputted at the start of the command. There is probably a better way to
+              // do this but I am smooth brain
+              types = [...newSpecie.types];
+              monName = newSpecie.name;
             } else if (gen === 8) {
               const Dex7 = gens.get(7);
-              const specie7 = Dex7.species.get(args[0]);
+              const specie7 = Dex7.species.get(possibleMons[input]);
               if (specie7?.exists) {
+                newSpecie = specie7;
                 types = [...specie7.types];
                 monName = specie7.name;
               }
             }
 
-            const bs = specie?.baseStats; // this is code I added myself because I wanted defense stats included. Feel free to ignore them
-            const defString = `HP: ${bs?.hp} / Def: ${bs?.def} / SpD: ${bs?.spd}`;
+            bs = newSpecie?.baseStats; // this is code I added myself because I wanted defense
+            // stats included. Feel free to ignore them
+            defString = `HP: ${bs?.hp} / Def: ${bs?.def} / SpD: ${bs?.spd}`;
 
             if (!types.length) {
               let index = 0;
@@ -125,7 +145,8 @@ module.exports = {
               const eff = Dex.types.totalEffectiveness(t.name, types);
               effectiveness[eff].push(t.name);
             }
-            message.channel.send( // for some reason returning a message was crashing toothE so I just send the message then return 0 to exit the code.
+            message.channel.send( // for some reason returning a message was crashing toothE so I
+              // just send the message then return 0 to exit the code.
               `${hadGenSpec ? `[Gen ${gen}] ` : ""}Weaknesses for: ${
                 monName ? `${monName} ` : ""
               }[${types.join("/")}]
@@ -152,11 +173,13 @@ Stats: ${defString}
           })
           .catch(collected => { // if an input is not sent within 30 seconds, await times out.
             console.log(collected);
-            message.channel.send("Timeout");
+            message.channel.send("Timeout").catch(console.error);
             return 0;
           });
-      });
-    } else { // This code executes if a pokemon was inputted correctly at the original call of the command. This was the code that existed before I started messing w/ typo correction
+      }).catch(console.error);
+    } else {
+      // This code executes if a pokemon was inputted correctly at the original call of the command.
+      // This was the code that existed before I started messing w/ typo correction
       const effectiveness: {[k: string]: string[]} = {
         0: [],
         0.25: [],
