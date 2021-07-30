@@ -13,14 +13,6 @@ module.exports = {
   usage: "<Pok\u{00e9}mon or Type>, <Type (optional)>," +
     "<Generation (optional)>, <\"inverse\" (optional)>",
   async command(message, args) {
-    const db = Storage.getDatabase("currentGen");
-    if (!db.currentGen) db.currentGen = "8"; // If the database loses the variable, reset it to 8
-    Storage.exportDatabase("currentGen");
-
-    if (!args[1]) {
-      args.push(db.currentGen);
-    }
-
     const [gen, newArgs, hadGenSpec] = Utilities.getGen(args);
     args = newArgs;
 
@@ -80,7 +72,6 @@ module.exports = {
       const eff = Dex.types.totalEffectiveness(t.name, types);
       effectiveness[eff].push(t.name);
     }
-
 
     return message.channel.send(
       `${hadGenSpec ? `[Gen ${gen}] ` : ""}Weaknesses for: ${
