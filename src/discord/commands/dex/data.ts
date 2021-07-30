@@ -8,6 +8,8 @@ import * as movets from "./move";
 import * as abilityts from "./ability";
 import * as itemts from "./item";
 import * as naturets from "./nature";
+import {TypoChecker} from "./typoChecker";
+
 
 module.exports = {
   desc: "Gets the information of a Pok\u{00e9}mon, ability, move, or item.",
@@ -16,6 +18,13 @@ module.exports = {
   usage: "<Pok\u{00e9}mon Name>",
   async command(message, args) {
     let [gen,, hadGenSpec] = Utilities.getGen(args);
+
+
+    const test = new TypoChecker(message, args);
+    const temp = test.getSimilarMons();
+    for (let i = 0; i < temp.length; i++) {
+      console.log(temp[i]);
+    }
 
     const gens = new Generations(dex.Dex);
     const Dex = gens.get(gen as dex.GenerationNum);

@@ -11,6 +11,14 @@ module.exports = {
   aliases: ["pokemon", "mon"],
   usage: "<Pok\u{00e9}mon Name>",
   async command(message, args) {
+    const db = Storage.getDatabase("currentGen");
+    if (!db.currentGen) db.currentGen = "8"; // If the database loses the variable, reset it to 8!
+    Storage.exportDatabase("currentGen");
+
+    if (!args[1]) {
+      args.push(db.currentGen);
+    }
+
     let [gen, newArgs, hadGenSpec] = Utilities.getGen(args);
     args = newArgs;
 

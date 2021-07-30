@@ -5,13 +5,22 @@ import {Generations} from "@pkmn/data";
 import type {TypeName} from "@pkmn/types";
 import {getAlias} from "../../../misc/dex-aliases";
 
+
 module.exports = {
   desc: "Gets the weaknesses of a Pok\u{00e9}mon or type.",
   commandPermissions: [Permissions.FLAGS.SEND_MESSAGES],
-  aliases: ["weak"],
+  aliases: ["wea"],
   usage: "<Pok\u{00e9}mon or Type>, <Type (optional)>," +
     "<Generation (optional)>, <\"inverse\" (optional)>",
   async command(message, args) {
+    const db = Storage.getDatabase("currentGen");
+    if (!db.currentGen) db.currentGen = "8"; // If the database loses the variable, reset it to 8
+    Storage.exportDatabase("currentGen");
+
+    if (!args[1]) {
+      args.push(db.currentGen);
+    }
+
     const [gen, newArgs, hadGenSpec] = Utilities.getGen(args);
     args = newArgs;
 
@@ -21,7 +30,9 @@ module.exports = {
     let monName;
 
     args[0] = getAlias(args[0]);
+
     const specie = Dex.species.get(args[0]);
+
     if (specie?.exists) {
       types = [...specie.types];
       monName = specie.name;
@@ -33,6 +44,10 @@ module.exports = {
         monName = specie7.name;
       }
     }
+
+    const bs = specie?.baseStats;
+    const defString = `HP: ${bs?.hp} / Def: ${bs?.def} / SpD: ${bs?.spd}`;
+
     if (!types.length) {
       let index = 0;
       for (const arg of args) {
@@ -51,6 +66,7 @@ module.exports = {
         )
       ).catch(e => console.error(e));
     }
+
     const effectiveness: {[k: string]: string[]} = {
       0: [],
       0.25: [],
@@ -65,10 +81,12 @@ module.exports = {
       effectiveness[eff].push(t.name);
     }
 
+
     return message.channel.send(
       `${hadGenSpec ? `[Gen ${gen}] ` : ""}Weaknesses for: ${
         monName ? `${monName} ` : ""
       }[${types.join("/")}]
+Stats: ${defString}
 0.00x: ${
   effectiveness[0].length ? effectiveness[0].join(", ") : "(None)"}
 0.25x: ${
