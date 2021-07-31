@@ -1,6 +1,7 @@
 import * as dex from "@pkmn/dex";
 import {Generations} from "@pkmn/data";
 import {Aliases} from "./dex-aliases";
+import type {typoCheckerListType} from "../types/typo-checker";
 
 // Maximum number of substitutions allowed in the fuzzy searching
 // Lower numbers mean stricter searching
@@ -12,33 +13,27 @@ const Dex = gens.get(8);
 const Gen7Dex = gens.get(7);
 
 export class TypoChecker {
-  arg: string;
-  list: string[] = this.generateList();
-
-  constructor(args: string[]) {
-    this.arg = args[0];
-  }
-
-  getClosestMatch(): string {
-    return this.getSimilarResults()[0];
+  getClosestMatch(arg: string, ...lists: Partial<typoCheckerListType>[]): string {
+    return this.getSimilarResults(arg, ...lists)[0];
   }
 
   // This function uses the levenshtein function and creates an array of all items that are
   // similar to the input
-  getSimilarResults(): string[] {
+  getSimilarResults(arg: string, ...lists: Partial<typoCheckerListType>[]): string[] {
     const results: any[] = [];
     // The more substitutions, the more results are allowed.
     let maxSubs = Math.max(MAX_SUBS, 3);
     // Shorter names should have less subs as it's easier to match them
-    if (this.arg.length < 6) {
+    if (arg.length < 6) {
       maxSubs = maxSubs - 1;
-    } else if (this.arg.length < 4) {
+    } else if (arg.length < 4) {
       maxSubs = maxSubs - 2;
     }
 
     // TODO: Abstract lists
-    for (const mon of this.list) {
-      const lVal = this.getLevenshteinValue(Utilities.toId(this.arg), mon);
+    const list = this.generateList(...lists);
+    for (const mon of list) {
+      const lVal = this.getLevenshteinValue(Utilities.toId(arg), mon);
       if (lVal <= maxSubs) {
         results.push([mon, lVal]);
       }
@@ -98,14 +93,40 @@ export class TypoChecker {
     return d[n][m];
   }
 
-  generateList(): string[] {
-    const pokemon: Set<string> = new Set();
-    for (const mon of Dex.species) {
-      pokemon.add(mon.id);
+  generateList(...lists: Partial<typoCheckerListType>[]): string[] {
+    const list: Set<string> = new Set();
+    const all = lists.includes("all");
+    if (lists.includes("pokemon") || all) {
+      for (const mon of Dex.species) {
+        list.add(mon.id);
+      }
+      for (const mon of Gen7Dex.species) {
+        list.add(mon.id);
+      }
+      for (const a of Object.keys(Aliases)) {
+        list.add(a);
+      }
     }
-    for (const mon of Gen7Dex.species) {
-      pokemon.add(mon.id);
+    if (lists.includes("moves") || all) {
+      for (const move of Dex.moves) {
+        list.add(move.id);
+      }
     }
-    return [...pokemon, ...Object.keys(Aliases)].sort();
+    if (lists.includes("items") || all) {
+      for (const item of Dex.items) {
+        list.add(item.id);
+      }
+    }
+    if (lists.includes("abilities") || all) {
+      for (const abil of Dex.abilities) {
+        list.add(abil.id);
+      }
+    }
+    if (lists.includes("natures") || all) {
+      for (const nature of Dex.natures) {
+        list.add(nature.id);
+      }
+    }
+    return [...list].sort();
   }
 }
