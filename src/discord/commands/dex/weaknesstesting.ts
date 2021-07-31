@@ -57,7 +57,7 @@ module.exports = {
       let msgString = `No pokemon found with the name '${args[0]}'. Did you mean:`;
       // This begins the string that will be sent as a message when it asks the user for input
 
-      const typoChecker = new TypoChecker(message, args);
+      const typoChecker = new TypoChecker(args);
       // creates a TypoChecker variable from the TypoChecker class
       const possibleMons = typoChecker.getSimilarResults();
       // getSimilarMons returns an array of all pokemon with similar-ish names to the argument.

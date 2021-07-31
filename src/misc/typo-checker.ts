@@ -1,4 +1,3 @@
-import type {Message} from "discord.js";
 import * as dex from "@pkmn/dex";
 import {Generations} from "@pkmn/data";
 import {Aliases} from "./dex-aliases";
@@ -13,12 +12,10 @@ const Dex = gens.get(8);
 const Gen7Dex = gens.get(7);
 
 export class TypoChecker {
-  message: Message;
   arg: string;
   list: string[] = this.generateList();
 
-  constructor(message: Message, args: string[]) {
-    this.message = message;
+  constructor(args: string[]) {
     this.arg = args[0];
   }
 
