@@ -5,8 +5,8 @@ import {Aliases} from "./dex-aliases";
 
 // Maximum number of substitutions allowed in the fuzzy searching
 // Lower numbers mean stricter searching
-// [4, 3, 2] is recommended for looser searching
-const MAX_SUBS = [3, 2, 1];
+// 4 is recommended for looser searching
+const MAX_SUBS = 3;
 
 const gens = new Generations(dex.Dex);
 const Dex = gens.get(8);
@@ -31,12 +31,12 @@ export class TypoChecker {
   getSimilarResults(): string[] {
     const results: any[] = [];
     // The more substitutions, the more results are allowed.
-    let maxSubs = MAX_SUBS[0];
+    let maxSubs = Math.max(MAX_SUBS, 3);
     // Shorter names should have less subs as it's easier to match them
     if (this.arg.length < 6) {
-      maxSubs = MAX_SUBS[1];
+      maxSubs = maxSubs - 1;
     } else if (this.arg.length < 4) {
-      maxSubs = MAX_SUBS[2];
+      maxSubs = maxSubs - 2;
     }
 
     // TODO: Abstract lists
