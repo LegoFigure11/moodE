@@ -334,6 +334,17 @@ export class Utilities {
     }
   }
 
+  parseUserId(message: Discord.Message, id: string | undefined):
+  Discord.User | undefined {
+    if (!id) return;
+    const idFromRegex = Discord.MessageMentions.USERS_PATTERN.exec(id);
+    if (idFromRegex?.[1]) {
+      return message.client.users.cache.get(idFromRegex[1]);
+    } else {
+      return;
+    }
+  }
+
   joinList(
     list: readonly string[], preFormatting?: string | null,
     postFormatting?: string | null, conjunction?: string
