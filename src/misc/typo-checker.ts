@@ -30,7 +30,6 @@ export class TypoChecker {
       maxSubs = maxSubs - 2;
     }
 
-    // TODO: Abstract lists
     const list = this.generateList(...lists);
     for (const mon of list) {
       const lVal = this.getLevenshteinValue(Utilities.toId(arg), mon);
