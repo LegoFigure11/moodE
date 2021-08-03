@@ -6,13 +6,13 @@ module.exports = {
   commandPermissions: [Permissions.FLAGS.SEND_MESSAGES],
   aliases: ["bigpfp", "avatar", "avi"],
   usage: "<user id>",
-  command(message, args) {
+  async command(message, args) {
     if (!args[0]) {
       return message.channel.send(
         Utilities.failureEmoji(message, "Please mention a user or provide a valid User ID!")
       ).catch(console.error);
     }
-    const user = Utilities.parseUserId(message, args[0]);
+    const user = await Utilities.parseUserId(message, args[0]);
     if (!user) {
       return message.channel.send(
         Utilities.failureEmoji(message, `Unable to find a user matching "${args[0]}"!`)
