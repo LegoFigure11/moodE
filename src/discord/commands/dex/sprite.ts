@@ -52,12 +52,9 @@ module.exports = {
   async command(message, args) {
     const gens = new Generations(dex.Dex);
     const Dex = gens.get(8);
-
-    const gmax = Utilities.toId(args[0]).includes("-gmax");
-    const emax = Utilities.toId(args[0]).includes("-eternamax");
-    args[0] = getAlias(args[0]);
-    let specie = Dex.species.get(args[0].replace(/-gmax|-eternamax/, ""));
-
+    let gmax, emax;
+    [args[0], gmax, emax] = getAlias(args[0], ["pokemon"]);
+    let specie = Dex.species.get(args[0]);
 
     if (!specie?.exists) {
       const Gen7Dex = gens.get(7);

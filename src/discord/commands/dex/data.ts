@@ -21,7 +21,7 @@ module.exports = {
     const Dex = gens.get(gen as dex.GenerationNum);
     const Gen7Dex = gens.get(7);
 
-    args[0] = getAlias(args[0]);
+    args[0] = getAlias(args[0], ["all"])[0];
     let specie = Dex.species.get(args[0]);
 
     // Species
