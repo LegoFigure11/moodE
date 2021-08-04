@@ -53,8 +53,11 @@ module.exports = {
     const gens = new Generations(dex.Dex);
     const Dex = gens.get(8);
 
+    const gmax = Utilities.toId(args[0]).includes("-gmax");
+    const emax = Utilities.toId(args[0]).includes("-eternamax");
     args[0] = getAlias(args[0]);
-    let specie = Dex.species.get(args[0]);
+    let specie = Dex.species.get(args[0].replace(/-gmax|-eternamax/, ""));
+
 
     if (!specie?.exists) {
       const Gen7Dex = gens.get(7);
@@ -74,7 +77,7 @@ module.exports = {
     args = args.map(a => Utilities.toId(a));
 
     const sprite = Sprites.getPokemon(
-      specie.name,
+      specie.name + (gmax ? "-gmax" : emax ? "-eternamax" : ""),
       {
         gen: resolveGenOptions(args),
         side: resolveSide(args),
