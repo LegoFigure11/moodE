@@ -74,7 +74,7 @@ module.exports = {
     args = args.map(a => Utilities.toId(a));
 
     const sprite = Sprites.getPokemon(
-      specie.name + (gmax ? "-gigantamax" : emax ? "-eternamax" : ""),
+      specie.name + (gmax ? "-gmax" : emax ? "-eternamax" : ""),
       {
         gen: resolveGenOptions(args),
         side: resolveSide(args),

@@ -334,6 +334,19 @@ export class Utilities {
     }
   }
 
+  async parseUserId(message: Discord.Message, id: string | undefined):
+  Promise<Discord.User | null | undefined | void> {
+    if (!id) return null;
+    id = id.trim();
+    let user: Discord.User | undefined | null | void;
+    id = Discord.MessageMentions.USERS_PATTERN.exec(id)?.[1] || id;
+    user = message.client.users.cache.get(id);
+    if (!user) {
+      user = await message.client.users.fetch(id.replace(/[^0-9]/g, "")).catch(console.error);
+    }
+    return user;
+  }
+
   joinList(
     list: readonly string[], preFormatting?: string | null,
     postFormatting?: string | null, conjunction?: string
