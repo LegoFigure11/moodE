@@ -24,10 +24,12 @@ export class TypoChecker {
     // The more substitutions, the more results are allowed.
     let maxSubs = Math.max(MAX_SUBS, 3);
     // Shorter names should have less subs as it's easier to match them
-    if (arg.length < 6) {
-      maxSubs = maxSubs - 1;
-    } else if (arg.length < 4) {
+    if (arg.length <= 1) {
+      maxSubs = 0;
+    } else if (arg.length <= 4) {
       maxSubs = maxSubs - 2;
+    } else if (arg.length <= 6) {
+      maxSubs = maxSubs - 1;
     }
 
     const list = this.generateList(...lists);

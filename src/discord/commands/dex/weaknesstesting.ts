@@ -10,7 +10,7 @@ import {TypoChecker} from "../../../misc/typo-checker";
 module.exports = {
   desc: "Gets the weaknesses of a Pok\u{00e9}mon or type.",
   commandPermissions: [Permissions.FLAGS.SEND_MESSAGES],
-  aliases: ["weak"],
+  aliases: ["weakt"],
   usage: "<Pok\u{00e9}mon or Type>, <Type (optional)>," +
     "<Generation (optional)>, <\"inverse\" (optional)>",
   async command(message, args) {
@@ -22,7 +22,7 @@ module.exports = {
     let types: TypeName[] = [];
     let monName: any;
 
-    args[0] = getAlias(args[0]);
+    args[0] = getAlias(args[0])[0];
 
     const specie = Dex.species.get(args[0]);
 
@@ -92,7 +92,7 @@ module.exports = {
               // function that removes the pokemon at the specified input
             } else { // if the user did not input a number, command fails
               console.log("Failure");
-              return 0;
+              return;
             }
             input--; // decrement input to match the input up with the array properly
 

@@ -9,7 +9,7 @@ import {getAlias} from "../../../misc/dex-aliases";
 module.exports = {
   desc: "Gets the weaknesses of a Pok\u{00e9}mon or type.",
   commandPermissions: [Permissions.FLAGS.SEND_MESSAGES],
-  aliases: ["wea"],
+  aliases: ["weak"],
   usage: "<Pok\u{00e9}mon or Type>, <Type (optional)>," +
     "<Generation (optional)>, <\"inverse\" (optional)>",
   async command(message, args) {
@@ -21,7 +21,7 @@ module.exports = {
     let types: TypeName[] = [];
     let monName;
 
-    args[0] = getAlias(args[0]);
+    args[0] = getAlias(args[0], ["pokemon"])[0];
 
     const specie = Dex.species.get(args[0]);
 

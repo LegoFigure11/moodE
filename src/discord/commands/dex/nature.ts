@@ -46,7 +46,7 @@ module.exports = {
     const gens = new Generations(dex.Dex);
     const Dex = gens.get(8);
 
-    args[0] = getAlias(args[0]);
+    args[0] = getAlias(args[0], ["natures"])[0];
     let nature = Dex.natures.get(args[0]);
 
     if (!nature?.exists) {

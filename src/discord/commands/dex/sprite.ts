@@ -52,8 +52,8 @@ module.exports = {
   async command(message, args) {
     const gens = new Generations(dex.Dex);
     const Dex = gens.get(8);
-
-    args[0] = getAlias(args[0]);
+    let gmax, emax;
+    [args[0], gmax, emax] = getAlias(args[0], ["pokemon"]);
     let specie = Dex.species.get(args[0]);
 
     if (!specie?.exists) {
@@ -74,7 +74,7 @@ module.exports = {
     args = args.map(a => Utilities.toId(a));
 
     const sprite = Sprites.getPokemon(
-      specie.name,
+      specie.name + (gmax ? "-gigantamax" : emax ? "-eternamax" : ""),
       {
         gen: resolveGenOptions(args),
         side: resolveSide(args),
