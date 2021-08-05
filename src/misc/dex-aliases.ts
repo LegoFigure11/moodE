@@ -3,6 +3,7 @@ import {TypoChecker} from "./typo-checker";
 
 export const Aliases: KeyedDict<string, string> = {
   // Cool people
+  "adam": "slakoth",
   "anubis": "corviknight",
   "archie": "jirachi",
   "bluecake": "scorbunny",
