@@ -6,11 +6,11 @@ import type {IGuildMemberAddRemoveEvent} from "../../types/events";
 const FIRST_PRIORITY = 1;
 const LAST_PRIORITY = 99;
 
-export class GuildMemberAddHandler {
-  eventsDirectory: string = path.join(Utilities.discordFolder, "events", "guildMemberAdd");
+export class GuildMemberRemoveHandler {
+  eventsDirectory: string = path.join(Utilities.discordFolder, "events", "guildMemberRemove");
   private events: KeyedDict<number, Dict<IGuildMemberAddRemoveEvent>> = {};
 
-  onReload(previous: Partial<GuildMemberAddHandler>): void {
+  onReload(previous: Partial<GuildMemberRemoveHandler>): void {
     for (const i in previous) {
     // @ts-expect-error
       delete previous[i];
@@ -65,11 +65,11 @@ export class GuildMemberAddHandler {
 }
 
 export const instantiate = (): void => {
-  const oldHandler = global.GuildMemberAddHandler as GuildMemberAddHandler | undefined;
+  const oldHandler = global.GuildMemberRemoveHandler as GuildMemberRemoveHandler | undefined;
 
-  global.GuildMemberAddHandler = new GuildMemberAddHandler();
+  global.GuildMemberRemoveHandler = new GuildMemberRemoveHandler();
 
   if (oldHandler) {
-    global.GuildMemberAddHandler.onReload(oldHandler);
+    global.GuildMemberRemoveHandler.onReload(oldHandler);
   }
 };

@@ -5,6 +5,8 @@ import type * as discordConfig from "./discord/config-example";
 import type {CommandHandler as commandHandlerType} from "./discord/handlers/commandHandler";
 import type {GuildMemberAddHandler as guildMemberAddHandlerType}
   from "./discord/handlers/guildMemberAddHandler";
+import type {GuildMemberRemoveHandler as guildMemberRemoveHandlerType}
+  from "./discord/handlers/guildMemberRemoveHandler";
 import type {MessageDeleteHandler as messageDeleteHandlerType}
   from "./discord/handlers/messageDeleteHandler";
 import type {MessageUpdateHandler as messageUpdateHandlerType}
@@ -18,6 +20,7 @@ declare global {
   let __clientReady: boolean;
   let __commandsLoaded: boolean;
   let __guildMemberAddHandlerLoaded: boolean;
+  let __guildMemberRemoveHandlerLoaded: boolean;
   let __messageDeleteHandlerLoaded: boolean;
   let __messageUpdateHandlerLoaded: boolean;
   let __messageReactionAddHandlerLoaded: boolean;
@@ -28,6 +31,7 @@ declare global {
   let __reloadModules: (message: import("discord.js").Message, args: string[]) => Promise<void>;
   const CommandHandler: commandHandlerType;
   const GuildMemberAddHandler: guildMemberAddHandlerType;
+  const GuildMemberRemoveHandler: guildMemberRemoveHandlerType;
   const MessageDeleteHandler: messageDeleteHandlerType;
   const MessageUpdateHandler: messageUpdateHandlerType;
   const MessageReactionAddHandler: messageReactionAddHandlerType;

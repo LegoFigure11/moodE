@@ -20,6 +20,7 @@ ReadyChecker.on("loaded", () => {
     __commandsLoaded &&
     __clientReady &&
     __guildMemberAddHandlerLoaded &&
+    __guildMemberRemoveHandlerLoaded &&
     __messageDeleteHandlerLoaded &&
     __messageUpdateHandlerLoaded &&
     __messageReactionAddHandlerLoaded &&
@@ -99,6 +100,26 @@ client.on("guildMemberAdd", (m) => void (
         }
       }
       GuildMemberAddHandler.executeEvents(member as Discord.GuildMember).catch(console.error);
+    }
+  })(m));
+
+client.on("guildMemberRemove", (m) => void (
+  async (
+    member: Discord.GuildMember | Discord.PartialGuildMember
+  ) => {
+    if (__listen) {
+      if (member.partial) {
+        try {
+          member = await member.fetch();
+        } catch (e) {
+          console.log(
+            Utilities.discordText(
+              `Unable to resolve a member partial! ${colors.grey(`${member.id}`)}`
+            )
+          );
+        }
+      }
+      GuildMemberRemoveHandler.executeEvents(member as Discord.GuildMember).catch(console.error);
     }
   })(m));
 

@@ -20,7 +20,7 @@ interface IEvent {
   onLoad?: void;
 }
 
-interface IGuildMemberAddEvent {
+interface IGuildMemberAddRemoveEvent {
   users?: string[];
 
   priority?: number;
