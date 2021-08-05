@@ -46,7 +46,7 @@ export class GuildMemberRemoveHandler {
       events[priority][eventName] = event;
     }
     this.events = events;
-    __guildMemberAddHandlerLoaded = true;
+    __guildMemberRemoveHandlerLoaded = true;
     ReadyChecker.emit("loaded");
   }
 
