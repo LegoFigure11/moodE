@@ -321,15 +321,19 @@ export class Utilities {
     return `${string}\n${"-".repeat(string.length)}`;
   }
 
-  parseChannelId(message: Discord.Message, id: string | undefined):
+  parseChannelId(guild: Discord.Message | Discord.Guild, id: string | undefined):
   Discord.GuildChannel | undefined {
     if (!id) return;
+    // @ts-ignore
+    if (guild.guild) guild = guild.guild; // Input is Message Type
     const idFromRegex = Discord.MessageMentions.CHANNELS_PATTERN.exec(id);
     if (idFromRegex?.[1]) {
-      return message.guild!.channels.cache.get(idFromRegex[1]);
+      return (guild as Discord.Guild).channels.cache.get(idFromRegex[1]);
     } else {
-      let channel = message.guild!.channels.cache.find(c => this.toId(c.name) === this.toId(id));
-      if (!channel) channel = message.guild!.channels.cache.get(id);
+      let channel = (guild as Discord.Guild).channels.cache.find(
+        c => this.toId(c.name) === this.toId(id)
+      );
+      if (!channel) channel = (guild as Discord.Guild).channels.cache.get(id);
       return channel;
     }
   }
