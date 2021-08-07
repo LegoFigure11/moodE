@@ -128,6 +128,11 @@ export class TypoChecker {
         list.add(nature.id);
       }
     }
+    if (lists.includes("types") || all) {
+      for (const nature of Dex.types) {
+        list.add(nature.id);
+      }
+    }
     return [...list].sort();
   }
 }

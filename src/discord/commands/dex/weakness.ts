@@ -21,7 +21,7 @@ module.exports = {
     let types: TypeName[] = [];
     let monName;
 
-    args[0] = getAlias(args[0], ["pokemon"])[0];
+    args[0] = getAlias(args[0], ["pokemon", "types"])[0];
 
     const specie = Dex.species.get(args[0]);
 
