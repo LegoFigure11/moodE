@@ -11,7 +11,9 @@ module.exports = {
   commandPermissions: [Permissions.FLAGS.SEND_MESSAGES],
   userPermissons: UserPermissions.DEVELOPER,
   async command(message) {
-    const msg = await message.channel.send("Attempting git pull...");
+    const msg = await message.reply(
+      {content: "Attempting git pull...", allowedMentions: {repliedUser: false}}
+    );
     const remoteOutput = await sh("git remote -v").catch(console.error);
     if (!remoteOutput || remoteOutput.stderr) {
       return msg.edit(Utilities.failureEmoji(message, "No git remote output."));

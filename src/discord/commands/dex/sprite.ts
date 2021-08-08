@@ -60,13 +60,16 @@ module.exports = {
       const Gen7Dex = gens.get(7);
       specie = Gen7Dex.species.get(args[0]);
       if (!specie?.exists) {
-        return message.channel.send(
-          Utilities.failureEmoji(
-            message,
-            `Unable to find any Pok\u{00e9}mon matching "${
-              args[0]
-            }"! All sprites can be viewed at: https://play.pokemonshowdown.com/sprites`
-          )
+        return message.reply(
+          {
+            content: Utilities.failureEmoji(
+              message,
+              `Unable to find any Pok\u{00e9}mon matching "${
+                args[0]
+              }"! All sprites can be viewed at: https://play.pokemonshowdown.com/sprites`
+            ),
+            allowedMentions: {repliedUser: false},
+          }
         ).catch(e => console.error(e));
       }
     }
@@ -86,6 +89,6 @@ module.exports = {
       .setTitle(`[Gen ${sprite.gen}] #${specie.num} - ${specie.name}`)
       .setImage(sprite.url)
       .setFooter(await Utilities.getFullVersionString());
-    message.channel.send({embeds: [embed]}).catch(console.error);
+    message.reply({embeds: [embed], allowedMentions: {repliedUser: false}}).catch(console.error);
   },
 } as ICommand;

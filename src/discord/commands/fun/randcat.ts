@@ -14,14 +14,17 @@ module.exports = {
       const embed = new MessageEmbed()
         .setImage(url)
         .setFooter(url);
-      message.channel.send({embeds: [embed]}).catch(e => console.error(e));
+      message.reply({embeds: [embed], allowedMentions: {repliedUser: false}}).catch(console.error);
     }).catch(e => {
       console.error(e);
-      message.channel.send(
-        Utilities.failureEmoji(
-          message,
-          "Oops! Looks like something went wrong. Try again later!"
-        )
+      message.reply(
+        {
+          content: Utilities.failureEmoji(
+            message,
+            "Oops! Looks like something went wrong. Try again later!"
+          ),
+          allowedMentions: {repliedUser: false},
+        }
       ).catch(err => console.error(err));
     });
   },

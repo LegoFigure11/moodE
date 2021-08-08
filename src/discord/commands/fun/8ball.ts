@@ -31,6 +31,8 @@ module.exports = {
     Permissions.FLAGS.SEND_MESSAGES,
   ],
   command(message) {
-    return message.channel.send(`:8ball: ${Utilities.sampleOne(phrases)}`);
+    return message.reply({
+      content: `:8ball: ${Utilities.sampleOne(phrases)}`, allowedMentions: {repliedUser: false},
+    });
   },
 } as ICommand;

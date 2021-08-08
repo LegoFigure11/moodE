@@ -24,9 +24,12 @@ module.exports = {
       }
     }
     if (!guild || !guild.available) {
-      return message.channel.send(
-        Utilities.failureEmoji(message, "Unable to fetch any information about this server!")
-      );
+      return message.reply({
+        content: Utilities.failureEmoji(
+          message, "Unable to fetch any information about this server!"
+        ),
+        allowedMentions: {repliedUser: false},
+      });
     }
 
     const iconURL = guild.icon?.startsWith("a_")
@@ -81,6 +84,8 @@ module.exports = {
         },
       );
 
-    message.channel.send({content: msg, embeds: [guildInfoEmbed]}).catch(e => console.error(e));
+    message.reply(
+      {content: msg || null, embeds: [guildInfoEmbed], allowedMentions: {repliedUser: false}}
+    ).catch(e => console.error(e));
   },
 } as ICommand;

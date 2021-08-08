@@ -26,13 +26,17 @@ module.exports = {
       if (specie?.exists && !hadGenSpec) {
         if (gen === 8) gen = 7;
       } else {
-        return message.channel.send(
+        return message.reply(
+          {
+            content:
           Utilities.failureEmoji(
             message,
             `Unable to find any Pok\u{00e9}mon matching "${
               args[0]
             }" for Generation ${gen}! (Check your spelling?)`
-          )
+          ),
+            allowedMentions: {repliedUser: false},
+          }
         ).catch(e => console.error(e));
       }
     }
@@ -148,17 +152,22 @@ module.exports = {
             ].join(" | "),
           ].join("")
         );
-      message.channel.send({embeds: [embed]}).catch(console.error);
+      message.reply({embeds: [embed], allowedMentions: {repliedUser: false}}).catch(console.error);
     } else {
       // Can't send embed, fall back to text only
-      return message.channel.send(Formatters.codeBlock("xl",
-        `${`${
-          Utilities.generateDashes(`[Gen ${gen}] #${specie.num} - ${specie.name}`)
-        }\n` +
-        `${typeString}${statsString}${abilityString}${heightWeightString}\n` +
-        `\nExtra Info: \n`}${
-          extraInfo.join("\n")
-        }`)).catch(e => console.error(e));
+      return message.reply(
+        {
+          content: Formatters.codeBlock("xl",
+            `${`${
+              Utilities.generateDashes(`[Gen ${gen}] #${specie.num} - ${specie.name}`)
+            }\n` +
+            `${typeString}${statsString}${abilityString}${heightWeightString}\n` +
+            `\nExtra Info: \n`}${
+              extraInfo.join("\n")
+            }`),
+          allowedMentions: {repliedUser: false},
+        }
+      ).catch(e => console.error(e));
     }
   },
 } as ICommand;

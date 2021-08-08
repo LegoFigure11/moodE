@@ -43,13 +43,16 @@ module.exports = {
         .setDescription(`${item.desc || item.shortDesc}\n\nIntroduced in Gen ${item.gen}`)
         .setFooter(await Utilities.getFullVersionString());
 
-      message.channel.send({embeds: [embed]}).catch(console.error);
+      message.reply({embeds: [embed], allowedMentions: {repliedUser: false}}).catch(console.error);
     } else {
       // Can't send embed, fall back to text only
-      return message.channel.send(
-        Formatters.codeBlock("xl", `${
-          Utilities.generateDashes(`[Gen ${gen}] ${item.name}`)
-        }\n\n${item.desc || item.shortDesc}\n\nIntroduced in Gen ${item.gen}`),
+      return message.reply(
+        {
+          content: Formatters.codeBlock("xl", `${
+            Utilities.generateDashes(`[Gen ${gen}] ${item.name}`)
+          }\n\n${item.desc || item.shortDesc}\n\nIntroduced in Gen ${item.gen}`),
+          allowedMentions: {repliedUser: false},
+        }
       ).catch(e => console.error(e));
     }
   },

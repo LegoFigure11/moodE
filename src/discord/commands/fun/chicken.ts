@@ -19,6 +19,11 @@ module.exports = {
     const nick = message.member!.nickname || message.author.username;
     const chook = Utilities.sampleOne(chickens);
     message.member!.setNickname(nick + chook).catch(console.error);
-    return message.channel.send(`Did somebody say... CHICKEN!?!? ${chook}`).catch(console.error);
+    return message.reply(
+      {
+        content: `Did somebody say... CHICKEN!?!? ${chook}`,
+        allowedMentions: {repliedUser: false},
+      }
+    ).catch(console.error);
   },
 } as ICommand;

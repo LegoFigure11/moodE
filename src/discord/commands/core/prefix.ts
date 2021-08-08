@@ -22,20 +22,28 @@ module.exports = {
       db.prefix = args[0];
       Storage.exportDatabase(id!);
       try {
-        return await message.channel.send(
-          Utilities.successEmoji(
-            message,
-            `Updated command prefix to \`${args[0]}\``
-          )
+        await message.reply(
+          {
+            content: Utilities.successEmoji(
+              message,
+              `Updated command prefix to \`${args[0]}\``
+            ),
+            allowedMentions: {repliedUser: false},
+          }
         );
+        return;
       } catch (e) {
         return console.error(e);
       }
     } else {
       try {
-        return await message.channel.send(
-          `Current prefix: \`${db?.prefix || DiscordConfig.prefix || message.client.user}\``
-        );
+        await message.reply({
+          content: `Current prefix: \`${
+            db?.prefix || DiscordConfig.prefix || message.client.user
+          }\``,
+          allowedMentions: {repliedUser: false},
+        });
+        return;
       } catch (e_1) {
         return console.log(e_1);
       }

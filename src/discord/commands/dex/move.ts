@@ -25,13 +25,16 @@ module.exports = {
       if (move?.exists && !hadGenSpec) {
         if (gen === 8) gen = 7;
       } else {
-        return message.channel.send(
-          Utilities.failureEmoji(
-            message,
-            `Unable to find any Move matching "${
-              args[0]
-            }" for Generation ${gen}! (Check your spelling?)`
-          )
+        return message.reply(
+          {
+            content: Utilities.failureEmoji(
+              message,
+              `Unable to find any Move matching "${
+                args[0]
+              }" for Generation ${gen}! (Check your spelling?)`
+            ),
+            allowedMentions: {repliedUser: false},
+          }
         ).catch(e => console.error(e));
       }
     }
@@ -63,20 +66,25 @@ ${move.desc || move.shortDesc}
 ${moveFlagDescriptions ? `${moveFlagDescriptions}\n` : ""}
 Introduced in Gen ${move.gen}`)
         .setFooter(await Utilities.getFullVersionString());
-      message.channel.send({embeds: [embed]}).catch(console.error);
+      message.reply({embeds: [embed], allowedMentions: {repliedUser: false}}).catch(console.error);
     } else {
       // Can't send embed, fall back to text only
-      return message.channel.send(Formatters.codeBlock("xl",
-        `${
-          Utilities.generateDashes(`[Gen ${gen}] ${move.name}`)
-        }\nBase Power: ${bp}\nType: ${move.type} | Acc: ${
-          acc
-        } | Category: ${move.category} | PP: ${pp}\n${
-          move.desc || move.shortDesc
-        }\n\n${
-          moveFlagDescriptions
-            ? `${moveFlagDescriptions}\n\n` : ""
-        }Introduced in Gen ${move.gen}`)).catch(e => console.error(e));
+      return message.reply(
+        {
+          content: Formatters.codeBlock("xl",
+            `${
+              Utilities.generateDashes(`[Gen ${gen}] ${move.name}`)
+            }\nBase Power: ${bp}\nType: ${move.type} | Acc: ${
+              acc
+            } | Category: ${move.category} | PP: ${pp}\n${
+              move.desc || move.shortDesc
+            }\n\n${
+              moveFlagDescriptions
+                ? `${moveFlagDescriptions}\n\n` : ""
+            }Introduced in Gen ${move.gen}`),
+          allowedMentions: {repliedUser: false},
+        }
+      ).catch(e => console.error(e));
     }
   },
 } as ICommand;

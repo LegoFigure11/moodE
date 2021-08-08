@@ -65,10 +65,13 @@ module.exports = {
       if (searchStats[0]) {
         if (!searchStats[1]) {
           // Get all natures matching searchStats[0];
-          return message.channel.send(
-            `All Natures that boost **${
-              Utilities.toStatName(searchStats[0])
-            }**: ${naturesNoNeutral[searchStats[0]].join(", ")}`
+          return message.reply(
+            {
+              content: `All Natures that boost **${
+                Utilities.toStatName(searchStats[0])
+              }**: ${naturesNoNeutral[searchStats[0]].join(", ")}`,
+              allowedMentions: {repliedUser: false},
+            }
           ).catch(console.error);
         }
         nature = Dex.natures.get(
@@ -76,13 +79,16 @@ module.exports = {
         );
       }
       if (!nature?.exists) {
-        return message.channel.send(
-          Utilities.failureEmoji(
-            message,
-            `Unable to find any Nature matching "${
-              args[0]
-            }"! (Check your spelling?)`
-          )
+        return message.reply(
+          {
+            content: Utilities.failureEmoji(
+              message,
+              `Unable to find any Nature matching "${
+                args[0]
+              }"! (Check your spelling?)`
+            ),
+            allowedMentions: {repliedUser: false},
+          }
         ).catch(e => console.error(e));
       }
     }
@@ -97,15 +103,20 @@ module.exports = {
         )
         .setFooter(await Utilities.getFullVersionString());
 
-      message.channel.send({embeds: [embed]}).catch(console.error);
+      message.reply({embeds: [embed], allowedMentions: {repliedUser: false}}).catch(console.error);
     } else {
       // Can't send embed, fall back to text only
-      return message.channel.send(Formatters.codeBlock("xl",
-        `${
-          Utilities.generateDashes(`${nature.name} Nature`)
-        }\n\nBoosts: ${Utilities.toStatName(nature.plus || "None")} (x1.1), Reduces: ${
-          Utilities.toStatName(nature.minus || "None")
-        } (x0.9)`)).catch(e => console.error(e));
+      return message.reply(
+        {
+          content: Formatters.codeBlock("xl",
+            `${
+              Utilities.generateDashes(`${nature.name} Nature`)
+            }\n\nBoosts: ${Utilities.toStatName(nature.plus || "None")} (x1.1), Reduces: ${
+              Utilities.toStatName(nature.minus || "None")
+            } (x0.9)`),
+          allowedMentions: {repliedUser: false},
+        }
+      ).catch(e => console.error(e));
     }
   },
 } as ICommand;

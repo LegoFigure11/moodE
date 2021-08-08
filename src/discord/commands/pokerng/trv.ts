@@ -11,25 +11,31 @@ module.exports = {
     const tsv = parseInt(args[1]);
 
     if (isNaN(g7id) || g7id < 0 || g7id > 999999) {
-      return message.channel.send(
-        Utilities.failureEmoji(
-          message,
-          `Unable to coerce "${
-            args[0]
-          }" as a valid G7ID! Your G7ID is the 6-digit long number on your trainer card.`
-        )
+      return message.reply(
+        {
+          content: Utilities.failureEmoji(
+            message,
+            `Unable to coerce "${
+              args[0]
+            }" as a valid G7ID! Your G7ID is the 6-digit long number on your trainer card.`
+          ),
+          allowedMentions: {repliedUser: false},
+        }
       ).catch(console.error);
     }
     if (isNaN(tsv) || tsv < 0 || tsv > 0xfff) {
-      return message.channel.send(
-        Utilities.failureEmoji(
-          message,
-          `Unable to coerce "${
-            args[1]
-          }" as a valid TSV! Your TSV is a 4-digit number less than 4096. ` +
+      return message.reply(
+        {
+          content: Utilities.failureEmoji(
+            message,
+            `Unable to coerce "${
+              args[1]
+            }" as a valid TSV! Your TSV is a 4-digit number less than 4096. ` +
           "Get someone with CFW to check it, or calculate it using the tsv command if you know " +
           "5-digit TID and SID."
-        )
+          ),
+          allowedMentions: {repliedUser: false},
+        }
       ).catch(console.error);
     }
     // Thanks to @wwwwwwzx (https://www.jdoodle.com/a/1U1o) for this calculation!
@@ -45,18 +51,29 @@ module.exports = {
       }
     }
     if (results.length === 0) {
-      message.channel.send(
-        Utilities.failureEmoji(message, `No TRV found for G7ID: \`${g7id}\` and TSV: \`${tsv}\`!`)
+      message.reply(
+        {
+          content: Utilities.failureEmoji(
+            message, `No TRV found for G7ID: \`${g7id}\` and TSV: \`${tsv}\`!`
+          ),
+          allowedMentions: {repliedUser: false},
+        }
       ).catch(console.error);
     } else if (results.length === 1) {
-      message.channel.send(Formatters.codeBlock("xl", results[0])).catch(console.error);
+      message.reply({
+        content: Formatters.codeBlock("xl", results[0]), allowedMentions: {repliedUser: false},
+      }).catch(console.error);
     } else {
-      message.channel.send(
+      message.reply(
+        {
+          content:
         `${"Looks like you've got multiple results! Math can't narrow them down any further, so " +
         "you'll just have to try them out until you find the right one." +
         "```xl\n"}${
           results.join("\n\n")
-        }\`\`\``
+        }\`\`\``,
+          allowedMentions: {repliedUser: false},
+        }
       ).catch(console.error);
     }
   },

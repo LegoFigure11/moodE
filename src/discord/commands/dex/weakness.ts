@@ -51,11 +51,14 @@ module.exports = {
       }
     }
     if (!types.length) {
-      return message.channel.send(
-        Utilities.failureEmoji(
-          message,
-          `Unable to identify any provided Pok\u{00e9}mon or Types! (Check your spelling?)`
-        )
+      return message.reply(
+        {
+          content: Utilities.failureEmoji(
+            message,
+            `Unable to identify any provided Pok\u{00e9}mon or Types! (Check your spelling?)`
+          ),
+          allowedMentions: {repliedUser: false},
+        }
       ).catch(e => console.error(e));
     }
 

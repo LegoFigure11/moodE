@@ -20,8 +20,16 @@ module.exports = {
     try {
       // eslint-disable-next-line @typescript-eslint/no-var-requires, no-eval
       const output = Utilities.clean(require("util").inspect(eval(args.join(", "))));
+      let first = true;
       for (const chunk of Discord.Util.splitMessage(Formatters.codeBlock("xl", output))) {
-        message.channel.send(chunk).catch(console.error);
+        if (first) {
+          message.reply(
+            {content: chunk, allowedMentions: {repliedUser: false}}
+          ).catch(console.error);
+          first = false;
+        } else {
+          message.channel.send(chunk).catch(console.error);
+        }
       }
     } catch (e) {
       message.channel.send(

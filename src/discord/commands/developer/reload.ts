@@ -10,8 +10,13 @@ module.exports = {
   aliases: ["hotpatch", "rl", "rocketleague"],
   command(message, args) {
     if (__reloadInProgress) {
-      return message.channel.send(
-        Utilities.failureEmoji(message, "You must wait for the current reload to finish.")
+      return message.reply(
+        {
+          content: Utilities.failureEmoji(
+            message, "You must wait for the current reload to finish."
+          ),
+          allowedMentions: {repliedUser: false},
+        }
       ).catch(e => console.error(e));
     }
 
