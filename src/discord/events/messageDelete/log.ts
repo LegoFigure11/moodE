@@ -28,19 +28,19 @@ module.exports = {
       .setTimestamp(new Date())
       .setFooter(message.client.user!.username, message.client.user!.avatarURL()!)
       .setColor(message.guild.members.cache.get(message.client.user!.id)!.displayColor)
-      .addField("Author", message.author, true)
-      .addField("Channel", message.channel, true)
+      .addField("Author", message.author.toString(), true)
+      .addField("Channel", message.channel.toString(), true)
       .setTitle("Message:")
       .setDescription(message.content || "(None)");
 
     if (message?.attachments.size > 0) {
-      embed.addField("Attachents", message.attachments.size, true);
+      embed.addField("Attachents", message.attachments.size.toString(), true);
     }
 
     channel.send(
-      `A message was deleted${by ? ` by ${by.tag}` : ""}:`,
       {
-        embed: embed,
+        content: `A message was deleted${by ? ` by ${by.tag}` : ""}:`,
+        embeds: [embed],
         files: message.attachments.map(m => m.url),
       }
     ).catch(console.error);
@@ -48,9 +48,11 @@ module.exports = {
     if (message.embeds?.[0]) {
       const newEmbed = new MessageEmbed(message.embeds[0]);
       channel.send(
-        `The above message contained ${message.embeds.length} embed${
-          message.embeds.length === 1 ? "" : "s"
-        }:`, {embed: newEmbed}
+        {
+          content: `The above message contained ${message.embeds.length} embed${
+            message.embeds.length === 1 ? "" : "s"
+          }:`, embeds: [newEmbed],
+        }
       ).catch(console.error);
     }
 

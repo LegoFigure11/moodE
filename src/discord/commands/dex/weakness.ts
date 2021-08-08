@@ -1,4 +1,4 @@
-import {Permissions} from "discord.js";
+import {Formatters, Permissions} from "discord.js";
 import type {ICommand} from "../../../types/commands";
 import * as dex from "@pkmn/dex";
 import {Generations} from "@pkmn/data";
@@ -73,7 +73,7 @@ module.exports = {
       effectiveness[eff].push(t.name);
     }
 
-    return message.channel.send(
+    return message.channel.send(Formatters.codeBlock("xl",
       `${hadGenSpec ? `[Gen ${gen}] ` : ""}Weaknesses for: ${
         monName ? `${monName} ` : ""
       }[${types.join("/")}]
@@ -95,7 +95,6 @@ Stats: ${defString}
 4.00x: ${
   effectiveness[4].length ? effectiveness[4].join(", ") : "(None)"
 }
-`, {code: "XL"}
-    ).catch(e => console.error(e));
+`)).catch(e => console.error(e));
   },
 } as ICommand;

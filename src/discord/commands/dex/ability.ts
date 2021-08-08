@@ -1,4 +1,4 @@
-import {Permissions, MessageEmbed} from "discord.js";
+import {Permissions, MessageEmbed, Formatters} from "discord.js";
 import {getAlias} from "../../../misc/dex-aliases";
 import type {ICommand} from "../../../types/commands";
 import * as dex from "@pkmn/dex";
@@ -43,14 +43,13 @@ module.exports = {
         .setFooter(await Utilities.getFullVersionString());
 
 
-      message.channel.send({embed: embed}).catch(console.error);
+      message.channel.send({embeds: [embed]}).catch(console.error);
     } else {
       // Can't send embed, fall back to text only
       return message.channel.send(
-        `${
+        Formatters.codeBlock("xl", `${
           Utilities.generateDashes(`[Gen ${gen}] ${ability.name}`)
-        }\n\n${ability.desc || ability.shortDesc}\n\nIntroduced in Gen ${ability.gen}`,
-        {code: "XL"}
+        }\n\n${ability.desc || ability.shortDesc}\n\nIntroduced in Gen ${ability.gen}`)
       ).catch(e => console.error(e));
     }
   },

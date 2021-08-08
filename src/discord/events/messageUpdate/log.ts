@@ -26,17 +26,18 @@ module.exports = {
       .setTimestamp(new Date())
       .setFooter(newMessage.client.user!.username, newMessage.client.user!.avatarURL()!)
       .setColor(newMessage.guild.members.cache.get(newMessage.client.user!.id)!.displayColor)
-      .addField("Author", newMessage.author, true)
-      .addField("Channel", newMessage.channel, true)
+      .addField("Author", newMessage.author.toString(), true)
+      .addField("Channel", newMessage.channel.toString(), true)
       .addField("Link", `[Click me!](${oldMessage.url})`, true);
 
     let deleteOldMessageFile = false;
     let deleteNewMessageFile = false;
+    const files = [];
     if (oldMessage.content.length > MAX_FIELD_LENGTH) {
       fs.writeFileSync(
         path.join(__dirname, `${oldMessage.id} - Old Message.txt`), oldMessage.content
       );
-      embed.attachFiles([...[path.join(__dirname, `${oldMessage.id} - Old Message.txt`)]]);
+      files.push(path.join(__dirname, `${oldMessage.id} - Old Message.txt`));
       deleteOldMessageFile = true;
     } else {
       embed.addField("Old Message:", oldMessage.content || "(None)", true);
@@ -46,16 +47,17 @@ module.exports = {
       fs.writeFileSync(
         path.join(__dirname, `${newMessage.id} - New Message.txt`), newMessage.content
       );
-      embed.attachFiles([...[path.join(__dirname, `${newMessage.id} - New Message.txt`)]]);
+      files.push(path.join(__dirname, `${newMessage.id} - New Message.txt`));
       deleteNewMessageFile = true;
     } else {
       embed.addField("New Message:", newMessage.content || "(None)", true);
     }
 
     await channel.send(
-      `A message was edited:`,
       {
-        embed: embed,
+        content: `A message was edited:`,
+        embeds: [embed],
+        files: files,
       }
     ).catch(console.error);
 

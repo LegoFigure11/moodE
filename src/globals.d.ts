@@ -16,28 +16,30 @@ import type {MessageReactionAddHandler as messageReactionAddHandlerType}
 import type {MessageReactionRemoveHandler as messageReactionRemoveHandlerType}
   from "./discord/handlers/messageReactionRemoveHandler";
 
+/* eslint-disable no-var */
 declare global {
-  let __clientReady: boolean;
-  let __commandsLoaded: boolean;
-  let __guildMemberAddHandlerLoaded: boolean;
-  let __guildMemberRemoveHandlerLoaded: boolean;
-  let __messageDeleteHandlerLoaded: boolean;
-  let __messageUpdateHandlerLoaded: boolean;
-  let __messageReactionAddHandlerLoaded: boolean;
-  let __messageReactionRemoveHandlerLoaded: boolean;
-  let __listen: boolean;
-  let __production: boolean;
-  let __reloadInProgress: boolean;
-  let __reloadModules: (message: import("discord.js").Message, args: string[]) => Promise<void>;
-  const CommandHandler: commandHandlerType;
-  const GuildMemberAddHandler: guildMemberAddHandlerType;
-  const GuildMemberRemoveHandler: guildMemberRemoveHandlerType;
-  const MessageDeleteHandler: messageDeleteHandlerType;
-  const MessageUpdateHandler: messageUpdateHandlerType;
-  const MessageReactionAddHandler: messageReactionAddHandlerType;
-  const MessageReactionRemoveHandler: messageReactionRemoveHandlerType;
-  const DiscordConfig: Partial<typeof discordConfig>;
-  const Storage: storageType;
-  const Utilities: utilitiesType;
-  const ReadyChecker: eventEmitterType;
+  var __clientReady: boolean;
+  var __commandsLoaded: boolean;
+  var __guildMemberAddHandlerLoaded: boolean;
+  var __guildMemberRemoveHandlerLoaded: boolean;
+  var __messageDeleteHandlerLoaded: boolean;
+  var __messageUpdateHandlerLoaded: boolean;
+  var __messageReactionAddHandlerLoaded: boolean;
+  var __messageReactionRemoveHandlerLoaded: boolean;
+  var __listen: boolean;
+  var __production: boolean;
+  var __reloadInProgress: boolean;
+  var __reloadModules: (message: import("discord.js").Message, args: string[]) => Promise<void>;
+  var CommandHandler: commandHandlerType;
+  var GuildMemberAddHandler: guildMemberAddHandlerType;
+  var GuildMemberRemoveHandler: guildMemberRemoveHandlerType;
+  var MessageDeleteHandler: messageDeleteHandlerType;
+  var MessageUpdateHandler: messageUpdateHandlerType;
+  var MessageReactionAddHandler: messageReactionAddHandlerType;
+  var MessageReactionRemoveHandler: messageReactionRemoveHandlerType;
+  var DiscordConfig: Partial<typeof discordConfig>;
+  var Storage: storageType;
+  var Utilities: utilitiesType;
+  var ReadyChecker: eventEmitterType;
 }
+/* eslint-enable no-var */

@@ -1,4 +1,4 @@
-import {MessageEmbed, Permissions} from "discord.js";
+import {Formatters, MessageEmbed, Permissions} from "discord.js";
 import type {ICommand} from "../../../types/commands";
 import * as dex from "@pkmn/dex";
 import {Generations} from "@pkmn/data";
@@ -63,10 +63,10 @@ ${move.desc || move.shortDesc}
 ${moveFlagDescriptions ? `${moveFlagDescriptions}\n` : ""}
 Introduced in Gen ${move.gen}`)
         .setFooter(await Utilities.getFullVersionString());
-      message.channel.send({embed: embed}).catch(console.error);
+      message.channel.send({embeds: [embed]}).catch(console.error);
     } else {
       // Can't send embed, fall back to text only
-      return message.channel.send(
+      return message.channel.send(Formatters.codeBlock("xl",
         `${
           Utilities.generateDashes(`[Gen ${gen}] ${move.name}`)
         }\nBase Power: ${bp}\nType: ${move.type} | Acc: ${
@@ -76,9 +76,7 @@ Introduced in Gen ${move.gen}`)
         }\n\n${
           moveFlagDescriptions
             ? `${moveFlagDescriptions}\n\n` : ""
-        }Introduced in Gen ${move.gen}`,
-        {code: "XL"}
-      ).catch(e => console.error(e));
+        }Introduced in Gen ${move.gen}`)).catch(e => console.error(e));
     }
   },
 } as ICommand;

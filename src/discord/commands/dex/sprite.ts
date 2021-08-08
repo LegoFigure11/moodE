@@ -86,6 +86,6 @@ module.exports = {
       .setTitle(`[Gen ${sprite.gen}] #${specie.num} - ${specie.name}`)
       .setImage(sprite.url)
       .setFooter(await Utilities.getFullVersionString());
-    message.channel.send({embed: embed}).catch(console.error);
+    message.channel.send({embeds: [embed]}).catch(console.error);
   },
 } as ICommand;

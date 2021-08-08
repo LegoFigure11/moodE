@@ -1,4 +1,4 @@
-import {Permissions} from "discord.js";
+import {Formatters, Permissions} from "discord.js";
 import type {ICommand} from "../../../types/commands";
 
 module.exports = {
@@ -49,7 +49,7 @@ module.exports = {
         Utilities.failureEmoji(message, `No TRV found for G7ID: \`${g7id}\` and TSV: \`${tsv}\`!`)
       ).catch(console.error);
     } else if (results.length === 1) {
-      message.channel.send(results, {code: "xl"}).catch(console.error);
+      message.channel.send(Formatters.codeBlock("xl", results[0])).catch(console.error);
     } else {
       message.channel.send(
         `${"Looks like you've got multiple results! Math can't narrow them down any further, so " +

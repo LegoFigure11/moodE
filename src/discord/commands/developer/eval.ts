@@ -1,4 +1,5 @@
 import * as Discord from "discord.js";
+import {Formatters} from "discord.js";
 import * as dex from "@pkmn/dex";
 import * as data from "@pkmn/data";
 // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
@@ -19,11 +20,13 @@ module.exports = {
     try {
       // eslint-disable-next-line @typescript-eslint/no-var-requires, no-eval
       const output = Utilities.clean(require("util").inspect(eval(args.join(", "))));
-      message.channel.send(output, {code: "xl", split: true}).catch(err => console.error(err));
+      for (const chunk of Discord.Util.splitMessage(Formatters.codeBlock("xl", output))) {
+        message.channel.send(chunk).catch(console.error);
+      }
     } catch (e) {
       message.channel.send(
-        `\`ERROR\` \`\`\`xl\n${Utilities.clean(e.stack.replace("/Archie/g", "*"))}\n\`\`\``
-      ).catch(err => console.error(err));
+        `\`ERROR\`\n ${Formatters.codeBlock("xl", Utilities.clean(e.stack))}`
+      ).catch(console.error);
     }
   },
 } as ICommand;

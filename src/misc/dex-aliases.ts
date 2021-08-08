@@ -89,7 +89,6 @@ export function getAlias(args?: string, lists: Partial<typoCheckerListType>[] = 
   arg = arg.replace(/-gmax|-gigantamax|-emax|-eternamax/, "");
   const old = arg;
   arg = new TypoChecker().getClosestMatch(arg, ...lists);
-  console.log(arg);
   if (Aliases[arg]) return [Aliases[arg], gmax, emax];
   return [arg || old, gmax, emax];
 }

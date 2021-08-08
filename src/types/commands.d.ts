@@ -14,7 +14,7 @@ interface ICommand {
 
   disabled?: boolean;
 
-  commandPermissions?: number[];
+  commandPermissions?: bigint[];
   userPermissions?: number;
 
   nsfw?: boolean;

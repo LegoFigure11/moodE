@@ -19,7 +19,7 @@ module.exports = {
       args[0] = Utilities.sampleOne(compliments);
     }
 
-    if (message.channel.type !== "dm") message.delete().catch(e => console.error(e));
+    if (message.channel.type !== "DM") message.delete().catch(e => console.error(e));
     message.channel.send(args.join(", ")).catch(e => console.error(e));
   },
 } as ICommand;

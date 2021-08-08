@@ -1,7 +1,14 @@
 import * as Discord from "discord.js";
 import * as colors from "colors/safe";
+import {Intents} from "discord.js";
 
 const client: Discord.Client = new Discord.Client({
+  intents: [
+    Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_BANS,
+    Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS, Intents.FLAGS.GUILD_INVITES,
+    Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+    Intents.FLAGS.DIRECT_MESSAGES, Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
+  ],
   partials: ["MESSAGE", "CHANNEL", "REACTION", "GUILD_MEMBER"],
 });
 
@@ -46,7 +53,7 @@ client.on("ready", () => {
   ReadyChecker.emit("loaded");
 });
 
-client.on("message", (m) => void (async (message: Discord.Message) => {
+client.on("messageCreate", (m) => void (async (message: Discord.Message) => {
   if (__listen) {
     if (message.partial) {
       try {
@@ -145,7 +152,7 @@ client.on("messageDelete", (m) => void (
 
 client.on("messageReactionAdd", (r, u) => void (
   async (
-    messageReaction: Discord.MessageReaction,
+    messageReaction: Discord.MessageReaction | Discord.PartialMessageReaction,
     user: Discord.User | Discord.PartialUser
   ) => {
     if (__listen) {
@@ -160,15 +167,26 @@ client.on("messageReactionAdd", (r, u) => void (
           );
         }
       }
+      if (messageReaction.partial) {
+        try {
+          messageReaction = await messageReaction.fetch();
+        } catch (e) {
+          console.log(
+            Utilities.discordText(
+              `Unable to resolve a reaction partial!`
+            )
+          );
+        }
+      }
       MessageReactionAddHandler.executeEvents(
-        messageReaction, user as Discord.User
+        messageReaction as Discord.MessageReaction, user as Discord.User
       ).catch(console.error);
     }
   })(r, u));
 
 client.on("messageReactionRemove", (r, u) => void (
   async (
-    messageReaction: Discord.MessageReaction,
+    messageReaction: Discord.MessageReaction | Discord.PartialMessageReaction,
     user: Discord.User | Discord.PartialUser
   ) => {
     if (__listen) {
@@ -183,8 +201,19 @@ client.on("messageReactionRemove", (r, u) => void (
           );
         }
       }
+      if (messageReaction.partial) {
+        try {
+          messageReaction = await messageReaction.fetch();
+        } catch (e) {
+          console.log(
+            Utilities.discordText(
+              `Unable to resolve a reaction partial!`
+            )
+          );
+        }
+      }
       MessageReactionRemoveHandler.executeEvents(
-        messageReaction, user as Discord.User
+        messageReaction as Discord.MessageReaction, user as Discord.User
       ).catch(console.error);
     }
   })(r, u));

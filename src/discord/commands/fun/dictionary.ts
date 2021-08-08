@@ -33,7 +33,7 @@ module.exports = {
         .setDescription(
           definitions.join("\n")
         );
-      message.channel.send({embed: embed}).catch(e => console.error(e));
+      message.channel.send({embeds: [embed]}).catch(e => console.error(e));
     }).catch(e => {
       console.error(e);
       message.channel.send(

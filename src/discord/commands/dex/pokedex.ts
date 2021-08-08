@@ -1,4 +1,4 @@
-import {MessageEmbed, Permissions} from "discord.js";
+import {Formatters, MessageEmbed, Permissions} from "discord.js";
 import type {ICommand} from "../../../types/commands";
 import {getAlias} from "../../../misc/dex-aliases";
 import * as dex from "@pkmn/dex";
@@ -146,20 +146,19 @@ module.exports = {
                 }`
               }${gen === 8 ? "/" : ".shtml"})`,
             ].join(" | "),
-          ]
+          ].join("")
         );
-      message.channel.send({embed: embed}).catch(console.error);
+      message.channel.send({embeds: [embed]}).catch(console.error);
     } else {
       // Can't send embed, fall back to text only
-      return message.channel.send(
+      return message.channel.send(Formatters.codeBlock("xl",
         `${`${
           Utilities.generateDashes(`[Gen ${gen}] #${specie.num} - ${specie.name}`)
         }\n` +
         `${typeString}${statsString}${abilityString}${heightWeightString}\n` +
         `\nExtra Info: \n`}${
-          extraInfo.join("\n")}`,
-        {code: "XL"}
-      ).catch(e => console.error(e));
+          extraInfo.join("\n")
+        }`)).catch(e => console.error(e));
     }
   },
 } as ICommand;

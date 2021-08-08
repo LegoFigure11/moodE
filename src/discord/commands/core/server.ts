@@ -30,7 +30,7 @@ module.exports = {
     }
 
     const iconURL = guild.icon?.startsWith("a_")
-      ? guild.iconURL({format: "gif", dynamic: true})
+      ? guild.iconURL({dynamic: true})
       : (guild.iconURL() || "https://cdn.discordapp.com/embed/avatars/0.png");
 
     const guildInfoEmbed = new MessageEmbed()
@@ -54,11 +54,6 @@ module.exports = {
         },
         Utilities.blankEmbedField(true),
         {
-          name: "Region",
-          value: guild.region,
-          inline: true,
-        },
-        {
           name: "Created",
           value: `${Utilities.UTCtimeStamp(
             guild.createdAt
@@ -70,7 +65,7 @@ module.exports = {
         Utilities.blankEmbedField(true),
         {
           name: "Owner",
-          value: `<@${guild.ownerID}> (${guild.ownerID})`,
+          value: `<@${guild.ownerId}> (${guild.ownerId})`,
           inline: true,
         },
         Utilities.blankEmbedField(true),
@@ -86,6 +81,6 @@ module.exports = {
         },
       );
 
-    message.channel.send(msg, {embed: guildInfoEmbed}).catch(e => console.error(e));
+    message.channel.send({content: msg, embeds: [guildInfoEmbed]}).catch(e => console.error(e));
   },
 } as ICommand;

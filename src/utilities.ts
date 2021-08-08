@@ -253,8 +253,8 @@ export class Utilities {
    * @param message the context of the check
    * @param permission the integer representation of the permission (see Permissions.FLAGS)
    */
-  checkBotPermissions(message: Discord.Message, permission: number): boolean {
-    if (message.channel.type === "dm" || !message?.guild?.me) return true;
+  checkBotPermissions(message: Discord.Message, permission: bigint): boolean {
+    if (message.channel.type === "DM" || !message?.guild?.me) return true;
     const channelPermissions = message.channel.permissionsFor(message.guild.me);
     const memberPermissions = message.guild.me.permissionsIn(message.channel);
     const rolePermissions = message.channel.permissionsFor(message.guild.me.roles.highest);
@@ -273,7 +273,7 @@ export class Utilities {
    */
   successEmoji(message: Discord.Message, text: string): string {
     let emoji = "\u{2714}"; // Fallback
-    if (message?.channel?.type === "dm") return `${DiscordConfig.successEmoji || emoji} ${text}`;
+    if (message?.channel?.type === "DM") return `${DiscordConfig.successEmoji || emoji} ${text}`;
     const permission = Discord.Permissions.FLAGS.USE_EXTERNAL_EMOJIS;
     if (
       DiscordConfig.successEmoji &&
@@ -290,7 +290,7 @@ export class Utilities {
    */
   failureEmoji(message: Discord.Message, text: string): string {
     let emoji = "\u{274C}"; // Fallback
-    if (message?.channel?.type === "dm") return `${DiscordConfig.failureEmoji || emoji} ${text}`;
+    if (message?.channel?.type === "DM") return `${DiscordConfig.failureEmoji || emoji} ${text}`;
     const permission = Discord.Permissions.FLAGS.USE_EXTERNAL_EMOJIS;
     if (
       DiscordConfig.failureEmoji &&
@@ -305,7 +305,7 @@ export class Utilities {
    * @returns the database id, or unfined if one cannot be found
    */
   toDatabaseId(message: Discord.Message): string | undefined {
-    if (message.channel.type === "dm") {
+    if (message.channel.type === "DM") {
       return message.channel.id;
     } else {
       return message?.guild?.id;
@@ -322,7 +322,7 @@ export class Utilities {
   }
 
   parseChannelId(guild: Discord.Message | Discord.Guild, id: string | undefined):
-  Discord.GuildChannel | undefined {
+  Discord.GuildChannel | Discord.ThreadChannel | undefined {
     if (!id) return;
     // @ts-ignore
     if (guild.guild) guild = guild.guild; // Input is Message Type

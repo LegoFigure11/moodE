@@ -1,4 +1,4 @@
-import {Permissions} from "discord.js";
+import {Permissions, Util} from "discord.js";
 import type {ICommand} from "../../../types/commands";
 import * as dex from "@pkmn/dex";
 import {Generations} from "@pkmn/data";
@@ -45,13 +45,15 @@ module.exports = {
           } in Generation ${gen}${restriction ? ` (${restriction} restriction)` : ""}`
         ).catch(e => console.error(e));
       }
-      return message.channel.send(`All Pok\u{00e9}mon who can learn ${move.name} in Generation ${
-        gen
-      }${
-        restriction ? ` (${restriction} restriction)` : ""
-      }:\n\`\`\`${learnable.sort().join(", ")}\`\`\``, {
-        split: {char: ", ", prepend: "```", append: "```"},
-      }).catch(e => console.error(e));
+      for (const chunk of Util.splitMessage(
+        `All Pok\u{00e9}mon who can learn ${move.name} in Generation ${gen}${
+          restriction ? ` (${restriction} restriction)` : ""
+        }:\n\`\`\`${learnable.sort().join(", ")}\`\`\``,
+        {char: ", ", prepend: "```", append: "```"}
+      )) {
+        message.channel.send(chunk).catch(e => console.error(e));
+      }
+      return;
     }
 
     if (args[1]) {
@@ -129,11 +131,13 @@ module.exports = {
         for (const move of Dex.moves) {
           if (moves![move.id]) learnable.push(move.name);
         }
-        message.channel.send(
+        for (const chunk of Util.splitMessage(
           `Full learnset for ${specie.name} in Generation ${gen}:\n\`\`\`${
             learnable.sort().join(", ")
-          }\`\`\``, {split: {char: ", ", prepend: "```", append: "```"}}
-        ).catch(e => console.error(e));
+          }\`\`\``, {char: ", ", prepend: "```", append: "```"}
+        )) {
+          message.channel.send(chunk).catch(e => console.error(e));
+        }
       }).catch(e => console.error(e));
     }
   },

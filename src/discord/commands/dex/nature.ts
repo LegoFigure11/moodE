@@ -1,4 +1,4 @@
-import {Permissions, MessageEmbed} from "discord.js";
+import {Permissions, MessageEmbed, Formatters} from "discord.js";
 import type {ICommand} from "../../../types/commands";
 import type {ShortStatName} from "../../../types/dex";
 import {getAlias} from "../../../misc/dex-aliases";
@@ -97,15 +97,15 @@ module.exports = {
         )
         .setFooter(await Utilities.getFullVersionString());
 
-      message.channel.send({embed: embed}).catch(console.error);
+      message.channel.send({embeds: [embed]}).catch(console.error);
     } else {
       // Can't send embed, fall back to text only
-      return message.channel.send(
+      return message.channel.send(Formatters.codeBlock("xl",
         `${
           Utilities.generateDashes(`${nature.name} Nature`)
         }\n\nBoosts: ${Utilities.toStatName(nature.plus || "None")} (x1.1), Reduces: ${
-          Utilities.toStatName(nature.minus || "None")} (x0.9)`, {code: "XL"}
-      ).catch(e => console.error(e));
+          Utilities.toStatName(nature.minus || "None")
+        } (x0.9)`)).catch(e => console.error(e));
     }
   },
 } as ICommand;

@@ -14,7 +14,7 @@ module.exports = {
       const embed = new MessageEmbed()
         .setImage(url)
         .setFooter(url);
-      message.channel.send({embed: embed}).catch(e => console.error(e));
+      message.channel.send({embeds: [embed]}).catch(e => console.error(e));
     }).catch(e => {
       console.error(e);
       message.channel.send(
