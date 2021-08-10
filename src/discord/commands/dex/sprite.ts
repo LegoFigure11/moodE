@@ -76,18 +76,27 @@ module.exports = {
 
     args = args.map(a => Utilities.toId(a));
 
+    const afd = args.includes("afd");
+    const shiny = args.includes("shiny");
+    const female = (args.includes("f") || args.includes("female"));
+    const side = resolveSide(args);
     const sprite = Sprites.getPokemon(
       specie.name + (gmax ? "-gmax" : emax ? "-eternamax" : ""),
       {
         gen: resolveGenOptions(args),
-        side: resolveSide(args),
-        shiny: args.includes("shiny"),
-        gender: (args.includes("f") || args.includes("female")) ? "F" : "M",
+        side: side,
+        shiny: shiny,
+        gender: female ? "F" : "M",
       }
     );
+
     const embed = new MessageEmbed()
       .setTitle(`[Gen ${sprite.gen}] #${specie.num} - ${specie.name}`)
-      .setImage(sprite.url)
+      .setImage(afd
+        ? `https://play.pokemonshowdown.com/sprites/afd${
+          shiny ? "-shiny" : ""}${side === "p1" ? "-back" : ""}/${
+          sprite.url.split("/")[sprite.url.split("/").length - 1].replace("gif", "png")}`
+        : sprite.url)
       .setFooter(await Utilities.getFullVersionString());
     message.reply({embeds: [embed], allowedMentions: {repliedUser: false}}).catch(console.error);
   },
