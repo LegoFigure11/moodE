@@ -150,7 +150,7 @@ module.exports = {
                 }`
               }${gen === 8 ? "/" : ".shtml"})`,
             ].join(" | "),
-          ].join("")
+          ].join("\n")
         );
       message.reply({embeds: [embed], allowedMentions: {repliedUser: false}}).catch(console.error);
     } else {
