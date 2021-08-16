@@ -140,7 +140,7 @@ module.exports = {
                 Utilities.genToSmogonGenString(gen as dex.GenerationNum)
               }/pokemon/${(specie.name.split(" ").join("-")).toLowerCase()}/)`,
               `[Bulbapedia](https://bulbapedia.bulbagarden.net/wiki/${
-                specie.baseSpecies
+                specie.baseSpecies.replace(" ", "_")
               }_(Pok%C3%A9mon))`,
               `[Serebii](https://www.serebii.net/pokedex${
                 Utilities.genToSerebiiGenString(gen as dex.GenerationNum)

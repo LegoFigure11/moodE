@@ -112,6 +112,9 @@ export class TypoChecker {
       for (const move of Dex.moves) {
         list.add(move.id);
       }
+      for (const move of Gen7Dex.moves) {
+        list.add(move.id);
+      }
     }
     if (lists.includes("items") || all) {
       for (const item of Dex.items) {
