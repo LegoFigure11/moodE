@@ -22,6 +22,7 @@ export const Aliases: KeyedDict<string, string> = {
   // Memes
   "boob": "rowlet",
   "god": "bidoof",
+  "rat": "rattata",
 
   // Dex Numbers
   "360": "wynaut",
