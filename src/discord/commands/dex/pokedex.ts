@@ -146,7 +146,9 @@ module.exports = {
                 Utilities.genToSerebiiGenString(gen as dex.GenerationNum)
               }/${
                 `${
-                  gen === 8 ? specie.baseSpecies.toLowerCase() : `${specie.num}`.padStart(3, "0")
+                  gen === 8
+                    ? specie.baseSpecies.toLowerCase().replace(" ", "")
+                    : `${specie.num}`.padStart(3, "0")
                 }`
               }${gen === 8 ? "/" : ".shtml"})`,
             ].join(" | "),
