@@ -1,4 +1,4 @@
-import {Permissions, MessageEmbed, TextChannel, Message} from "discord.js";
+import {Permissions, TextChannel, Message} from "discord.js";
 import type {IEvent} from "../../../types/events";
 
 module.exports = {
