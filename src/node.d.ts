@@ -4,6 +4,7 @@ declare namespace NodeJS {
     __commandsLoaded: boolean;
     __guildMemberAddHandlerLoaded: boolean;
     __guildMemberRemoveHandlerLoaded: boolean;
+    __messageCreateHandlerLoaded: boolean;
     __messageDeleteHandlerLoaded: boolean;
     __messageUpdateHandlerLoaded: boolean;
     __messageReactionAddHandlerLoaded: boolean;
@@ -20,6 +21,7 @@ declare namespace NodeJS {
     GuildMemberRemoveHandler: import(
       "./discord/handlers/guildMemberRemoveHandler"
     ).GuildMemberRemoveHandler;
+    MessageCreateHandler: import("./discord/handlers/messageCreateHandler").MessageCreateHandler;
     MessageDeleteHandler: import("./discord/handlers/messageDeleteHandler").MessageDeleteHandler;
     MessageUpdateHandler: import("./discord/handlers/messageUpdateHandler").MessageUpdateHandler;
     MessageReactionAddHandler: import(

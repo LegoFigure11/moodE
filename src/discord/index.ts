@@ -28,6 +28,7 @@ ReadyChecker.on("loaded", () => {
     __clientReady &&
     __guildMemberAddHandlerLoaded &&
     __guildMemberRemoveHandlerLoaded &&
+    __messageCreateHandlerLoaded &&
     __messageDeleteHandlerLoaded &&
     __messageUpdateHandlerLoaded &&
     __messageReactionAddHandlerLoaded &&
@@ -67,25 +68,31 @@ client.on("messageCreate", (m) => void (async (message: Discord.Message) => {
       }
     }
 
-    const prefix =
+    message = await MessageCreateHandler.executeEvents(
+      message
+    ).catch(console.error) as unknown as Discord.Message;
+
+    if (message && !message.deleted) {
+      const prefix =
       Storage.getDatabase(Utilities.toDatabaseId(message))?.prefix || DiscordConfig.prefix!;
-    message.content = message.content.trim();
-    const u = client.user!.toString().replace("<@!", "<@");
-    const startsWithBotTag =
+      message.content = message.content.trim();
+      const u = client.user!.toString().replace("<@!", "<@");
+      const startsWithBotTag =
       message.content.replace("<@!", "<@").startsWith(u);
-    if (message.content.startsWith(prefix) || startsWithBotTag) {
-      if (startsWithBotTag) message.content = message.content.replace("<@!", "<@");
-      const firstPart = startsWithBotTag ? u : prefix;
-      // We also want messages that start with the prefix and a space to register as commands
-      const spacer = message.content.replace(firstPart, "").startsWith(" ") ? " " : "";
-      const commandName = message.content.replace(`${firstPart}${spacer}`, "").split(" ")[0];
-      const args =
+      if (message.content.startsWith(prefix) || startsWithBotTag) {
+        if (startsWithBotTag) message.content = message.content.replace("<@!", "<@");
+        const firstPart = startsWithBotTag ? u : prefix;
+        // We also want messages that start with the prefix and a space to register as commands
+        const spacer = message.content.replace(firstPart, "").startsWith(" ") ? " " : "";
+        const commandName = message.content.replace(`${firstPart}${spacer}`, "").split(" ")[0];
+        const args =
         message.content.replace(`${firstPart}${spacer}${commandName}`, "").split(",").map(
           arg => arg.trim()
         );
 
-      // Looks like we finally have everything in order. Lets run the command!
-      CommandHandler.executeCommand(Utilities.toId(commandName), message, args);
+        // Looks like we finally have everything in order. Lets run the command!
+        CommandHandler.executeCommand(Utilities.toId(commandName), message, args);
+      }
     }
   }
 })(m));

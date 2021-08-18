@@ -434,7 +434,9 @@ export class Utilities {
    * If no timestamp is provided, uses the current time
    */
   date(timestamp?: number): DateMention {
-    return `<t:${timestamp || ~~(Date.now() / 1000)}>` as DateMention;
+    return `<t:${
+      timestamp ? ~~(+new Date(timestamp) / 1000) : ~~(Date.now() / 1000)
+    }>` as DateMention;
   }
 
   random(max: number | null) {
