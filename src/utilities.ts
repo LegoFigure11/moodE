@@ -428,6 +428,14 @@ export class Utilities {
     return `${interval} ${intervalType} ago`;
   }
 
+  /**
+   * Gets the current time in Discord Markdown format
+   * @returns "<t:CURRENT_UNIX_TIMESTAMP>"
+   */
+  date(): string {
+    return `<t:${~~(Date.now() / 1000)}>`;
+  }
+
   random(max: number | null) {
     if (!max) max = 2;
     return Math.floor(Math.random() * max);
