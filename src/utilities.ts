@@ -8,6 +8,7 @@ import {exec} from "child_process";
 import * as Discord from "discord.js";
 
 import type {BoostID, BoostsTable, Move, Species, GenerationNum} from "@pkmn/dex-types";
+import type {DateMention} from "./types/utilities";
 
 const sh = util.promisify(exec);
 
@@ -429,11 +430,11 @@ export class Utilities {
   }
 
   /**
-   * Gets the current time in Discord Markdown format
-   * @returns "<t:CURRENT_UNIX_TIMESTAMP>"
+   * Converts a timestamp to Discord Markdown format
+   * If no timestamp is provided, uses the current time
    */
-  date(): string {
-    return `<t:${~~(Date.now() / 1000)}>`;
+  date(timestamp?: number): DateMention {
+    return `<t:${timestamp || ~~(Date.now() / 1000)}>` as DateMention;
   }
 
   random(max: number | null) {
