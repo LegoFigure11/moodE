@@ -93,6 +93,10 @@ export function getAlias(args?: string, lists: Partial<typoCheckerListType>[] = 
   arg = new TypoChecker().getClosestMatch(arg, ...lists);
   const match = Aliases[arg];
   return {
-    id: match?.id || old, gmax: gmax, emax: emax, shiny: !!match?.shiny, female: !!match?.female,
+    id: match?.id || arg || old,
+    gmax: gmax,
+    emax: emax,
+    shiny: !!match?.shiny,
+    female: !!match?.female,
   };
 }
