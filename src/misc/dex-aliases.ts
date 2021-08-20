@@ -1,94 +1,86 @@
 import type {typoCheckerListType} from "../types/typo-checker";
 import {TypoChecker} from "./typo-checker";
 
-export const Aliases: KeyedDict<string, string> = {
+export const Aliases: KeyedDict<string, {id: string; shiny?: boolean; female?: boolean}> = {
   // Cool people
-  "adam": "slakoth",
-  "anubis": "corviknight",
-  "archie": "jirachi",
-  "bluecake": "scorbunny",
-  "juanjo": "falinks",
-  "lego": "eldegoss",
-  "mica": "shaymin",
-  "onion": "eldegoss",
-  "psychicj": "gardevoir",
-  "saiph": "gengar",
-  "taylor": "nidoking",
-  "thexreturns": "garchomp",
-  "tora": "luxray",
-  "xen": "qwilfish",
-  "x": "gible",
+  "adam": {id: "slakoth"},
+  "anubis": {id: "corviknight"},
+  "archie": {id: "jirachi"},
+  "bluecake": {id: "scorbunny"},
+  "juanjo": {id: "falinks", shiny: true},
+  "lego": {id: "eldegoss"},
+  "mica": {id: "shaymin"},
+  "onion": {id: "eldegoss", shiny: true},
+  "psychicj": {id: "gardevoir"},
+  "saiph": {id: "gengar", shiny: true},
+  "taylor": {id: "nidoking", shiny: true},
+  "thexreturns": {id: "garchomp"},
+  "tora": {id: "luxray", female: true},
+  "xen": {id: "qwilfish"},
+  "x": {id: "gible"},
 
   // Memes
-  "boob": "rowlet",
-  "god": "bidoof",
-  "rat": "rattata",
+  "boob": {id: "rowlet"},
+  "god": {id: "bidoof"},
+  "rat": {id: "rattata"},
 
   // Dex Numbers
-  "360": "wynaut",
+  "360": {id: "wynaut"},
 
   // Foreign Names
-  "boober": "magmar",
+  "boober": {id: "magmar"},
 
   // Megas
-  "venusaur-m": "venusaur-mega",
-  "charizard-x": "charizard-mega-x",
-  "charizard-y": "charizard-mega-y",
-  "blastoise-m": "blastoise-mega",
-  "alakazam-m": "alaazam-mega",
-  "gengar-m": "gengar-mega",
-  "kangaskhan-m": "kangaskhan-mega",
-  "pinsir-m": "pinsir-mega",
-  "gyarados-m": "gyarados-mega",
-  "aerodactyl-m": "aerodactyl-mega",
-  "mewtwo-x": "mewtwo-mega-x",
-  "mewtwo-y": "mewtwo-mega-y",
-  "ampharos-m": "ampharos-mega",
-  "scizor-m": "scizor-mega",
-  "heracross-m": "heracross-mega",
-  "houndoom-m": "houndoom-mega",
-  "tyranitar-m": "tyranitar-mega",
-  "blaziken-m": "blaziken-mega",
-  "gardevoir-m": "gardevoir-mega",
-  "mawile-m": "mawile-mega",
-  "aggron-m": "aggron-mega",
-  "medicham-m": "medicham-mega",
-  "manectric-m": "manectric-mega",
-  "banette-m": "banette-mega",
-  "latias-m": "latias-mega",
-  "latios-m": "latios-mega",
-  "garchomp-m": "garchomp-mega",
-  "lucario-m": "lucario-mega",
-  "beedrill-m": "beedrill-mega",
-  "pidgeot-m": "pidgeot-mega",
-  "slowbro-m": "slowbro-mega",
-  "steelix-m": "steelix-mega",
-  "sceptile-m": "sceptile-mega",
-  "swampert-m": "swampert-mega",
-  "sableye-m": "sableye-mega",
-  "sharpedo-m": "sharpedo-mega",
-  "camerupt-m": "camerupt-mega",
-  "altaria-m": "altaria-mega",
-  "glalie-m": "glalie-mega",
-  "salamence-m": "salamence-mega",
-  "metagross-m": "metagross-mega",
-  "lopunny-m": "lopunny-mega",
-  "gallade-m": "gallade-mega",
-  "audino-m": "audino-mega",
-  "diancie-m": "diancie-mega",
+  "venusaur-m": {id: "venusaur-mega"},
+  "charizard-x": {id: "charizard-mega-x"},
+  "charizard-y": {id: "charizard-mega-y"},
+  "blastoise-m": {id: "blastoise-mega"},
+  "alakazam-m": {id: "alaazam-mega"},
+  "gengar-m": {id: "gengar-mega"},
+  "kangaskhan-m": {id: "kangaskhan-mega"},
+  "pinsir-m": {id: "pinsir-mega"},
+  "gyarados-m": {id: "gyarados-mega"},
+  "aerodactyl-m": {id: "aerodactyl-mega"},
+  "mewtwo-x": {id: "mewtwo-mega-x"},
+  "mewtwo-y": {id: "mewtwo-mega-y"},
+  "ampharos-m": {id: "ampharos-mega"},
+  "scizor-m": {id: "scizor-mega"},
+  "heracross-m": {id: "heracross-mega"},
+  "houndoom-m": {id: "houndoom-mega"},
+  "tyranitar-m": {id: "tyranitar-mega"},
+  "blaziken-m": {id: "blaziken-mega"},
+  "gardevoir-m": {id: "gardevoir-mega"},
+  "mawile-m": {id: "mawile-mega"},
+  "aggron-m": {id: "aggron-mega"},
+  "medicham-m": {id: "medicham-mega"},
+  "manectric-m": {id: "manectric-mega"},
+  "banette-m": {id: "banette-mega"},
+  "latias-m": {id: "latias-mega"},
+  "latios-m": {id: "latios-mega"},
+  "garchomp-m": {id: "garchomp-mega"},
+  "lucario-m": {id: "lucario-mega"},
+  "beedrill-m": {id: "beedrill-mega"},
+  "pidgeot-m": {id: "pidgeot-mega"},
+  "slowbro-m": {id: "slowbro-mega"},
+  "steelix-m": {id: "steelix-mega"},
+  "sceptile-m": {id: "sceptile-mega"},
+  "swampert-m": {id: "swampert-mega"},
+  "sableye-m": {id: "sableye-mega"},
+  "sharpedo-m": {id: "sharpedo-mega"},
+  "camerupt-m": {id: "camerupt-mega"},
+  "altaria-m": {id: "altaria-mega"},
+  "glalie-m": {id: "glalie-mega"},
+  "salamence-m": {id: "salamence-mega"},
+  "metagross-m": {id: "metagross-mega"},
+  "lopunny-m": {id: "lopunny-mega"},
+  "gallade-m": {id: "gallade-mega"},
+  "audino-m": {id: "audino-mega"},
+  "diancie-m": {id: "diancie-mega"},
 
   // Other
-  "gibbu": "gible",
-  "valentina": "lopunny",
-  "toothless": "charizard",
-};
-
-export const Options: KeyedDict<string, {shiny?: boolean; female?: boolean}> = {
-  "juanjo": {shiny: true},
-  "onion": {shiny: true},
-  "toothless": {shiny: true, female: true},
-  "tora": {female: true},
-  "valentina": {shiny: true, female: true},
+  "gibbu": {id: "gible"},
+  "toothless": {id: "charizard", shiny: true},
+  "valentina": {id: "lopunny", shiny: true, female: true},
 };
 
 export function getAlias(args?: string, lists: Partial<typoCheckerListType>[] = ["all"]):
@@ -99,8 +91,8 @@ export function getAlias(args?: string, lists: Partial<typoCheckerListType>[] = 
   arg = arg.replace(/-gmax|-gigantamax|-emax|-eternamax/, "");
   const old = arg;
   arg = new TypoChecker().getClosestMatch(arg, ...lists);
-  const shiny = !!Options[arg]?.shiny;
-  const female = !!Options[arg]?.female;
-  if (Aliases[arg]) return {id: Aliases[arg], gmax: gmax, emax: emax, shiny: shiny, female: female};
-  return {id: arg || old, gmax: gmax, emax: emax, shiny: shiny, female: female};
+  const match = Aliases[arg];
+  return {
+    id: match?.id || old, gmax: gmax, emax: emax, shiny: !!match?.shiny, female: !!match?.female,
+  };
 }
