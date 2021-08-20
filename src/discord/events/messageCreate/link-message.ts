@@ -1,5 +1,7 @@
-import {Permissions, TextChannel, Message} from "discord.js";
+import {Permissions, TextChannel, Message, MessageAttachment} from "discord.js";
 import type {IEvent} from "../../../types/events";
+
+const MAX_SIZE = 8388608;
 
 module.exports = {
   priority: 1,
@@ -33,15 +35,38 @@ module.exports = {
             content.push(line);
           }
 
+          const attachments: MessageAttachment[] = [];
+          let size = 0;
+          let large = 0;
+          for (const attachment of msg.attachments) {
+            const s = attachment[1].size;
+            console.log(s);
+            if (size + s < MAX_SIZE) {
+              size += s;
+              attachments.push(new MessageAttachment(attachment[1].attachment));
+            } else {
+              large++;
+            }
+          }
+
+          const attachmentText = attachments.length > 0 || large > 0 ? ` (with ${
+            attachments.length + large
+          } attachment(s)${
+            large > 0 ? `, ${large} too big to attach` : ""})` : "";
+
           const cont = Utilities.clean(
-            `Message from ${author} at ${date} in ${chan}:\n>>> ${content.join("\n")}`
+            `Message from ${author} at ${date} in ${chan}${attachmentText}:\n >>> ${
+              content.join("\n").length ? content.join("\n") : "(No content)"
+            }`
           );
 
-          message.channel.send(cont).then(m => {
+          message.channel.send({content: cont, files: attachments}).then(m => {
             m.edit(cont.replace(
               new RegExp(String.fromCharCode(8203), "g"), ""
             )).catch(console.error);
           }).catch(console.error);
+
+          // TODO: Edit out all mentions and replace them with the @ text between ``
 
           return message;
         }).catch(console.error);
