@@ -16,6 +16,7 @@ export const Aliases: KeyedDict<string, {id: string; shiny?: boolean; female?: b
   "taylor": {id: "nidoking", shiny: true},
   "thexreturns": {id: "garchomp"},
   "tora": {id: "luxray", female: true},
+  "totes": {id: "totodile"},
   "xen": {id: "qwilfish"},
   "x": {id: "gible"},
 
