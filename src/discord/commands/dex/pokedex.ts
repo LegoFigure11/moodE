@@ -17,7 +17,7 @@ module.exports = {
     const gens = new Generations(dex.Dex);
     const Dex = gens.get(gen as dex.GenerationNum);
 
-    args[0] = getAlias(args[0], ["pokemon"])[0];
+    args[0] = getAlias(args[0], ["pokemon"]).id;
     let specie = Dex.species.get(args[0]);
 
     if (!specie?.exists) {

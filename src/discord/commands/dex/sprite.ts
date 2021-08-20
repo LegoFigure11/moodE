@@ -52,8 +52,11 @@ module.exports = {
   async command(message, args) {
     const gens = new Generations(dex.Dex);
     const Dex = gens.get(8);
-    let gmax, emax;
-    [args[0], gmax, emax] = getAlias(args[0], ["pokemon"]);
+    const temp = getAlias(args[0], ["pokemon"]);
+    args[0] = temp.id;
+    const gmax = temp.gmax;
+    const emax = temp.emax;
+    let shiny = temp.shiny;
     let specie = Dex.species.get(args[0]);
 
     if (!specie?.exists) {
@@ -77,7 +80,7 @@ module.exports = {
     args = args.map(a => Utilities.toId(a));
 
     const afd = args.includes("afd");
-    const shiny = args.includes("shiny");
+    shiny = shiny || args.includes("shiny");
     const female = (args.includes("f") || args.includes("female"));
     const side = resolveSide(args);
     const sprite = Sprites.getPokemon(

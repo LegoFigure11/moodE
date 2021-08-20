@@ -80,16 +80,24 @@ export const Aliases: KeyedDict<string, string> = {
   // Other
   "gibbu": "gible",
   "valentina": "lopunny",
+  "toothless": "charizard",
+};
+
+export const Options: KeyedDict<string, {shiny?: boolean}> = {
+  "onion": {shiny: true},
+  "toothless": {shiny: true},
+  "valentina": {shiny: true},
 };
 
 export function getAlias(args?: string, lists: Partial<typoCheckerListType>[] = ["all"]):
-[id: string, gmax: boolean, emax: boolean] {
+{id: string; gmax: boolean; emax: boolean; shiny: boolean} {
   let arg = Utilities.toId(args);
   const gmax = arg.includes("-gmax") || arg.includes("-gigantamax");
   const emax = arg.includes("-emax") || arg.includes("-eternamax");
   arg = arg.replace(/-gmax|-gigantamax|-emax|-eternamax/, "");
   const old = arg;
   arg = new TypoChecker().getClosestMatch(arg, ...lists);
-  if (Aliases[arg]) return [Aliases[arg], gmax, emax];
-  return [arg || old, gmax, emax];
+  const shiny = !!Options[arg]?.shiny;
+  if (Aliases[arg]) return {id: Aliases[arg], gmax: gmax, emax: emax, shiny: shiny};
+  return {id: arg || old, gmax: gmax, emax: emax, shiny: shiny};
 }

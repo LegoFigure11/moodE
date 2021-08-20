@@ -16,7 +16,7 @@ module.exports = {
     const gens = new Generations(dex.Dex);
     const Dex = gens.get(gen as dex.GenerationNum);
 
-    args[0] = getAlias(args[0], ["abilities"])[0];
+    args[0] = getAlias(args[0], ["abilities"]).id;
     let ability = Dex.abilities.get(args[0]);
 
     if (!ability?.exists) {
