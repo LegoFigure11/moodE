@@ -57,6 +57,7 @@ module.exports = {
     const gmax = temp.gmax;
     const emax = temp.emax;
     let shiny = temp.shiny;
+    let female = temp.female;
     let specie = Dex.species.get(args[0]);
 
     if (!specie?.exists) {
@@ -81,7 +82,7 @@ module.exports = {
 
     const afd = args.includes("afd");
     shiny = shiny || args.includes("shiny");
-    const female = (args.includes("f") || args.includes("female"));
+    female = female || (args.includes("f") || args.includes("female"));
     const side = resolveSide(args);
     const sprite = Sprites.getPokemon(
       specie.name + (gmax ? "-gmax" : emax ? "-eternamax" : ""),

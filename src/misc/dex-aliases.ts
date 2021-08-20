@@ -83,14 +83,16 @@ export const Aliases: KeyedDict<string, string> = {
   "toothless": "charizard",
 };
 
-export const Options: KeyedDict<string, {shiny?: boolean}> = {
+export const Options: KeyedDict<string, {shiny?: boolean; female?: boolean}> = {
+  "juanjo": {shiny: true},
   "onion": {shiny: true},
-  "toothless": {shiny: true},
-  "valentina": {shiny: true},
+  "toothless": {shiny: true, female: true},
+  "tora": {female: true},
+  "valentina": {shiny: true, female: true},
 };
 
 export function getAlias(args?: string, lists: Partial<typoCheckerListType>[] = ["all"]):
-{id: string; gmax: boolean; emax: boolean; shiny: boolean} {
+{id: string; gmax: boolean; emax: boolean; shiny: boolean; female: boolean} {
   let arg = Utilities.toId(args);
   const gmax = arg.includes("-gmax") || arg.includes("-gigantamax");
   const emax = arg.includes("-emax") || arg.includes("-eternamax");
@@ -98,6 +100,7 @@ export function getAlias(args?: string, lists: Partial<typoCheckerListType>[] = 
   const old = arg;
   arg = new TypoChecker().getClosestMatch(arg, ...lists);
   const shiny = !!Options[arg]?.shiny;
-  if (Aliases[arg]) return {id: Aliases[arg], gmax: gmax, emax: emax, shiny: shiny};
-  return {id: arg || old, gmax: gmax, emax: emax, shiny: shiny};
+  const female = !!Options[arg]?.female;
+  if (Aliases[arg]) return {id: Aliases[arg], gmax: gmax, emax: emax, shiny: shiny, female: female};
+  return {id: arg || old, gmax: gmax, emax: emax, shiny: shiny, female: female};
 }
