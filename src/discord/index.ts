@@ -8,6 +8,7 @@ const client: Discord.Client = new Discord.Client({
     Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS, Intents.FLAGS.GUILD_INVITES,
     Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
     Intents.FLAGS.DIRECT_MESSAGES, Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
+    Intents.FLAGS.GUILD_MEMBERS,
   ],
   partials: ["MESSAGE", "CHANNEL", "REACTION", "GUILD_MEMBER"],
 });
