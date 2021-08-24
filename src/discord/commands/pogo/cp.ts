@@ -9,6 +9,9 @@ enum LEVEL_MODIFIERS {
   TWENTY = 0.59740001,
   TWENTYFIVE = 0.667934,
   FORTY = 0.79030001,
+  FORTYONE = 0.79530001,
+  FIFTY = 0.84029999,
+  FIFTYONE = 0.84529999,
 }
 
 module.exports = {
@@ -60,10 +63,24 @@ module.exports = {
         content: Formatters.codeBlock(
           "XL",
           `${Utilities.generateDashes(`${specie.name} - ATK: ${atk} | DEF: ${def} | STA: ${hp}`)}
-Lv. 15: ${maxCP(atk, def, hp, LEVEL_MODIFIERS.FIFTEEN)}
-Lv. 20: ${maxCP(atk, def, hp, LEVEL_MODIFIERS.TWENTY)}
-Lv. 25: ${maxCP(atk, def, hp, LEVEL_MODIFIERS.TWENTYFIVE)}
-Lv. 40: ${maxCP(atk, def, hp, LEVEL_MODIFIERS.FORTY)}`
+Lv. 15: ${
+  maxCP(atk, 10, def, 10, hp, 10, LEVEL_MODIFIERS.FIFTEEN)
+} - ${
+  maxCP(atk, 15, def, 15, hp, 15, LEVEL_MODIFIERS.FIFTEEN)
+}
+Lv. 20: ${
+  maxCP(atk, 10, def, 10, hp, 10, LEVEL_MODIFIERS.TWENTY)
+} - ${maxCP(atk, 15, def, 15, hp, 15, LEVEL_MODIFIERS.TWENTY)
+}
+Lv. 25: ${
+  maxCP(atk, 10, def, 10, hp, 10, LEVEL_MODIFIERS.TWENTYFIVE)
+} - ${
+  maxCP(atk, 15, def, 15, hp, 15, LEVEL_MODIFIERS.TWENTYFIVE)
+}
+Lv. 40: ${maxCP(atk, 15, def, 15, hp, 15, LEVEL_MODIFIERS.FORTY)}
+Lv. 41: ${maxCP(atk, 15, def, 15, hp, 15, LEVEL_MODIFIERS.FORTYONE)}
+Lv. 50: ${maxCP(atk, 15, def, 15, hp, 15, LEVEL_MODIFIERS.FIFTY)}
+Lv. 51: ${maxCP(atk, 15, def, 15, hp, 15, LEVEL_MODIFIERS.FIFTYONE)}`
         ),
         allowedMentions: {repliedUser: false},
       }
@@ -91,12 +108,14 @@ function defFormula(a: number, b: number, speed: number): number {
   );
 }
 
-function maxCP(atk: number, def: number, hp: number, mult: number): number {
+function maxCP(
+  atk: number, ativ: number, def: number, dfiv: number, hp: number, hpiv: number, mult: number
+): number {
   return Math.max(
     10,
     Math.floor(
       (
-        (atk + 15) * Math.sqrt(def + 15) * Math.sqrt(hp + 15) * Math.pow(mult, 2)
+        (atk + ativ) * Math.sqrt(def + dfiv) * Math.sqrt(hp + hpiv) * Math.pow(mult, 2)
       ) / 10
     )
   );
