@@ -54,7 +54,7 @@ module.exports = {
 
     const [batk, bdef, bhp] = calcPogoBaseStats(specie.baseStats);
     let [atk, def, hp] = [batk, bdef, bhp];
-    const cp = maxCP(atk, def, hp, LEVEL_MODIFIERS.FORTY);
+    const cp = maxCP(atk, 15, def, 15, hp, 15, LEVEL_MODIFIERS.FORTY);
     if (cp > 4000) {
       [atk, def, hp] = calcPogoBaseStats(specie.baseStats, true);
     }
