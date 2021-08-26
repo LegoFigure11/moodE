@@ -7,6 +7,7 @@ export const Aliases: KeyedDict<string, {id: string; shiny?: boolean; female?: b
   "anubis": {id: "corviknight"},
   "archie": {id: "jirachi"},
   "bluecake": {id: "scorbunny"},
+  "eep": {id: "ferrothorn"},
   "juanjo": {id: "falinks", shiny: true},
   "lego": {id: "eldegoss"},
   "mica": {id: "shaymin"},
