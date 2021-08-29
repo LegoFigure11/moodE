@@ -4,6 +4,7 @@ import {EventEmitter} from "events";
 
 import * as utilities from "./utilities";
 import * as storage from "./storage";
+import * as lcrng from "./misc/lcrng";
 import * as discordConfig from "./discord/config-example";
 import * as commandHandler from "./discord/handlers/commandHandler";
 import * as guildMemberAddHandler from "./discord/handlers/guildMemberAddHandler";
@@ -51,6 +52,8 @@ module.exports = (): void => {
   global.__clientReady = false;
 
   utilities.instantiate();
+  lcrng.instantiate();
+  global.RNG = new lcrng.PokeRNG();
   global.DiscordConfig = discordConfig;
   global.__listen = false;
   void storage.instantiate();

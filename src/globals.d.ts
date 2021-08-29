@@ -1,6 +1,8 @@
 import type {EventEmitter as eventEmitterType} from "events";
 import type {Storage as storageType} from "./storage";
 import type {Utilities as utilitiesType} from "./utilities";
+import type {LCRNG as lcrngType} from "./misc/lcrng";
+import type * as lcrng from "./misc/lcrng";
 import type * as discordConfig from "./discord/config-example";
 import type {CommandHandler as commandHandlerType} from "./discord/handlers/commandHandler";
 import type {GuildMemberAddHandler as guildMemberAddHandlerType}
@@ -44,6 +46,8 @@ declare global {
   var DiscordConfig: Partial<typeof discordConfig>;
   var Storage: storageType;
   var Utilities: utilitiesType;
+  var LCRNG: lcrngType;
+  var RNG: lcrng.PokeRNG;
   var ReadyChecker: eventEmitterType;
 }
 /* eslint-enable no-var */
