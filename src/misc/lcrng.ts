@@ -11,28 +11,55 @@ export class LCRNG {
     this.lo = this.low();
   }
 
+  /**
+  * Gets the value of the current LCRNG state
+  * @returns unsigned 32-bit integer
+  */
   getseed(): number {
     return this.seed;
   }
 
+  /**
+  * Sets the current value of the LCRNG
+  * @param seed the value to set the LCRNG to
+  */
   reseed(seed: number): void {
     this.seed = seed;
     this.hi = this.high();
     this.lo = this.low();
   }
 
+  /**
+  * Converts an integer to a uint32
+  * @param int the number to convert
+  * @returns the number as uint32
+  */
   unsign(int: number): number {
     return (int >>> 1) * 2 + (int & 1);
   }
 
+  /**
+  * Gets the highest 16 bits of a 32-bit integer
+  * @param int
+  * @returns the high 16-bits of int
+  */
   high(int = this.seed): number {
     return this.unsign(int & 0xFFFF0000);
   }
 
+  /**
+  * Gets the lowest 16 bits of a 32-bit integer
+  * @param int
+  * @returns the low 16-bits of int
+  */
   low(int = this.seed): number {
     return this.unsign(int & 0xFFFF);
   }
 
+  /**
+  * Gets the value of the next 32-bit LCRNG state
+  * @returns 32-bit RNG state
+  */
   next(): number {
     let seed = this.unsign(Math.imul(this.seed, this.mult));
     seed = this.unsign(seed + this.add);
@@ -43,6 +70,11 @@ export class LCRNG {
     return seed;
   }
 
+  /**
+  * Advances the LCRNG
+  * @param states the number of states to advance
+  * @returns the 32-bit RNG state after the advancements
+  */
   advance(states = 1): number {
     for (let i = 0; i < states; i++) {
       this.next();
@@ -50,6 +82,9 @@ export class LCRNG {
     return this.seed;
   }
 
+  /**
+  * Gets the highest 16 bits of the next 32-bit RNG state
+  */
   next16bit(): number {
     return this.next() >>> 16;
   }

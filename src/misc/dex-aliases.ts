@@ -4,6 +4,7 @@ import {TypoChecker} from "./typo-checker";
 export const Aliases: KeyedDict<string, {id: string; shiny?: boolean; female?: boolean}> = {
   // Cool people
   "adam": {id: "slakoth"},
+  "andrew": {id: "zigzagoon", shiny: true},
   "anubis": {id: "corviknight"},
   "archie": {id: "jirachi"},
   "bluecake": {id: "scorbunny"},
