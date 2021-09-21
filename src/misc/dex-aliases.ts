@@ -80,6 +80,10 @@ export const Aliases: KeyedDict<string, {id: string; shiny?: boolean; female?: b
   "audino-m": {id: "audino-mega"},
   "diancie-m": {id: "diancie-mega"},
 
+  // Forms
+  "necrozma-dm": {id: "necrozma-dusk-mane"},
+  "necrozma-dw": {id: "necrozma-dawn-wings"},
+
   // Other
   "gibbu": {id: "gible"},
   "toothless": {id: "charizard", shiny: true},
