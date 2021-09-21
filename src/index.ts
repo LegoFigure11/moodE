@@ -52,8 +52,9 @@ module.exports = (): void => {
   global.__clientReady = false;
 
   utilities.instantiate();
-  lcrng.instantiate();
-  global.RNG = new lcrng.PokeRNG();
+  global.RNG = new lcrng.PokeRNG(); // Already initialized
+  RNG.reseed(Utilities.random(0xFFFFFFFF)); // Randomly seed
+
   global.DiscordConfig = discordConfig;
   global.__listen = false;
   void storage.instantiate();
