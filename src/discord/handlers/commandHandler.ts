@@ -208,7 +208,7 @@ export class CommandHandler {
           message,
           `\`The command crashed!\`` +
           `Your error has been logged and a fix will (hopefully) be on its way soon. \`\`\`xl\n${
-            Utilities.clean(e.stack)
+            Utilities.clean((e as any).stack)
           }\n\`\`\``
         )
       ).catch(err => console.error(err));

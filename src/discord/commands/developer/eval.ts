@@ -33,7 +33,7 @@ module.exports = {
       }
     } catch (e) {
       message.channel.send(
-        `\`ERROR\`\n ${Formatters.codeBlock("xl", Utilities.clean(e.stack))}`
+        `\`ERROR\`\n ${Formatters.codeBlock("xl", Utilities.clean((e as any).stack))}`
       ).catch(console.error);
     }
   },
