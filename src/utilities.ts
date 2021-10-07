@@ -340,8 +340,8 @@ export class Utilities {
   }
 
   async parseUserId(message: Discord.Message, id: string | undefined):
-  Promise<Discord.User | null | undefined | void> {
-    if (!id) return null;
+  Promise<Discord.User | undefined | void> {
+    if (!id) return;
     id = id.trim();
     let user: Discord.User | undefined | null | void;
     id = Discord.MessageMentions.USERS_PATTERN.exec(id)?.[1] || id;
@@ -350,6 +350,23 @@ export class Utilities {
       user = await message.client.users.fetch(id.replace(/[^0-9]/g, "")).catch(console.error);
     }
     return user;
+  }
+
+  parseRoleId(guild: Discord.Message | Discord.Guild, id: string | undefined):
+  Discord.Role | undefined | void {
+    if (!id) return;
+    // @ts-ignore
+    if (guild.guild) guild = guild.guild; // Input is Message Type
+    id = id.trim();
+    let role: Discord.Role | undefined | null | void;
+    id = Discord.MessageMentions.ROLES_PATTERN.exec(id)?.[1] || id;
+    role = (guild as Discord.Guild).roles.cache.get(id);
+    if (!role) {
+      role = (guild as Discord.Guild).roles.cache.find(
+        r => this.toId(r.name) === this.toId(id)
+      );
+    }
+    return role;
   }
 
   joinList(
