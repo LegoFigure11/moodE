@@ -4,6 +4,7 @@
 /node_modules/*
 /src/discord/config-example.ts
 /src/discord/commands/private/*
+/src/discord/events/guildMemberAdd/auto-join-role-private.ts
 /src/discord/events/messageCreate/swf-new-user-filter.ts
 
 /databases/*

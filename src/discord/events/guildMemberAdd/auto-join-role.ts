@@ -3,6 +3,7 @@ import type {IGuildMemberAddRemoveEvent} from "../../../types/events";
 
 module.exports = {
   priority: 50,
+  disabled: true,
   async process(member): Promise<GuildMember> {
     if (!member.guild) return member;
     const db = Storage.getDatabase(member.guild.id);
