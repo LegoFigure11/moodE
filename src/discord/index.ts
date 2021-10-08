@@ -2,7 +2,7 @@ import * as Discord from "discord.js";
 import * as colors from "colors/safe";
 import {Intents} from "discord.js";
 
-const client: Discord.Client = new Discord.Client({
+global.client = new Discord.Client({
   intents: [
     Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_BANS,
     Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS, Intents.FLAGS.GUILD_INVITES,

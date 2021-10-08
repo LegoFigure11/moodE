@@ -13,6 +13,7 @@ declare namespace NodeJS {
     __listen: boolean;
     __reloadInProgress: boolean;
     __reloadModules: (message: import("discord.js").Message, args: string[]) => Promise<void>;
+    client: import("discord.js").Client;
     CommandHandler: import("./discord/handlers/commandHandler").CommandHandler;
     LCRNG: import("./misc/lcrng").LCRNG;
     RNG: import("./misc/lcrng").PokeRNG;

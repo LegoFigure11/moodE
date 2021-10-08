@@ -35,6 +35,7 @@ declare global {
   var __production: boolean;
   var __reloadInProgress: boolean;
   var __reloadModules: (message: import("discord.js").Message, args: string[]) => Promise<void>;
+  var client: import("discord.js").Client;
   var CommandHandler: commandHandlerType;
   var GuildMemberAddHandler: guildMemberAddHandlerType;
   var GuildMemberRemoveHandler: guildMemberRemoveHandlerType;
