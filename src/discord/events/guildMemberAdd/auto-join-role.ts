@@ -6,12 +6,9 @@ module.exports = {
   async process(member): Promise<GuildMember> {
     if (!member.guild) return member;
     const db = Storage.getDatabase(member.guild.id);
-    const roles = [...db.events?.guildMemberAdd.joinRoles as any];
-    console.log(roles);
+    const roles = [...db.events?.guildMemberAdd.joinRoles as string];
     for (const roleId of roles) {
-      const role = Utilities.parseRoleId(
-        member.guild, roleId
-      ) as Role;
+      const role = Utilities.parseRoleId(member.guild, roleId) as Role;
       if (!role) continue;
       await member.roles.add(role).catch(console.error);
     }
