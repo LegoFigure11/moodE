@@ -14,6 +14,7 @@ import * as messageDeleteHandler from "./discord/handlers/messageDeleteHandler";
 import * as messageUpdateHandler from "./discord/handlers/messageUpdateHandler";
 import * as messageReactionAddHandler from "./discord/handlers/messageReactionAddHandler";
 import * as messageReactionRemoveHandler from "./discord/handlers/messageReactionRemoveHandler";
+import * as pluginsLoader from "./discord/handlers/pluginsLoader";
 
 import type {ReloadableModule} from "./types/index";
 import type {Message} from "discord.js";
@@ -21,7 +22,7 @@ import type {Message} from "discord.js";
 const moduleOrder: ReloadableModule[] = [
   "utilities", "config", "storage", "commands", "messagedeletehandler", "messageupdatehandler",
   "guildmemberaddhandler", "messagereactionaddhandler", "messagereactionremovehandler",
-  "guildmemberremovehandler", "messagecreatehandler",
+  "guildmemberremovehandler", "messagecreatehandler", "pluginsloader",
 ];
 
 const moduleFilenames: KeyedDict<ReloadableModule, string> = {
@@ -39,6 +40,7 @@ const moduleFilenames: KeyedDict<ReloadableModule, string> = {
   messagereactionremovehandler: path.join(
     __dirname, "discord", "handlers", "messageReactionRemoveHandler.js"
   ),
+  pluginsloader: path.join(__dirname, "discord", "handlers", "pluginsLoader.js"),
   config: path.join(__dirname, "discord", "config-example.js"),
   storage: path.join(__dirname, "storage.js"),
   utilities: path.join(__dirname, "utilities.js"),
@@ -66,6 +68,7 @@ module.exports = (): void => {
   void messageUpdateHandler.instantiate();
   void messageReactionAddHandler.instantiate();
   void messageReactionRemoveHandler.instantiate();
+  void pluginsLoader.instantiate();
 
   console.log(Utilities.moodeText("Loading Databases..."));
   void Storage.importDatabases();
@@ -102,6 +105,10 @@ module.exports = (): void => {
   console.log(Utilities.moodeText("Loading Message Reaction Remove Events..."));
   void MessageReactionRemoveHandler.loadEvents();
 
+  global.__PluginLoaderLoaded = false;
+  console.log(Utilities.moodeText("Loading Plugins..."));
+  void PluginsLoader.loadPlugins();
+
   global.__reloadInProgress = false;
 
   // eslint-disable-next-line
@@ -136,6 +143,7 @@ module.exports = (): void => {
     __messageDeleteHandlerLoaded = false;
     __messageUpdateHandlerLoaded = false;
     __messageReactionAddHandlerLoaded = false;
+    __PluginLoaderLoaded = false;
 
     const modules: ReloadableModule[] = [];
     for (let i = 0; i < hasModules.length; i++) {
@@ -217,6 +225,12 @@ module.exports = (): void => {
               "./discord/handlers/messageReactionRemoveHandler"
             );
           newMessageReactionRemoveHandler.instantiate();
+        } else if (moduleName === "pluginsloader") {
+          // eslint-disable-next-line
+          const newPluginsLoader = require(moduleFilenames[moduleName]) as typeof import (
+            "./discord/handlers/pluginsLoader"
+          );
+          newPluginsLoader.instantiate();
         }
       }
 

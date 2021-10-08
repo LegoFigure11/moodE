@@ -9,6 +9,7 @@ declare namespace NodeJS {
     __messageUpdateHandlerLoaded: boolean;
     __messageReactionAddHandlerLoaded: boolean;
     __messageReactionRemoveHandlerLoaded: boolean;
+    __PluginLoaderLoaded: boolean;
     __production: boolean;
     __listen: boolean;
     __reloadInProgress: boolean;
@@ -33,6 +34,7 @@ declare namespace NodeJS {
     MessageReactionRemoveHandler: import(
       "./discord/handlers/messageReactionRemoveHandler"
     ).MessageReactionRemoveHandler;
+    PluginsLoader: import("./discord/handlers/pluginsLoader").PluginsLoader;
     ReadyChecker: import("events").EventEmitter;
   }
 }

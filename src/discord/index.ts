@@ -33,7 +33,8 @@ ReadyChecker.on("loaded", () => {
     __messageDeleteHandlerLoaded &&
     __messageUpdateHandlerLoaded &&
     __messageReactionAddHandlerLoaded &&
-    __messageReactionRemoveHandlerLoaded
+    __messageReactionRemoveHandlerLoaded &&
+    __PluginLoaderLoaded
   ) {
     console.log(Utilities.discordText(colors.green("Ready!")));
     __listen = true;

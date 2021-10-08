@@ -19,6 +19,7 @@ import type {MessageReactionAddHandler as messageReactionAddHandlerType}
   from "./discord/handlers/messageReactionAddHandler";
 import type {MessageReactionRemoveHandler as messageReactionRemoveHandlerType}
   from "./discord/handlers/messageReactionRemoveHandler";
+import type {PluginsLoader as pluginsLoaderType} from "./discord/handlers/pluginsLoader";
 
 /* eslint-disable no-var */
 declare global {
@@ -31,6 +32,7 @@ declare global {
   var __messageUpdateHandlerLoaded: boolean;
   var __messageReactionAddHandlerLoaded: boolean;
   var __messageReactionRemoveHandlerLoaded: boolean;
+  var __PluginLoaderLoaded: boolean;
   var __listen: boolean;
   var __production: boolean;
   var __reloadInProgress: boolean;
@@ -44,6 +46,7 @@ declare global {
   var MessageUpdateHandler: messageUpdateHandlerType;
   var MessageReactionAddHandler: messageReactionAddHandlerType;
   var MessageReactionRemoveHandler: messageReactionRemoveHandlerType;
+  var PluginsLoader: pluginsLoaderType;
   var DiscordConfig: Partial<typeof discordConfig>;
   var Storage: storageType;
   var Utilities: utilitiesType;
