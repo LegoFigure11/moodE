@@ -4,5 +4,6 @@
 /node_modules/*
 /src/discord/config-example.ts
 /src/discord/commands/private/*
+/src/discord/events/messageCreate/swf-new-user-filter.ts
 
 /databases/*
