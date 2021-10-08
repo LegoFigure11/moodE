@@ -16,9 +16,9 @@ module.exports = {
     if (reaction.emoji.name === getEmote(1) || reaction.emoji.name === getEmote(2) || reaction.emoji.name === getEmote(3) || reaction.emoji.name === getEmote(4) || reaction.emoji.name === getEmote(5) || reaction.emoji.name === getEmote(6) || reaction.emoji.name === getEmote(7) || reaction.emoji.name === getEmote(8) || reaction.emoji.name === getEmote(9)) {
       reaction.users.remove(user); // Remove reactions only if it is one of the vote reactions
 
-      if (db.polls[reaction.message.id].users.includes(user)) return reaction; // If the user has voted before disallow vote
+      if (db.polls[reaction.message.id].users.includes(user.id)) return reaction; // If the user has voted before disallow vote
 
-      db.polls[reaction.message.id].users.push(user); // Push the user into the db to stop multiple votes
+      db.polls[reaction.message.id].users.push(user.id); // Push the user into the db to stop multiple votes
       addVote(db, getNum(reaction.emoji.name), reaction); // add user's vote to the database array
     }
 
