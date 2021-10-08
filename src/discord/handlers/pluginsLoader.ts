@@ -35,6 +35,7 @@ export class PluginsLoader {
         continue;
       }
       plugins[pluginName] = plugin;
+      if (plugin.onLoad) plugin.onLoad();
     }
     this.plugins = plugins;
     __PluginLoaderLoaded = true;
