@@ -40,7 +40,6 @@ module.exports = {
           let large = 0;
           for (const attachment of msg.attachments) {
             const s = attachment[1].size;
-            console.log(s);
             if (size + s < MAX_SIZE) {
               size += s;
               attachments.push(new MessageAttachment(attachment[1].attachment));
