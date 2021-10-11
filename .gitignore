@@ -5,8 +5,6 @@
 /src/discord/config-example.ts
 /src/discord/commands/private/*
 /src/discord/events/guildMemberAdd/auto-join-role-private.ts
-/src/discord/events/messageCreate/swf-new-user-filter.ts
-/src/discord/events/messageReactionAdd/swf-rule-gate.ts
-/src/discord/plugins/swf-babyjail.ts
+swf-*
 
 /databases/*
