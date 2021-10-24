@@ -6,9 +6,9 @@ module.exports = {
   async process(member): Promise<GuildMember> {
     if (!member.guild) return member;
     const db = Storage.getDatabase(member.guild.id);
-    const log = db.events?.logger.logLeaves;
+    const log = db.events?.guildMemberRemove.logLeaves;
     const channel = Utilities.parseChannelId(
-      member.guild, db.events?.logger?.channel
+      member.guild, db.events?.guildMemberRemove?.channel
     ) as TextChannel;
     if (!log || !channel) return member;
     if (!channel) return member;
