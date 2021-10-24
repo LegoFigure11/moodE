@@ -626,7 +626,7 @@ export class Utilities {
     }
     if ("reflectable" in move.flags) flags.push("\u{2705} Is bounced by Magic Coat/Magic Guard");
     if ("snatch" in move.flags) flags.push("\u{2705} Can be stolen by Snatch");
-    if ("" in move.flags) flags.push("\u{2705} Blocked by Soundproof, boosted by Punk Rock");
+    if ("sound" in move.flags) flags.push("\u{2705} Blocked by Soundproof, boosted by Punk Rock");
 
     return flags.join("\n");
   }
