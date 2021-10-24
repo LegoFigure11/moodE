@@ -13,6 +13,7 @@ import type {DateMention} from "./types/utilities";
 const sh = util.promisify(exec);
 
 const ID_REGEX = /[^a-z0-9-]/g;
+const URL_REGEX = /[^A-Za-z0-9-_.~:/?#[\]@!$&'()*+,;=%\s]/g;
 
 const DEFAULT_DEX_GENERATION = 8;
 const GEN_1_ALIASES = [
@@ -110,6 +111,20 @@ export class Utilities {
   toTitleCase(input?: string): string {
     if (!input) return "";
     return input.replace(/\b\w/g, c => c.toUpperCase());
+  }
+
+  /**
+   * Returns a string with all invalid URL characters removed
+   * @param input the input to process
+   */
+  removeIllegalURLCharacters(input?: string | number): string {
+    if (!input) return "";
+    if (typeof input !== "string") {
+      if (typeof input === "number") {
+        input = `${input}`;
+      }
+    }
+    return input.replace(URL_REGEX, "");
   }
 
   /**
