@@ -13,7 +13,7 @@ module.exports = {
     if (!log || !channel) return message;
     if (!channel) return message;
     if (
-      db.events?.messageDelete?.ignoreChannels?.includes(channel.id) ||
+      db.events?.messageDelete?.ignoreChannels?.includes(message.channel.id) ||
       db.events?.messageDelete?.ignoreAuthors?.includes(message.author.id) ||
       db.events?.messageDelete?.ignoreMessagesStartingWith?.includes(message.content.charAt(0))
     ) return message;
