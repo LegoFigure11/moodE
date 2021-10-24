@@ -6,14 +6,16 @@ module.exports = {
   async process(message): Promise<Message> {
     if (!message.guild) return message;
     const db = Storage.getDatabase(Utilities.toDatabaseId(message));
-    const log = db.events?.logger.logDeletes;
-    const channel = Utilities.parseChannelId(message, db.events?.logger?.channel) as TextChannel;
+    const log = db.events?.messageDelete?.logDeletes;
+    const channel = Utilities.parseChannelId(
+      message, db.events?.messageDelete?.channel
+    ) as TextChannel;
     if (!log || !channel) return message;
     if (!channel) return message;
     if (
-      db.events?.logger?.ignoreChannels?.includes(channel.id) ||
-      db.events?.logger?.ignoreAuthors?.includes(message.author.id) ||
-      db.events?.logger?.ignoreMessagesStartingWith?.includes(message.content.charAt(0))
+      db.events?.messageDelete?.ignoreChannels?.includes(channel.id) ||
+      db.events?.messageDelete?.ignoreAuthors?.includes(message.author.id) ||
+      db.events?.messageDelete?.ignoreMessagesStartingWith?.includes(message.content.charAt(0))
     ) return message;
 
     let by;
