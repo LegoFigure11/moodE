@@ -159,6 +159,29 @@ client.on("messageDelete", (m) => void (
     }
   })(m));
 
+client.on("messageDeleteBulk", (ms) => void (
+  async (
+    messages: Discord.Collection<string, Discord.Message | Discord.PartialMessage>
+  ) => {
+    if (__listen) {
+      for (const entry of messages) {
+        let message = entry[1];
+        if (message.partial) {
+          try {
+            message = await message.fetch();
+          } catch (e) {
+            console.log(
+              Utilities.discordText(
+                `Unable to resolve a message partial! ${colors.grey(`${message.id}`)}`
+              )
+            );
+          }
+        }
+        MessageDeleteHandler.executeEvents(message as Discord.Message).catch(console.error);
+      }
+    }
+  })(ms));
+
 client.on("messageReactionAdd", (r, u) => void (
   async (
     messageReaction: Discord.MessageReaction | Discord.PartialMessageReaction,
