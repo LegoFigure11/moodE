@@ -14,8 +14,11 @@ module.exports = {
     if (!channel) return member;
 
     await channel.send(
-      `${member} (${member.user.username}#${member.user.discriminator} - ${member.id}) has left ` +
-      `the server.`
+      Utilities.guildLeaveEmoji(
+        channel,
+        `${member} (${member.user.username}#${member.user.discriminator} - ${member.id}) has ` +
+      `left the server.`
+      )
     ).catch(console.error);
 
     return member;

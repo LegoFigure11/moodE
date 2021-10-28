@@ -282,6 +282,25 @@ export class Utilities {
   }
 
   /**
+   * Checks the permissions of the bot in the current guild from a channel
+   * @param channel the context of the check
+   * @param permission the integer representation of the permission (see Permissions.FLAGS)
+   */
+  checkBotPermissionsFromChannel(
+    channel: Discord.TextChannel | Discord.DMChannel, permission: bigint
+  ): boolean {
+    if (channel.type === "DM" || !channel?.guild?.me) return true;
+    const channelPermissions = channel.permissionsFor(channel.guild.me);
+    const memberPermissions = channel.guild.me.permissionsIn(channel);
+    const rolePermissions = channel.permissionsFor(channel.guild.me.roles.highest);
+    return (
+      channelPermissions?.has(permission) ||
+      memberPermissions?.has(permission) ||
+      rolePermissions?.has(permission)
+    ) || false;
+  }
+
+  /**
    * Used for signifying success on discord
    * @param message the message used to perform the permission check to determine the emoji used
    * @param text the text to output
@@ -312,6 +331,40 @@ export class Utilities {
       DiscordConfig.failureEmoji &&
       this.checkBotPermissions(message, permission)
     ) emoji = DiscordConfig.failureEmoji;
+    return `${emoji} ${text}`;
+  }
+
+  /**
+   * Used for custom join messages
+   * @param message the message used to perform the permission check to determine the emoji used
+   * @param text the text to output
+   * @returns an emoji followed by `text`
+   */
+  guildJoinEmoji(channel: Discord.TextChannel | Discord.DMChannel, text: string): string {
+    let emoji = "\u{27A1}"; // Fallback
+    if (channel?.type === "DM") return `${DiscordConfig.guildJoinEmoji || emoji} ${text}`;
+    const permission = Discord.Permissions.FLAGS.USE_EXTERNAL_EMOJIS;
+    if (
+      DiscordConfig.guildJoinEmoji &&
+      this.checkBotPermissionsFromChannel(channel, permission)
+    ) emoji = DiscordConfig.guildJoinEmoji;
+    return `${emoji} ${text}`;
+  }
+
+  /**
+   * Used for custom leave messages
+   * @param message the message used to perform the permission check to determine the emoji used
+   * @param text the text to output
+   * @returns an emoji followed by `text`
+   */
+  guildLeaveEmoji(channel: Discord.TextChannel | Discord.DMChannel, text: string): string {
+    let emoji = "\u{2B05}"; // Fallback
+    if (channel?.type === "DM") return `${DiscordConfig.guildLeaveEmoji || emoji} ${text}`;
+    const permission = Discord.Permissions.FLAGS.USE_EXTERNAL_EMOJIS;
+    if (
+      DiscordConfig.guildLeaveEmoji &&
+       this.checkBotPermissionsFromChannel(channel, permission)
+    ) emoji = DiscordConfig.guildLeaveEmoji;
     return `${emoji} ${text}`;
   }
 
