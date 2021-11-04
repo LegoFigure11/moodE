@@ -301,6 +301,25 @@ export class Utilities {
   }
 
   /**
+   * Checks the permissions of the bot in the current guild from a channel
+   * @param channel the context of the check
+   * @param permission the integer representation of the permission (see Permissions.FLAGS)
+   */
+  checkBotPermissionsFromGuild(
+    guild: Discord.Guild, permission: bigint, channel: Discord.TextChannel
+  ): boolean {
+    if (!guild?.me) return true;
+    const channelPermissions = channel.permissionsFor(guild.me);
+    const memberPermissions = guild.me.permissionsIn(channel);
+    const rolePermissions = channel.permissionsFor(guild.me.roles.highest);
+    return (
+      channelPermissions?.has(permission) ||
+      memberPermissions?.has(permission) ||
+      rolePermissions?.has(permission)
+    ) || false;
+  }
+
+  /**
    * Used for signifying success on discord
    * @param message the message used to perform the permission check to determine the emoji used
    * @param text the text to output
