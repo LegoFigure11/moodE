@@ -369,6 +369,23 @@ export class Utilities {
   }
 
   /**
+   * Used for messages that need a warning emoji
+   * @param message the message used to perform the permission check to determine the emoji used
+   * @param text the text to output
+   * @returns an emoji followed by `text`
+   */
+  warningEmoji(channel: Discord.TextChannel | Discord.DMChannel, text: string): string {
+    let emoji = "\u{26A0}"; // Fallback
+    if (channel?.type === "DM") return `${DiscordConfig.warningEmoji || emoji} ${text}`;
+    const permission = Discord.Permissions.FLAGS.USE_EXTERNAL_EMOJIS;
+    if (
+      DiscordConfig.warningEmoji &&
+       this.checkBotPermissionsFromChannel(channel, permission)
+    ) emoji = DiscordConfig.warningEmoji;
+    return `${emoji} ${text}`;
+  }
+
+  /**
    * Normalizes a Message object into a string representing the id of its database
    * @param message the message to get the database id of
    * @returns the database id, or unfined if one cannot be found
