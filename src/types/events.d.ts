@@ -1,4 +1,4 @@
-import type {GuildMember, Message, MessageReaction, User} from "discord.js";
+import type {GuildBan, GuildMember, Message, MessageReaction, User} from "discord.js";
 
 export interface IEventDefinition<IEvent> {
   event: Dict<IEvent>;
@@ -33,6 +33,22 @@ interface IGuildMemberAddRemoveEvent {
   noPm?: boolean;
 
   process: (member: GuildMember) => Promise<GuildMember>;
+  onLoad?: void;
+}
+
+interface IGuildBanEvent {
+  users?: string[];
+
+  priority?: number;
+  disabled?: boolean;
+
+  commandPermissions?: number[];
+  userPermissons?: number;
+
+  pmOnly?: boolean;
+  noPm?: boolean;
+
+  process: (ban: GuildBan) => Promise<GuildBan>;
   onLoad?: void;
 }
 

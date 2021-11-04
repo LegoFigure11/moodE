@@ -7,6 +7,8 @@ import * as storage from "./storage";
 import * as lcrng from "./misc/lcrng";
 import * as discordConfig from "./discord/config-example";
 import * as commandHandler from "./discord/handlers/commandHandler";
+import * as guildBanAddHandler from "./discord/handlers/guildBanAddHandler";
+import * as guildBanRemoveHandler from "./discord/handlers/guildBanRemoveHandler";
 import * as guildMemberAddHandler from "./discord/handlers/guildMemberAddHandler";
 import * as guildMemberRemoveHandler from "./discord/handlers/guildMemberRemoveHandler";
 import * as messageCreateHandler from "./discord/handlers/messageCreateHandler";
@@ -22,11 +24,14 @@ import type {Message} from "discord.js";
 const moduleOrder: ReloadableModule[] = [
   "utilities", "config", "storage", "commands", "messagedeletehandler", "messageupdatehandler",
   "guildmemberaddhandler", "messagereactionaddhandler", "messagereactionremovehandler",
-  "guildmemberremovehandler", "messagecreatehandler", "pluginsloader",
+  "guildbanaddhandler", "guildmemberremovehandler", "guildbanremovehandler",
+  "messagecreatehandler", "pluginsloader",
 ];
 
 const moduleFilenames: KeyedDict<ReloadableModule, string> = {
   commands: path.join(__dirname, "discord", "handlers", "commandHandler.js"),
+  guildbanaddhandler: path.join(__dirname, "discord", "handlers", "guildBanAddHandler.js"),
+  guildbanremovehandler: path.join(__dirname, "discord", "handlers", "guildMemberRemoveHandler.js"),
   guildmemberaddhandler: path.join(__dirname, "discord", "handlers", "guildMemberAddHandler.js"),
   guildmemberremovehandler: path.join(
     __dirname, "discord", "handlers", "guildMemberRemoveHandler.js"
@@ -61,6 +66,8 @@ module.exports = (): void => {
   global.__listen = false;
   void storage.instantiate();
   void commandHandler.instantiate();
+  void guildBanAddHandler.instantiate();
+  void guildBanRemoveHandler.instantiate();
   void guildMemberAddHandler.instantiate();
   void guildMemberRemoveHandler.instantiate();
   void messageCreateHandler.instantiate();
@@ -76,6 +83,14 @@ module.exports = (): void => {
   global.__commandsLoaded = false;
   console.log(Utilities.moodeText("Loading Commands..."));
   void CommandHandler.loadCommandsDirectory();
+
+  global.__guildBanAddHandlerLoaded = false;
+  console.log(Utilities.moodeText("Loading Guild Ban Add Events..."));
+  void GuildBanAddHandler.loadEvents();
+
+  global.__guildBanRemoveHandlerLoaded = false;
+  console.log(Utilities.moodeText("Loading Guild Ban Remove Events..."));
+  void GuildBanRemoveHandler.loadEvents();
 
   global.__guildMemberAddHandlerLoaded = false;
   console.log(Utilities.moodeText("Loading Guild Member Add Events..."));
@@ -137,6 +152,8 @@ module.exports = (): void => {
     }
     global.__reloadInProgress = true;
     __commandsLoaded = false;
+    __guildBanAddHandlerLoaded = false;
+    __guildBanRemoveHandlerLoaded = false;
     __guildMemberAddHandlerLoaded = false;
     __guildMemberRemoveHandlerLoaded = false;
     __messageCreateHandlerLoaded = false;
@@ -183,6 +200,18 @@ module.exports = (): void => {
           // eslint-disable-next-line @typescript-eslint/no-var-requires
           const newUtilities = require(moduleFilenames[moduleName]) as typeof import("./utilities");
           newUtilities.instantiate();
+        } else if (moduleName === "guildbanaddhandler") {
+          const newGuildBanAddHandler = // eslint-disable-next-line
+            require(moduleFilenames[moduleName]) as typeof import(
+              "./discord/handlers/guildBanAddHandler"
+            );
+          newGuildBanAddHandler.instantiate();
+        } else if (moduleName === "guildbanremovehandler") {
+          const newGuildBanRemoveHandler = // eslint-disable-next-line
+            require(moduleFilenames[moduleName]) as typeof import(
+              "./discord/handlers/guildBanRemoveHandler"
+            );
+          newGuildBanRemoveHandler.instantiate();
         } else if (moduleName === "guildmemberaddhandler") {
           const newGuildMemberAddHandler = // eslint-disable-next-line
             require(moduleFilenames[moduleName]) as typeof import(

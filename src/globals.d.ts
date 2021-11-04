@@ -5,6 +5,10 @@ import type {LCRNG as lcrngType} from "./misc/lcrng";
 import type * as lcrng from "./misc/lcrng";
 import type * as discordConfig from "./discord/config-example";
 import type {CommandHandler as commandHandlerType} from "./discord/handlers/commandHandler";
+import type {GuildBanAddHandler as guildBanAddHandlerType}
+  from "./discord/handlers/guildBanAddHandler";
+import type {GuildBanRemoveHandler as guildBanRemoveHandlerType}
+  from "./discord/handlers/guildBanRemoveHandler";
 import type {GuildMemberAddHandler as guildMemberAddHandlerType}
   from "./discord/handlers/guildMemberAddHandler";
 import type {GuildMemberRemoveHandler as guildMemberRemoveHandlerType}
@@ -25,6 +29,8 @@ import type {PluginsLoader as pluginsLoaderType} from "./discord/handlers/plugin
 declare global {
   var __clientReady: boolean;
   var __commandsLoaded: boolean;
+  var __guildBanAddHandlerLoaded: boolean;
+  var __guildBanRemoveHandlerLoaded: boolean;
   var __guildMemberAddHandlerLoaded: boolean;
   var __guildMemberRemoveHandlerLoaded: boolean;
   var __messageCreateHandlerLoaded: boolean;
@@ -39,6 +45,8 @@ declare global {
   var __reloadModules: (message: import("discord.js").Message, args: string[]) => Promise<void>;
   var client: import("discord.js").Client;
   var CommandHandler: commandHandlerType;
+  var GuildBanAddHandler: guildBanAddHandlerType;
+  var GuildBanRemoveHandler: guildBanRemoveHandlerType;
   var GuildMemberAddHandler: guildMemberAddHandlerType;
   var GuildMemberRemoveHandler: guildMemberRemoveHandlerType;
   var MessageCreateHandler: messageCreateHandlerType;

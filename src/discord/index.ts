@@ -27,6 +27,8 @@ ReadyChecker.on("loaded", () => {
   if (
     __commandsLoaded &&
     __clientReady &&
+    __guildBanAddHandlerLoaded &&
+    __guildBanRemoveHandlerLoaded &&
     __guildMemberAddHandlerLoaded &&
     __guildMemberRemoveHandlerLoaded &&
     __messageCreateHandlerLoaded &&

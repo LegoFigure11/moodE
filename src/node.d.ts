@@ -2,6 +2,8 @@ declare namespace NodeJS {
   interface Global {
     __clientReady: boolean;
     __commandsLoaded: boolean;
+    __guildBanAddHandlerLoaded: boolean;
+    __guildBanRemoveHandlerLoaded: boolean;
     __guildMemberAddHandlerLoaded: boolean;
     __guildMemberRemoveHandlerLoaded: boolean;
     __messageCreateHandlerLoaded: boolean;
@@ -21,6 +23,8 @@ declare namespace NodeJS {
     Utilities: import("./utilities").Utilities;
     DiscordConfig: Partial<typeof import("./discord/config-example")>;
     Storage: import("./storage").Storage;
+    GuildBanAddHandler: import("./discord/handlers/guildBanAddHandler").GuildBanAddHandler;
+    GuildBanRemoveHandler: import("./discord/handlers/guildBanRemoveHandler").GuildBanRemoveHandler;
     GuildMemberAddHandler: import("./discord/handlers/guildMemberAddHandler").GuildMemberAddHandler;
     GuildMemberRemoveHandler: import(
       "./discord/handlers/guildMemberRemoveHandler"
