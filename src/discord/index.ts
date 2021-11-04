@@ -101,6 +101,48 @@ client.on("messageCreate", (m) => void (async (message: Discord.Message) => {
   }
 })(m));
 
+client.on("guildBanAdd", (b) => void (
+  async (
+    ban: Discord.GuildBan
+  ) => {
+    if (__listen) {
+      if (ban.partial) {
+        try {
+          ban = await ban.fetch();
+        } catch (e) {
+          console.log(
+            Utilities.discordText(
+              `Unable to resolve a ban partial! ${colors.grey(`${ban.guild.id}`)}`
+            )
+          );
+        }
+      }
+      GuildBanAddHandler.executeEvents(ban).catch(console.error);
+    }
+  }
+)(b));
+
+client.on("guildBanRemove", (b) => void (
+  async (
+    ban: Discord.GuildBan
+  ) => {
+    if (__listen) {
+      if (ban.partial) {
+        try {
+          ban = await ban.fetch();
+        } catch (e) {
+          console.log(
+            Utilities.discordText(
+              `Unable to resolve a ban partial! ${colors.grey(`${ban.guild.id}`)}`
+            )
+          );
+        }
+      }
+      GuildBanRemoveHandler.executeEvents(ban).catch(console.error);
+    }
+  }
+)(b));
+
 client.on("guildMemberAdd", (m) => void (
   async (
     member: Discord.GuildMember | Discord.PartialGuildMember
@@ -119,7 +161,8 @@ client.on("guildMemberAdd", (m) => void (
       }
       GuildMemberAddHandler.executeEvents(member as Discord.GuildMember).catch(console.error);
     }
-  })(m));
+  }
+)(m));
 
 client.on("guildMemberRemove", (m) => void (
   async (
@@ -139,7 +182,8 @@ client.on("guildMemberRemove", (m) => void (
       }
       GuildMemberRemoveHandler.executeEvents(member as Discord.GuildMember).catch(console.error);
     }
-  })(m));
+  }
+)(m));
 
 client.on("messageDelete", (m) => void (
   async (
@@ -159,7 +203,8 @@ client.on("messageDelete", (m) => void (
       }
       MessageDeleteHandler.executeEvents(message as Discord.Message).catch(console.error);
     }
-  })(m));
+  }
+)(m));
 
 client.on("messageDeleteBulk", (ms) => void (
   async (
@@ -182,7 +227,8 @@ client.on("messageDeleteBulk", (ms) => void (
         MessageDeleteHandler.executeEvents(message as Discord.Message).catch(console.error);
       }
     }
-  })(ms));
+  }
+)(ms));
 
 client.on("messageReactionAdd", (r, u) => void (
   async (
@@ -216,7 +262,8 @@ client.on("messageReactionAdd", (r, u) => void (
         messageReaction as Discord.MessageReaction, user as Discord.User
       ).catch(console.error);
     }
-  })(r, u));
+  }
+)(r, u));
 
 client.on("messageReactionRemove", (r, u) => void (
   async (
@@ -250,7 +297,8 @@ client.on("messageReactionRemove", (r, u) => void (
         messageReaction as Discord.MessageReaction, user as Discord.User
       ).catch(console.error);
     }
-  })(r, u));
+  }
+)(r, u));
 
 client.on("messageUpdate", (o, n) => void (async (
   oldMessage: Discord.Message | Discord.PartialMessage,
