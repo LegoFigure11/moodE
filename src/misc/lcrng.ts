@@ -44,7 +44,7 @@ export class LCRNG {
   * @returns the high 16-bits of int
   */
   high(int = this.seed): number {
-    return this.unsign(int & 0xFFFF0000);
+    return this.unsign(int >>> 16);
   }
 
   /**
