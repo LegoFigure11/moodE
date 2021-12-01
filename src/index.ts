@@ -11,6 +11,7 @@ import * as guildBanAddHandler from "./discord/handlers/guildBanAddHandler";
 import * as guildBanRemoveHandler from "./discord/handlers/guildBanRemoveHandler";
 import * as guildMemberAddHandler from "./discord/handlers/guildMemberAddHandler";
 import * as guildMemberRemoveHandler from "./discord/handlers/guildMemberRemoveHandler";
+import * as guildMemberUpdateHandler from "./discord/handlers/guildMemberUpdateHandler";
 import * as messageCreateHandler from "./discord/handlers/messageCreateHandler";
 import * as messageDeleteHandler from "./discord/handlers/messageDeleteHandler";
 import * as messageUpdateHandler from "./discord/handlers/messageUpdateHandler";
@@ -25,7 +26,7 @@ const moduleOrder: ReloadableModule[] = [
   "utilities", "config", "storage", "commands", "messagedeletehandler", "messageupdatehandler",
   "guildmemberaddhandler", "messagereactionaddhandler", "messagereactionremovehandler",
   "guildbanaddhandler", "guildmemberremovehandler", "guildbanremovehandler",
-  "messagecreatehandler", "pluginsloader",
+  "messagecreatehandler", "pluginsloader", "guildmemberupdatehandler",
 ];
 
 const moduleFilenames: KeyedDict<ReloadableModule, string> = {
@@ -35,6 +36,9 @@ const moduleFilenames: KeyedDict<ReloadableModule, string> = {
   guildmemberaddhandler: path.join(__dirname, "discord", "handlers", "guildMemberAddHandler.js"),
   guildmemberremovehandler: path.join(
     __dirname, "discord", "handlers", "guildMemberRemoveHandler.js"
+  ),
+  guildmemberupdatehandler: path.join(
+    __dirname, "discord", "handlers", "guildMemberUpdateHandler.js"
   ),
   messagecreatehandler: path.join(__dirname, "discord", "handlers", "messageCreateHandler.js"),
   messagedeletehandler: path.join(__dirname, "discord", "handlers", "messageDeleteHandler.js"),
@@ -70,6 +74,7 @@ module.exports = (): void => {
   void guildBanRemoveHandler.instantiate();
   void guildMemberAddHandler.instantiate();
   void guildMemberRemoveHandler.instantiate();
+  void guildMemberUpdateHandler.instantiate();
   void messageCreateHandler.instantiate();
   void messageDeleteHandler.instantiate();
   void messageUpdateHandler.instantiate();
@@ -99,6 +104,10 @@ module.exports = (): void => {
   global.__guildMemberRemoveHandlerLoaded = false;
   console.log(Utilities.moodeText("Loading Guild Member Remove Events..."));
   void GuildMemberRemoveHandler.loadEvents();
+
+  global.__guildMemberUpdateHandlerLoaded = false;
+  console.log(Utilities.moodeText("Loading Guild Member Update Events..."));
+  void GuildMemberUpdateHandler.loadEvents();
 
   global.__messageCreateHandlerLoaded = false;
   console.log(Utilities.moodeText("Loading Message Create Events..."));
@@ -156,6 +165,7 @@ module.exports = (): void => {
     __guildBanRemoveHandlerLoaded = false;
     __guildMemberAddHandlerLoaded = false;
     __guildMemberRemoveHandlerLoaded = false;
+    __guildMemberUpdateHandlerLoaded = false;
     __messageCreateHandlerLoaded = false;
     __messageDeleteHandlerLoaded = false;
     __messageUpdateHandlerLoaded = false;
@@ -224,6 +234,12 @@ module.exports = (): void => {
               "./discord/handlers/guildMemberRemoveHandler"
             );
           newGuildMemberRemoveHandler.instantiate();
+        } else if (moduleName === "guildmemberupdatehandler") {
+          const newGuildMemberUpdateHandler = // eslint-disable-next-line
+            require(moduleFilenames[moduleName]) as typeof import(
+              "./discord/handlers/guildMemberUpdateHandler"
+            );
+          newGuildMemberUpdateHandler.instantiate();
         } else if (moduleName === "messagecreatehandler") {
           const newMessageCreateHandler = // eslint-disable-next-line
             require(moduleFilenames[moduleName]) as typeof import(

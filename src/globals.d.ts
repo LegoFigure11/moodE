@@ -13,6 +13,8 @@ import type {GuildMemberAddHandler as guildMemberAddHandlerType}
   from "./discord/handlers/guildMemberAddHandler";
 import type {GuildMemberRemoveHandler as guildMemberRemoveHandlerType}
   from "./discord/handlers/guildMemberRemoveHandler";
+import type {GuildMemberUpdateHandler as guildMemberUpdateHandlerType}
+  from "./discord/handlers/guildMemberUpdateHandler";
 import type {MessageCreateHandler as messageCreateHandlerType}
   from "./discord/handlers/messageCreateHandler";
 import type {MessageDeleteHandler as messageDeleteHandlerType}
@@ -33,6 +35,7 @@ declare global {
   var __guildBanRemoveHandlerLoaded: boolean;
   var __guildMemberAddHandlerLoaded: boolean;
   var __guildMemberRemoveHandlerLoaded: boolean;
+  var __guildMemberUpdateHandlerLoaded: boolean;
   var __messageCreateHandlerLoaded: boolean;
   var __messageDeleteHandlerLoaded: boolean;
   var __messageUpdateHandlerLoaded: boolean;
@@ -49,6 +52,7 @@ declare global {
   var GuildBanRemoveHandler: guildBanRemoveHandlerType;
   var GuildMemberAddHandler: guildMemberAddHandlerType;
   var GuildMemberRemoveHandler: guildMemberRemoveHandlerType;
+  var GuildMemberUpdateHandler: guildMemberUpdateHandlerType;
   var MessageCreateHandler: messageCreateHandlerType;
   var MessageDeleteHandler: messageDeleteHandlerType;
   var MessageUpdateHandler: messageUpdateHandlerType;

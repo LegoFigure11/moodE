@@ -31,6 +31,7 @@ ReadyChecker.on("loaded", () => {
     __guildBanRemoveHandlerLoaded &&
     __guildMemberAddHandlerLoaded &&
     __guildMemberRemoveHandlerLoaded &&
+    __guildMemberUpdateHandlerLoaded &&
     __messageCreateHandlerLoaded &&
     __messageDeleteHandlerLoaded &&
     __messageUpdateHandlerLoaded &&
@@ -184,6 +185,29 @@ client.on("guildMemberRemove", (m) => void (
     }
   }
 )(m));
+
+client.on("guildMemberUpdate", (o, n) => void (
+  async (
+    oldMember: Discord.GuildMember | Discord.PartialGuildMember, newMember: Discord.GuildMember
+  ) => {
+    if (__listen) {
+      if (oldMember.partial) {
+        try {
+          oldMember = await oldMember.fetch();
+        } catch (e) {
+          console.log(
+            Utilities.discordText(
+              `Unable to resolve a member partial! ${colors.grey(`${newMember.id}`)}`
+            )
+          );
+        }
+      }
+      GuildMemberUpdateHandler.executeEvents(
+        oldMember as Discord.GuildMember, newMember
+      ).catch(console.error);
+    }
+  }
+)(o, n));
 
 client.on("messageDelete", (m) => void (
   async (

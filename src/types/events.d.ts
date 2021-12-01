@@ -36,6 +36,22 @@ interface IGuildMemberAddRemoveEvent {
   onLoad?: void;
 }
 
+interface IGuildMemberUpdateEvent {
+  users?: string[];
+
+  priority?: number;
+  disabled?: boolean;
+
+  commandPermissions?: number[];
+  userPermissons?: number;
+
+  pmOnly?: boolean;
+  noPm?: boolean;
+
+  process: (oldMember: GuildMember, newMember: GuildMember) => Promise<GuildMember>;
+  onLoad?: void;
+}
+
 interface IGuildBanEvent {
   users?: string[];
 
