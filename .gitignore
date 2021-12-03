@@ -5,6 +5,7 @@
 /src/discord/config-example.ts
 /src/discord/commands/private/*
 /src/discord/events/guildMemberAdd/auto-join-role-private.ts
+bss-*
 swf-*
 
 /databases/*
