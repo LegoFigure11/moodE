@@ -50,7 +50,7 @@ module.exports = {
         banMessage = `${message.author} It doesn't look like ${
           user.username}#${user.discriminator
         } is in this server. Would you like to ban them anyway? (Y/n):`;
-      } else if (member?.bannable) {
+      } else if (!member?.bannable) {
         return await message.channel.send(
           Utilities.failureEmoji(
             message,
