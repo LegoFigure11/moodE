@@ -41,12 +41,14 @@ module.exports = {
       response.channel.id === message.channel.id &&
       (Utilities.toId(response.content) === "y" || Utilities.toId(response.content) === "n");
 
+    let isInServer = true;
     try {
       const member = message.guild!.members.cache.get(user.id);
       let banMessage = `${
         message.author
       } Are you sure you want to ban ${user.username}#${user.discriminator}? (Y/n):`;
       if (!member) {
+        isInServer = false;
         banMessage = `${message.author} It doesn't look like ${
           user.username}#${user.discriminator
         } is in this server. Would you like to ban them anyway? (Y/n):`;
@@ -59,18 +61,20 @@ module.exports = {
           )
         );
       }
-      await message.channel.send(banMessage).then(() => {
-        void message.channel.awaitMessages({
+      await message.channel.send(banMessage).then(async () => {
+        await message.channel.awaitMessages({
           filter, max: 1, time: TIMEOUT, errors: ["time"],
         }).then(async (c) => {
           if (Utilities.toId(c.first()!.content) === "y") {
-            try {
-              await user.send(
-                `You have been banned from ${message.guild!.name} ${reason.length > 0
-                  ? `(${reason})` : `(No reason was provided)`}`
-              );
-            } catch {
-              await message.channel.send("Unable to DM user.");
+            if (isInServer) {
+              try {
+                await user.send(
+                  `You have been banned from ${message.guild!.name} ${reason.length > 0
+                    ? `(${reason})` : `(No reason was provided)`}`
+                );
+              } catch {
+                await message.channel.send("Unable to DM user.");
+              }
             }
             await message.guild!.members.ban(user, {days: 7, reason: reason});
             return message.channel.send(Utilities.successEmoji(
