@@ -50,7 +50,7 @@ export class TypoChecker {
 
   // Shamelessly taken from smogon/pokemon-showdown
   // https://git.io/JB2SR
-  getLevenshteinValue(s: string, t: string): number {
+  getLevenshteinValue(s: string, t: string, allowTransposition = false): number {
     // Original levenshtein distance function by James Westgate, turned out to be the fastest
     const d: number[][] = [];
 
@@ -89,6 +89,13 @@ export class TypoChecker {
         if (c < mi) mi = c;
 
         d[i][j] = mi; // Step 6
+
+        if (allowTransposition) {
+          // Damerau transposition
+          if (i > 2 && j > 2 && si === t.charAt(j - 2) && s.charAt(i - 2) === tj) {
+            d[i][j] = Math.min(d[i][j], d[i - 2][j - 2] + cost);
+          }
+        }
       }
     }
     return d[n][m];
