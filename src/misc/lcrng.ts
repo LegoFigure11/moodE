@@ -11,6 +11,7 @@ export class LCRNG {
     this.lo = this.low();
   }
 
+
   /**
   * Gets the value of the current LCRNG state
   * @returns unsigned 32-bit integer

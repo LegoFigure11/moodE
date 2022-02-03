@@ -1,16 +1,23 @@
 import {Permissions} from "discord.js";
 import type {ICommand} from "../../../types/commands";
 
-const ACCURACY = 30;
+let ACCURACY = 30;
 
 module.exports = {
   desc: "Uses a One-hit KO move.",
   commandPermissions: [Permissions.FLAGS.SEND_MESSAGES],
   command(message) {
-    RNG.advance(2);
-    const roll = RNG.next16bit();
+    const roll = CSRNG.random(100);
+    console.log(roll);
     let m = "The attack missed!";
-    if (roll % 100 < ACCURACY) {
+    if (
+      Utilities.toId(message.content).includes("nith") ||
+      Utilities.toId(message.content).includes("nitachi") ||
+      message.content.includes("371436658878316555")
+    ) {
+      ACCURACY = 1;
+    }
+    if ((roll % 100) < ACCURACY) {
       m = "It's a one-hit KO!";
     }
     return message.reply(

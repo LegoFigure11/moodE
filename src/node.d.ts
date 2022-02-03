@@ -20,6 +20,7 @@ declare namespace NodeJS {
     client: import("discord.js").Client;
     CommandHandler: import("./discord/handlers/commandHandler").CommandHandler;
     LCRNG: import("./misc/lcrng").LCRNG;
+    CSRNG: import("./misc/csrng").CSRNG;
     RNG: import("./misc/lcrng").PokeRNG;
     Utilities: import("./utilities").Utilities;
     DiscordConfig: Partial<typeof import("./discord/config-example")>;

@@ -4,6 +4,7 @@ import {EventEmitter} from "events";
 
 import * as utilities from "./utilities";
 import * as storage from "./storage";
+import * as csrng from "./misc/csrng";
 import * as lcrng from "./misc/lcrng";
 import * as discordConfig from "./discord/config-example";
 import * as commandHandler from "./discord/handlers/commandHandler";
@@ -63,6 +64,10 @@ module.exports = (): void => {
   global.__clientReady = false;
 
   utilities.instantiate();
+
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  void csrng.instantiate();
+
   global.RNG = new lcrng.PokeRNG(); // Already initialized
   RNG.reseed(Utilities.random(0xFFFFFFFF)); // Randomly seed
 

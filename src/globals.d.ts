@@ -2,6 +2,7 @@ import type {EventEmitter as eventEmitterType} from "events";
 import type {Storage as storageType} from "./storage";
 import type {Utilities as utilitiesType} from "./utilities";
 import type {LCRNG as lcrngType} from "./misc/lcrng";
+import type {CSRNG as csrngType} from "./misc/csrng";
 import type * as lcrng from "./misc/lcrng";
 import type * as discordConfig from "./discord/config-example";
 import type {CommandHandler as commandHandlerType} from "./discord/handlers/commandHandler";
@@ -63,6 +64,7 @@ declare global {
   var Storage: storageType;
   var Utilities: utilitiesType;
   var LCRNG: lcrngType;
+  var CSRNG: csrngType;
   var RNG: lcrng.PokeRNG;
   var ReadyChecker: eventEmitterType;
 }
