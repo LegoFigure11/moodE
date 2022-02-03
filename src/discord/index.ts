@@ -77,7 +77,7 @@ client.on("messageCreate", (m) => void (async (message: Discord.Message) => {
       message
     ).catch(console.error) as unknown as Discord.Message;
 
-    if (message && !message.deleted) {
+    if (message) {
       const prefix =
       Storage.getDatabase(Utilities.toDatabaseId(message))?.prefix || DiscordConfig.prefix!;
       message.content = message.content.trim();

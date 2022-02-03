@@ -557,7 +557,7 @@ export class Utilities {
   date(timestamp?: number): DateMention {
     return `<t:${
       timestamp ? ~~(+new Date(timestamp) / 1000) : ~~(Date.now() / 1000)
-    }>` as DateMention;
+    }>` as unknown as DateMention;
   }
 
   random(max: number | null) {
