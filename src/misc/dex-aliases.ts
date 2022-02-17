@@ -10,6 +10,7 @@ export const Aliases: KeyedDict<string, {id: string; shiny?: boolean; female?: b
   "bluecake": {id: "scorbunny"},
   "eep": {id: "ferrothorn"},
   "juanjo": {id: "falinks", shiny: true},
+  "kalo": {id: "houndoom"},
   "lego": {id: "eldegoss"},
   "matt": {id: "meltan"},
   "mica": {id: "shaymin"},
