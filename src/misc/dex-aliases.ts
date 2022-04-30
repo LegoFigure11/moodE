@@ -10,7 +10,9 @@ export const Aliases: KeyedDict<string, {id: string; shiny?: boolean; female?: b
   "bluecake": {id: "scorbunny"},
   "eep": {id: "ferrothorn"},
   "juanjo": {id: "falinks", shiny: true},
+  "kalo": {id: "houndoom"},
   "lego": {id: "eldegoss"},
+  "matt": {id: "meltan"},
   "mica": {id: "shaymin"},
   "onion": {id: "eldegoss", shiny: true},
   "psychicj": {id: "gardevoir"},
@@ -25,6 +27,7 @@ export const Aliases: KeyedDict<string, {id: string; shiny?: boolean; female?: b
   // Memes
   "boob": {id: "rowlet"},
   "god": {id: "bidoof"},
+  "nut": {id: "meltan"},
   "rat": {id: "rattata"},
 
   // Dex Numbers
