@@ -36,7 +36,7 @@ module.exports = {
       .setDescription(message.content || "(None)");
 
     if (message?.attachments.size > 0) {
-      embed.addField("Attachents", message.attachments.size.toString(), true);
+      embed.addField("Attachments", message.attachments.size.toString(), true);
     }
 
     channel.send(
