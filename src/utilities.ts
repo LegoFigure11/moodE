@@ -18,33 +18,35 @@ const URL_REGEX = /[^A-Za-z0-9-_.~:/?#[\]@!$&'()*+,;=%\s]/g;
 const DEFAULT_DEX_GENERATION = 8;
 const GEN_1_ALIASES = [
   "r", "b", "y", "g", "red", "yellow", "blue", "green", "rb", "rby", "rbyg", "gen1", "generation1",
-  "1", "g1",
+  "1", "g1", "i", "geni",
 ];
 const GEN_2_ALIASES = [
-  "g", "s", "c", "gold", "silver", "crystal", "gs", "gsc", "gen2", "generation2", "2", "g2",
+  "g", "s", "c", "gold", "silver", "crystal", "gs", "gsc", "gen2", "generation2", "2", "g2", "ii",
+  "genii",
 ];
 const GEN_3_ALIASES = [
   "r", "s", "e", "fr", "lg", "c", "xd", "rs", "rse", "frlg", "colo", "gales", "adv", "ruby",
   "sapphire", "emerald", "firered", "leafgreen", "colosseum", "gen3", "generation3", "3", "g3",
+  "iii", "geniii",
 ];
 const GEN_4_ALIASES = [
   "d", "p", "pt", "hg", "ss", "dp", "dpp", "dppt", "hgss", "diamond", "pearl", "plat", "platinum",
-  "heartgold", "soulsilver", "gen4", "generation4", "4", "g4",
+  "heartgold", "soulsilver", "gen4", "generation4", "4", "g4", "iv", "geniv",
 ];
 const GEN_5_ALIASES = [
   "b", "w", "b2", "w2", "bw", "bw2", "black", "black2", "white", "white2", "gen5", "generation5",
-  "5", "g5",
+  "5", "g5", "v", "genv",
 ];
 const GEN_6_ALIASES = [
-  "x", "y", "xy", "or", "as", "oras", "xyoras", "gen6", "generation6", "6", "g6",
+  "x", "y", "xy", "or", "as", "oras", "xyoras", "gen6", "generation6", "6", "g6", "vi", "genvi",
 ];
 const GEN_7_ALIASES = [
   "s", "m", "sm", "us", "um", "usum", "sun", "moon", "ultrasun", "ultramoon", "gen7", "generation7",
-  "7", "g7",
+  "7", "g7", "vii", "genvii",
 ];
 const GEN_8_ALIASES = [
   "sw", "sh", "swsh", "swish", "swoshi", "sword", "shield", "swordshield", "swordandsheild", "gen8",
-  "8", "g8", "generation8",
+  "8", "g8", "generation8", "viii", "genviii",
 ];
 const PENTAGON_ALIASES = [
   "penta", "pentagon",
