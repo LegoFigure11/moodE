@@ -6,10 +6,10 @@ import {Generations} from "@pkmn/data";
 import {GraphicsGen, Sprites} from "@pkmn/img";
 
 const spriteGens: {[k: string]: string[]} = {
-  "gen1": ["1", "gen1", "g1", "y", "yellow"],
-  "gen2": ["2", "gen2", "g2", "c", "crystal"],
-  "gen3": ["3", "gen3", "g3", "rse", "e", "emerald"],
-  "gen4": ["4", "gen4", "g4", "hgss", "hg", "ss", "heartgold", "soulsilver"],
+  "gen1": ["1", "gen1", "g1", "y", "yellow", "i", "geni"],
+  "gen2": ["2", "gen2", "g2", "c", "crystal", "ii", "genii"],
+  "gen3": ["3", "gen3", "g3", "rse", "e", "emerald", "iii", "geniii"],
+  "gen4": ["4", "gen4", "g4", "hgss", "hg", "ss", "heartgold", "soulsilver", "iv", "geniv"],
   "gen1rg": ["rg", "green", "1rg", "redgreen"],
   "gen1rb": ["rb", "rby", "red", "blue", "1rb"],
   "gen2g": ["g", "gold", "2g"],
@@ -19,6 +19,7 @@ const spriteGens: {[k: string]: string[]} = {
   "gen4dp": ["d", "p", "pt", "diamond", "pearl", "plat", "platinum", "dp", "dppt", "4dp"],
   "gen5ani": [
     "5", "gen5", "g5", "bw", "bw2", "b2", "w2", "black", "black2", "white", "white2", "b2w2", "5bw",
+    "v", "genv",
   ],
 };
 
