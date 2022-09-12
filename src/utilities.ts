@@ -475,6 +475,28 @@ export class Utilities {
     return role;
   }
 
+  normalizeEmoji(input: string | Discord.Emoji): string {
+    if (typeof input !== "string") {
+      return `<:${input.name}:${input.id}>`;
+    } else if (input.startsWith("<")) {
+      return input;
+    } else {
+      return input.codePointAt(0)?.toString(16) ? `0x${input.codePointAt(0)?.toString(16)}` : "";
+    }
+  }
+
+  parseEmoji(message: Discord.Message, input: string): Discord.Emoji | string | undefined {
+    if (input.startsWith("<")) {
+      if (input.includes(":")) {
+        return message.client.emojis.cache.get(this.toId(input.split(":")[2]));
+      } else {
+        return message.client.emojis.cache.get(this.toId(input));
+      }
+    } else {
+      return String.fromCodePoint(+input);
+    }
+  }
+
   joinList(
     list: readonly string[], preFormatting?: string | null,
     postFormatting?: string | null, conjunction?: string
