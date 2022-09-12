@@ -68,7 +68,7 @@ module.exports = {
       );
     }
 
-    m.react(`${emoji}`).catch(console.error);
+    await m.react(`${emoji}`).catch(console.error);
     const db = Storage.getDatabase(message.guild!.id);
     if (!db.reactionRoles) db.reactionRoles = {};
     if (!db.reactionRoles[`${emoji}-${m.id}`]) {
