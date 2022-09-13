@@ -9,7 +9,7 @@ module.exports = {
     Permissions.FLAGS.MANAGE_ROLES,
   ],
   aliases: ["rr", "reactrole", "rolereact", "rolereaction"],
-  usage: ":emoji:, <@role|user id>, <post id>",
+  usage: ":emoji:, <@role|role id>, <message id>",
   noPm: true,
   async command(message, args) {
     if (
@@ -19,7 +19,9 @@ module.exports = {
       return message.reply(
         {
           content:
-            Utilities.failureEmoji(message, `This command can only be used by server admins.`),
+            Utilities.failureEmoji(
+              message, `This command can only be used by server or bot admins.`
+            ),
           allowedMentions: {repliedUser: false},
         }
       );
