@@ -2,7 +2,7 @@ import {Permissions, TextChannel} from "discord.js";
 import type {ICommand} from "../../../types/commands";
 
 module.exports = {
-  desc: "Sets up reaction roles.",
+  desc: "Sets up starboard.",
   commandPermissions: [
     Permissions.FLAGS.SEND_MESSAGES,
   ],
@@ -83,7 +83,7 @@ module.exports = {
         content:
         Utilities.successEmoji(
           message,
-          "Setup complete!.\n" +
+          "Setup complete!\n" +
           `Starboard configuration for ${emoji}:\n` +
           `Channel: ${channel}\nNumber of reactions required: ${number}`
         ),

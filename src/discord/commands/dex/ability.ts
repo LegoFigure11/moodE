@@ -40,7 +40,7 @@ module.exports = {
       const embed = new MessageEmbed()
         .setTitle(`[Gen ${gen}] ${ability.name}`)
         .setDescription(`${ability.desc || ability.shortDesc}\n\nIntroduced in Gen ${ability.gen}`)
-        .setFooter(await Utilities.getFullVersionString());
+        .setFooter({text: await Utilities.getFullVersionString()});
 
 
       message.reply({embeds: [embed], allowedMentions: {repliedUser: false}}).catch(console.error);
