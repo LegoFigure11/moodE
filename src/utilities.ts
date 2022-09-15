@@ -445,6 +445,12 @@ export class Utilities {
     }
   }
 
+  /**
+   * Asynchronosly parses a Discord User ID or Mention and returns a User object
+   * @param message to use as context
+   * @param id the id to parse
+   * @returns the matching User object
+   */
   async parseUserId(message: Discord.Message, id: string | undefined):
   Promise<Discord.User | undefined | void> {
     if (!id) return;
@@ -458,6 +464,12 @@ export class Utilities {
     return user;
   }
 
+  /**
+   * Parses a Discord Role ID or Mention and returns a Role object
+   * @param message the message or guild context
+   * @param id the id to parse
+   * @returns the matching Role object
+   */
   parseRoleId(guild: Discord.Message | Discord.Guild, id: string | undefined):
   Discord.Role | undefined | void {
     if (!id) return;
@@ -485,6 +497,12 @@ export class Utilities {
     }
   }
 
+  /**
+   * Parses a custom Emoji or codepoint and returns the associated emoji object or unicode emoji
+   * @param message to use as context
+   * @param input the emoji to parse
+   * @returns the matching emoji object or emoji
+   */
   parseEmoji(message: Discord.Message, input: string): Discord.Emoji | string | undefined {
     if (input.startsWith("<")) {
       if (input.includes(":")) {
@@ -584,7 +602,7 @@ export class Utilities {
     }>` as unknown as DateMention;
   }
 
-  random(max: number | null) {
+  random(max?: number) {
     if (!max) max = 2;
     return Math.floor(Math.random() * max);
   }
