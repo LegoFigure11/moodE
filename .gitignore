@@ -8,16 +8,36 @@ node_modules/
 
 converter.js
 
+/assets/private/*
+
 /databases/*
 !/databases/.dummy
 
 /discord/config.json
-/discord/.twitchMonitor.js
-/discord/twitchMonitor.js
 /discord/commands/nsfw/*
 !/discord/commands/nsfw/command.js.example
 /discord/commands/joke/*
 !/discord/commands/joke/command.js.example
+/discord/plugins/*
+!/discord/plugins/backup.js
 /discord/rules/*
 !/discord/rules/link-message.js
+!/discord/rules/get-ps-battle-info.js
+!/discord/rules/filter.js
 !/discord/rules/rule.js.example
+!/discord/rules/editRules
+/discord/rules/editRules/*
+!/discord/rules/editRules/editRule.js.example
+!/discord/rules/editRules/filter.js
+
+/showdown/config.json
+/showdown/commands/private/*
+!/showdown/commands/private/command.js.example
+/showdown/rules/*
+!/showdown/rules/rule.js.example
+
+/twitch/config.json
+/twitch/commands/private/*
+!/twitch/commands/private/command.js.example
+/twitch/rules/*
+!/twitch/rules/rule.js.example

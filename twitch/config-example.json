@@ -1,0 +1,11 @@
+{
+	"identity": {
+		"username": "yourepicbot",
+		"password": "oauth:aaaaAAAAaaAaAAaAAAAAAaaaaaAAAa"
+	},
+	"channels": [
+    "#yourepicusername",
+	],
+	"commandCharacter": "\\",
+	"developers": ["yourepicusername"]
+}

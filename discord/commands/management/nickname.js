@@ -18,16 +18,16 @@ module.exports = {
 		if (user) {
 			await message.guild.members.cache.get(user).setNickname(args[0].trim()).catch(function () { failed = true; });
 			if (!failed) {
-				return message.channel.send(`${discordConfig.successEmoji} Set <@${user}>'s nickname to "${args[0].trim()}"!`);
+				return message.channel.send(`${discordSuccessEmoji} Set <@${user}>'s nickname to "${args[0].trim()}"!`);
 			} else {
-				return message.channel.send(`${discordConfig.failureEmoji} Unable to set nickname!`);
+				return message.channel.send(`${discordFailureEmoji} Unable to set nickname!`);
 			}
 		} else {
 			await message.guild.members.cache.get(client.user.id).setNickname(args[0].trim()).catch(function () { failed = true; });
 			if (!failed) {
-				return message.channel.send(`${discordConfig.successEmoji} Set <@${client.user.id}>'s nickname to "${args[0].trim()}"!`);
+				return message.channel.send(`${discordSuccessEmoji} Set <@${client.user.id}>'s nickname to "${args[0].trim()}"!`);
 			} else {
-				return message.channel.send(`${discordConfig.failureEmoji} Unable to set nickname!`);
+				return message.channel.send(`${discordFailureEmoji} Unable to set nickname!`);
 			}
 		}
 	},

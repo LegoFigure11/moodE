@@ -5,7 +5,7 @@ const utilities = require("../../utilities.js");
 module.exports = {
 	desc: `Adds an FC to the provided category for the provided user, for use with ${discordConfig.commandCharacter}fc.`,
 	usage: "<code>, <category>, <user id>",
-	elevatedOnly: true,
+	isElevated: true,
 	async process(message, args) {
 		utilities.checkForDb("fc", `{"fc":{}}`);
 

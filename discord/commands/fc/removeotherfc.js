@@ -6,7 +6,7 @@ module.exports = {
 	desc: "Removes an FC from the database.",
 	usage: "<code>, <category>, <user id>",
 	aliases: ["deleteotherfc"],
-	elevatedOnly: true,
+	isElevated: true,
 	async process(message, args) {
 		utilities.checkForDb("fc", `{"fc":{}}`);
 

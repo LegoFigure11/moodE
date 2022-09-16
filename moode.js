@@ -3,11 +3,14 @@
 // define constants
 const child_process = require("child_process");
 const Discord = require("discord.js");
+const Twitch = require("tmi.js");
 const util = require("util");
 
 const exec = util.promisify(child_process.exec);
 
-const runDiscord = true;
+global.runDiscord = true;
+global.runShowdown = true;
+global.runTwitch = true;
 
 // set up globals
 global.colors = require("colors");
@@ -17,15 +20,20 @@ global.path = require("path");
 global.Storage = require("./sources/storage.js");
 global.Tools = require("./sources/tools.js");
 
-global.discordText = "Discord-Bot: ".yellow;
-global.moodeText = "moodE: ".yellow;
-global.showdownText = "pokemon-showdown: ".yellow;
-
 Storage.importDatabases();
 
 // Modified from https://github.com/sirDonovan/Lanette/blob/master/build.js
 (async (resolve, reject) => {
-	console.log(`${moodeText}Checking pokemon-showdown remote...`);
+	// Print welcome message
+	console.log(`${Tools.moodeText()}${"-------------------------------------".yellow}`);
+	console.log(`${Tools.moodeText()}${"|         Welcome to moodE!         |".yellow}`);
+	console.log(`${Tools.moodeText()}${"-------------------------------------".yellow}`);
+	console.log(Tools.moodeText());
+
+	const moodeHash = await exec("git rev-parse --short HEAD");
+	global.hash = moodeHash.stdout.trim();
+
+	console.log(`${Tools.moodeText()}Checking pokemon-showdown remote...`);
 	const pokemonShowdown = path.join(__dirname, "pokemon-showdown");
 	const moodeRemote = "https://github.com/smogon/pokemon-showdown.git";
 	const moodeShaDir = path.join(__dirname, "pokemon-showdown.sha");
@@ -40,15 +48,15 @@ Storage.importDatabases();
 	}
 
 	if (!(fs.existsSync(moodeShaDir))) {
-		console.log(`${moodeText}Creating pokemon-showdown.sha...`);
-		fs.writeFileSync(moodeShaDir);
+		console.log(`${Tools.moodeText()}Creating pokemon-showdown.sha...`);
+		fs.writeFileSync(moodeShaDir, " ");
 	}
 
 	process.chdir(pokemonShowdown);
 
 	const remoteOutput = await exec("git remote -v").catch(e => console.log(e));
 	if (!remoteOutput || remoteOutput.Error) {
-		console.log(`${moodeText}${"Error".red}: No git remote output.`);
+		console.log(`${Tools.moodeText()}${"Error".red}: No git remote output.`);
 		reject();
 		return;
 	}
@@ -68,22 +76,22 @@ Storage.importDatabases();
 	if (!currentRemote || currentRemote.trim() !== moodeRemote.trim()) {
 		needsClone = true;
 		deleteFolderRecursive(pokemonShowdown);
-		if (!firstRun) console.log(`${moodeText}Deleted old remote ${currentRemote}`);
+		if (!firstRun) console.log(`${Tools.moodeText()}Deleted old remote ${currentRemote}`);
 	}
 
 	if (needsClone) {
 		const hrStart = process.hrtime();
-		console.log(`${moodeText}Cloning ${moodeRemote.trim().cyan} (This may take some time!)`);
-		const cmd = await exec("git clone " + moodeRemote).catch(e => console.log(e));
+		console.log(`${Tools.moodeText()}Cloning ${moodeRemote.trim().cyan} (This may take some time!)`);
+		const cmd = await exec(`git clone ${moodeRemote}`).catch(e => console.log(e));
 		if (!cmd || cmd.Error) {
 			reject();
 			return;
 		}
 		const hrEnd = process.hrtime(hrStart);
 		const timeString = `${Math.floor(hrEnd[0] / 60)} min ${hrEnd[0] % 60} sec`;
-		console.log(`${moodeText}Cloned into ${pokemonShowdown.cyan} ${("(" + timeString + ")").grey}`);
+		console.log(`${Tools.moodeText()}Cloned into ${pokemonShowdown.cyan} ${(`(${timeString})`).grey}`);
 	} else {
-		console.log(`${moodeText}No clone required!`);
+		console.log(`${Tools.moodeText()}No clone required!`);
 	}
 	process.chdir(pokemonShowdown);
 
@@ -96,52 +104,85 @@ Storage.importDatabases();
 	const moodeSha = fs.readFileSync(moodeShaDir).toString().trim();
 	const currentSha = revParseOutput.stdout.replace("\n", "");
 	if (moodeSha !== currentSha) {
-		console.log(`${moodeText}Writing sha... ${("(" + currentSha + ")").grey}`);
+		console.log(`${Tools.moodeText()}Writing sha... ${(`(${currentSha})`).grey}`);
 		fs.writeFileSync(moodeShaDir, currentSha);
 	}
 
-	console.log(`${showdownText}Attempting pull...`);
+	console.log(`${Tools.pokemonShowdownText()}Attempting pull...`);
 	const pull = await exec("git pull");
 	if (!pull || pull.Error) {
 		needsBuild = false;
-		console.log(`${showdownText}Error: could not pull origin.`);
+		console.log(`${Tools.pokemonShowdownText()}Error: could not pull origin.`);
 		return;
 	}
 	if (pull.stdout.replace("\n", "").replace(/-/g, " ") === "Already up to date.") {
 		needsBuild = false;
-		console.log(`${showdownText}Already up to date!`);
+		console.log(`${Tools.pokemonShowdownText()}Already up to date!`);
 	} else {
-		console.log(`${showdownText}Pull completed!`);
+		console.log(`${Tools.pokemonShowdownText()}Pull completed!`);
 	}
 
 	if (firstRun || needsBuild || needsClone) {
-		console.log(`${showdownText}Commencing build script...`);
+		console.log(`${Tools.pokemonShowdownText()}Commencing build script...`);
 		await exec("node build").catch(e => console.log(e));
-		console.log(`${showdownText}Built!`);
+		console.log(`${Tools.pokemonShowdownText()}Built!`);
 	}
 
 	process.chdir(__dirname);
 
 	if (runDiscord) {
-		console.log(`${moodeText}Launching Discord...`);
+		console.log(`${Tools.moodeText()}Launching Discord...`);
 		try {
 			fs.accessSync(path.resolve(__dirname, "./discord/config.json"));
 		} catch (e) {
 			if (e.code !== "ENOENT") throw e;
-			console.log(`${discordText}: No discord configuration file found...`);
-			console.log(`${discordText}: Writing one with default values. Please fill it out with your own information!`);
+			console.log(`${Tools.discordText()}No discord configuration file found...`);
+			console.log(`${Tools.discordText()}Writing one with default values. Please fill it out with your own information!`);
 			fs.writeFileSync(path.resolve(__dirname, "./discord/config.json"), fs.readFileSync(path.resolve(__dirname, "./discord/config-example.json")));
 		}
-		global.client = new Discord.Client();
+		global.client = new Discord.Client({partials: ["MESSAGE", "CHANNEL", "REACTION"]});
 		global.discordConfig = require("./discord/config.json");
-		global.successEmoji = discordConfig.successEmoji || "\u2705";
-		global.failureEmoji = discordConfig.failureEmoji || "\u274C";
+		global.discordSuccessEmoji = discordConfig.successEmoji || "\u2705";
+		global.discordFailureEmoji = discordConfig.failureEmoji || "\u274C";
 
 		if (!discordConfig.token) throw new Error(`${discordText}Please specify a token in config.json!`);
 
 		global.discord = require("./discord/app.js");
 	} else {
-		console.log(`${moodeText}Discord disabled.`);
+		console.log(`${Tools.moodeText()}Discord Bot disabled.`);
+		console.log(`${Tools.moodeText()}${"/!\\".yellow}PLEASE NOTE THAT THIS ALSO DISABLES DATABASE BACKUPS!!! ${"/!\\".yellow}`);
+	}
+
+	if (runShowdown) {
+		console.log(`${Tools.moodeText()}Launching PS Bot...`);
+		try {
+			fs.accessSync(path.resolve(__dirname, "./showdown/config.json"));
+		} catch (e) {
+			if (e.code !== "ENOENT") throw e;
+			console.log(`${Tools.showdownText()}No PS Bot configuration file found...`);
+			console.log(`${Tools.showdownText()}Writing one with default values. Please fill it out with your own information!`);
+			fs.writeFileSync(path.resolve(__dirname, "./showdown/config.json"), fs.readFileSync(path.resolve(__dirname, "./showdown/config-example.json")));
+		}
+		global.psBot = require("./showdown/app.js");
+	} else {
+		console.log(`${Tools.moodeText()}PS Bot disabled.`);
+	}
+
+	if (runTwitch) {
+		console.log(`${Tools.moodeText()}Launching Twitch Bot...`);
+		try {
+			fs.accessSync(path.resolve(__dirname, "./twitch/config.json"));
+		} catch (e) {
+			if (e.code !== "ENOENT") throw e;
+			console.log(`${Tools.twitchText()}No Twitch Bot configuration file found...`);
+			console.log(`${Tools.twitchText()}Writing one with default values. Please fill it out with your own information!`);
+			fs.writeFileSync(path.resolve(__dirname, "./twitch/config.json"), fs.readFileSync(path.resolve(__dirname, "./twitch/config-example.json")));
+		}
+		global.twitchConfig = require("./twitch/config.json");
+		global.bot = new Twitch.Client(twitchConfig);
+		global.twitch = require("./twitch/app.js");
+	} else {
+		console.log(`${Tools.moodeText()}Twitch Bot disabled.`);
 	}
 })();
 

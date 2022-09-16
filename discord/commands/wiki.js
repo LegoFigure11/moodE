@@ -18,7 +18,12 @@ module.exports = {
 			doc = await wtf.fetch(Tools.toTitleCase(args[0]));
 		}
 		if (doc !== null) {
-			if (doc.json().sections[0].paragraphs[0].sentences) {
+			if (
+				doc.json() &&
+				doc.json().sections &&
+				doc.json().sections[0].paragraphs &&
+				doc.json().sections[0].paragraphs[0].sentences
+			) {
 				const desc = [];
 				const index = doc.json().sections[0].paragraphs[0].sentences.length > 0 ? 0 : 1;
 				for (let i = 0; i < 2; i++) {

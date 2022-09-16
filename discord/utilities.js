@@ -23,7 +23,7 @@ class Utilities {
 		if (!(db.config.commands[cmd])) db.config.commands[cmd] = {"uses": {"total": 0, "users": {}}, "requiredRoles": [], "bannedUsers": [], "bannedChannels": [], "isElevated": false, "isManager": false};
 		if (!(db.config.commands[cmd].uses.users[message.author.id])) db.config.commands[cmd].uses.users[message.author.id] = {};
 
-		db.config.commands[cmd].uses.users[message.author.id].name = message.author.username + "#" + message.author.discriminator; // Update identifier in case Username has changed since last time
+		db.config.commands[cmd].uses.users[message.author.id].name = `${message.author.username}#${message.author.discriminator}`; // Update identifier in case Username has changed since last time
 		if (!(db.config.commands[cmd].uses.users[message.author.id].times)) db.config.commands[cmd].uses.users[message.author.id].times = 0;
 		db.config.commands[cmd].uses.total += 1;
 		db.config.commands[cmd].uses.users[message.author.id].times += 1;
@@ -33,7 +33,7 @@ class Utilities {
 	}
 
 	buildDb(id, name) {
-		console.log(`${discordText}Building database for ${name.green}...`);
+		console.log(`${Tools.discordText()}Building database for ${name.green}...`);
 		const db = Storage.getDatabase(id);
 		db.name = name; // Update identifier in case the server has changed name since the last command
 		if (!(db.config.nsfw)) db.config.nsfw = {"allowNSFW": false, "nsfwChannels": []};
@@ -48,14 +48,14 @@ class Utilities {
 		const db = Storage.getDatabase(id);
 		if (!(db.config.commands)) db.config.commands = {};
 		if (!(db.config.commands[cmd])) {
-			console.log(`${discordText}Adding ${type !== "NSFW" ? cmd.green : cmd.charAt(0).green + "*****".green} to ${(client.guilds.cache.get(id).name).cyan} database...`);
+			console.log(`${Tools.discordText()}Adding ${type !== "NSFW" ? cmd.green : cmd.charAt(0).green + "*****".green} to ${(client.guilds.cache.get(id).name).cyan} database...`);
 			db.config.commands[cmd] = {"uses": {"total": 0, "users": {}}, "requiredRoles": [], "bannedUsers": [], "bannedChannels": [], "isElevated": false, "isManager": false};
 		}
 		Storage.exportDatabase(id);
 	}
 
 	generateRandomLinkCode(len) {
-		const length = len > 0 ? len : 4;
+		const length = len > 0 ? len : 8;
 		if (!(fs.existsSync(path.resolve(__dirname, "../databases/linkCodes.json")))) {
 			fs.writeFileSync(path.resolve(__dirname, "../databases/linkCodes.json"), `{"linkCodes":[]}`);
 			Storage.importDatabase("linkCodes");
@@ -85,8 +85,10 @@ class Utilities {
 	}
 
 	parseRoleId(message, input) {
+		if (!message) throw new Error("parseRoleId() requires a message object!");
+		if (!input) throw new Error("parseRoleId() requires a role id!");
 		if (input.includes("<")) {
-			return message.guild.roles.get(input.match(/^<@&?(\d+)>$/)[1]);
+			return message.guild.roles.cache.get(input.match(/^<@&?(\d+)>$/)[1]);
 		} else {
 			let name = message.guild.roles.cache.find(r => Tools.toId(r.name) === Tools.toId(input));
 			if (!name) name = message.guild.roles.cache.get(input);
@@ -95,6 +97,8 @@ class Utilities {
 	}
 
 	parseChannelId(message, input) {
+		if (!message) throw new Error("parseChannelId() requires a message object!");
+		if (!input) throw new Error("parseChannelId() requires a channel id!");
 		if (input.includes("<")) {
 			return message.guild.channels.cache.get(input.match(/^<#?(\d+)>$/)[1]);
 		} else {
@@ -102,6 +106,22 @@ class Utilities {
 			if (!name) name = message.guild.channels.cache.get(input);
 			return name;
 		}
+	}
+
+
+	async parseMessageId(message, input) {
+		if (!message) throw new Error("parseMessageId() requires a message object!");
+		if (!input) throw new Error("parseMessageId() requires a message id!");
+		let msg;
+		for (const channel of message.guild.channels.cache) {
+			if (!channel[1].messages) continue;
+			msg = await channel[1].messages.fetch(input).catch(e => {
+				msg = undefined;
+			});
+			if (msg) break;
+		}
+		if (!msg) throw new Error(`No message ${input} found on this guild!`);
+		return msg;
 	}
 
 	oneIn(number) {

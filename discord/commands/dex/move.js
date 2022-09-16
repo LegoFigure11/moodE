@@ -7,10 +7,10 @@ const stats = ["atk", "def", "spa", "spd", "spe", "accuracy", "evasion"];
 const exceptions_100_fight = ["Low Kick", "Reversal", "Final Gambit"];
 const exceptions_80_fight = ["Double Kick", "Triple Kick"];
 const exceptions_75_fight = ["Counter", "Seismic Toss"];
-const exceptions_140 = ["Crush Grip", "Wring Out", "Magnitude", "Double Iron Bash"];
-const exceptions_130 = ["Pin Missile", "Power Trip", "Punishment", "Dragon Darts", "Dual Chop", "Electro Ball", "Heat Crash",
+const exceptions_140 = ["Triple Axel", "Crush Grip", "Wring Out", "Magnitude", "Double Iron Bash", "Rising Voltage"];
+const exceptions_130 = ["Scale Shot", "Dual Wing Beat", "Terrain Pulse", "Pin Missile", "Power Trip", "Punishment", "Dragon Darts", "Dual Chop", "Electro Ball", "Heat Crash",
 	"Bullet Seed", "Grass Knot", "Bonemerang", "Bone Rush", "Fissure", "Icicle Spear", "Sheer Cold", "Weather Ball", "Tail Slap", "Guillotine", "Horn Drill",
-	"Flail", "Return", "Frustration", "Endeavor", "Natural Gift", "Trump Card", "Stored Power", "Rock Blast", "Gear Grind", "Gyro Ball", "Heavy Slam", "Bolt Beak (Doubled)", "Fishious Rend (Doubled)"];
+	"Flail", "Return", "Frustration", "Endeavor", "Natural Gift", "Trump Card", "Stored Power", "Rock Blast", "Gear Grind", "Gyro Ball", "Heavy Slam"];
 const exceptions_120 = ["Double Hit", "Spike Cannon"];
 const exceptions_100 = ["Twineedle", "Beat Up", "Fling", "Dragon Rage", "Nature's Madness", "Night Shade", "Comet Punch", "Fury Swipes", "Sonic Boom", "Bide",
 	"Super Fang", "Present", "Spit Up", "Psywave", "Mirror Coat", "Metal Burst"];
@@ -59,7 +59,7 @@ module.exports = {
 			} else {
 				zStr = `(Z: ${move.zMovePower})`;
 			}
-			zStr = " " + zStr;
+			zStr = ` ${zStr}`;
 		}
 
 		let maxPower = "";
@@ -81,7 +81,7 @@ module.exports = {
 				else if (move.basePower >= 45) maxPower = 100;
 				else maxPower = 90;
 			}
-			maxPower = " (Max Move Power: " + maxPower + ")";
+			maxPower = ` (Max Move Power: ${maxPower})`;
 		}
 
 		let behaviorFlags = "";
@@ -156,7 +156,7 @@ module.exports = {
 
 		const embed = {
 			title: move.name,
-			description: `Base Power: ${move.basePower}${maxPower}${zStr}\nType: ${move.type} | Acc: ${move.accuracy === true ? "--" : move.accuracy} | Category: ${move.category} | PP: ${move.pp} (Max ${Math.floor(move.pp * 1.6)})\n${move.desc || move.shortDesc}${move.priority > 0 ? "\nPriority: +" + move.priority : move.priority < 0 ? "\nPriority: " + move.priority : ""}`,
+			description: `Base Power: ${move.basePower}${maxPower}${zStr}\nType: ${move.type} | Acc: ${move.accuracy === true ? "--" : move.accuracy} | Category: ${move.category} | PP: ${move.pp} (Max ${Math.floor(move.pp * 1.6)})\n${move.desc || move.shortDesc}${move.priority > 0 ? `\nPriority: +${move.priority}` : move.priority < 0 ? `\nPriority: ${move.priority}` : ""}`,
 			url: `https://www.smogon.com/dex/${utilities.toSmogonString(dex.gen)}/moves/${(move.name.split(" ").join("-")).toLowerCase()}/`,
 			author: {
 				name: `${move.name}`,

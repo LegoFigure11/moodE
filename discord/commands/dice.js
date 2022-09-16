@@ -13,7 +13,7 @@ module.exports = {
 		`${discordConfig.commandCharacter}dice <number of dice>d<number of sides><+/-><offset> - Simulates rolling a number of dice and adding an offset to the sum, e.g., ${discordConfig.commandCharacter}dice 2d6+10: two standard dice are rolled; the result lies between 12 and 22.`,
 		`${discordConfig.commandCharacter}dice <number of dice>d<number of sides>-<H/L> - Simulates rolling a number of dice with removal of extreme values, e.g., /dice 3d8-L: rolls three 8-sided dice; the result ignores the lowest value.`],
 	usage: "<number of sides>",
-	aliases: ["roll"],
+	aliases: ["roll", "d", "r"],
 	async process(message, args) {
 		let target = args.join("");
 
@@ -63,7 +63,7 @@ module.exports = {
 		let maxRoll = 0;
 		let minRoll = Number.MAX_SAFE_INTEGER;
 
-		const trackRolls = diceQuantity * (("" + diceFaces).length + 1) <= 60;
+		const trackRolls = diceQuantity * ((`${diceFaces}`).length + 1) <= 60;
 		const rolls = [];
 		let rollSum = 0;
 
@@ -87,11 +87,11 @@ module.exports = {
 		// Reply with relevant information
 
 		let offsetFragment = "";
-		if (offset) offsetFragment += (offset > 0 ? " + " + offset : offset);
+		if (offset) offsetFragment += (offset > 0 ? ` + ${offset}` : offset);
 
-		if (diceQuantity === 1) return message.channel.send(`Rolling (1 to ${diceFaces})${offsetFragment}: ${rollSum}`);
+		if (diceQuantity === 1) return message.channel.send(`:game_die: Rolling (1 to ${diceFaces})${offsetFragment}: ${rollSum}`);
 		const outlierFragment = removeOutlier ? ` except ${removeOutlier > 0 ? "highest" : "lowest"}` : ``;
-		const rollsFragment = trackRolls ? ": " + rolls.join(", ") : "";
+		const rollsFragment = trackRolls ? `: ${rolls.join(", ")}` : "";
 		return message.channel.send(
 			`\`\`\`${diceQuantity} rolls (1 to ${diceFaces})${rollsFragment}\nSum${offsetFragment}${outlierFragment}: ${rollSum}\`\`\``
 		);

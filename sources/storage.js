@@ -35,7 +35,7 @@ class Storage {
 	importDatabase(roomid) {
 		let file = "{}";
 		try {
-			file = fs.readFileSync("./databases/" + roomid + ".json").toString();
+			file = fs.readFileSync(`./databases/${roomid}.json`).toString();
 		} catch (e) {}
 		this.databases[roomid] = JSON.parse(file);
 	}
@@ -45,7 +45,7 @@ class Storage {
 	 */
 	exportDatabase(roomid) {
 		if (!(roomid in this.databases)) return;
-		fs.writeFileSync("./databases/" + roomid + ".json", JSON.stringify(this.databases[roomid]));
+		fs.writeFileSync(`./databases/${roomid}.json`, JSON.stringify(this.databases[roomid]));
 	}
 
 	importDatabases() {

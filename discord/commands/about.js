@@ -16,11 +16,11 @@ module.exports = {
 			},
 			color: message.channel.type === "dm" ? 0 : message.guild.members.cache.get(client.user.id).displayColor,
 			fields: [
-				{name: "Invite Link", value: "[Click here](https://discordapp.com/oauth2/authorize?&client_id=537773790445305866&scope=bot&permissions=8)!"},
+				{name: "Invite Link", value: "[Click here](https://discordapp.com/oauth2/authorize?&client_id=537773790445305866&scope=bot&permissions=403041478)!"},
 				{name: "Language", value: "JavaScript (discordjs)"},
 			],
 			footer: {
-				text: `moodE version ${packagejson.version}`,
+				text: `moodE version ${packagejson.version} @ ${hash}`,
 			},
 		}});
 	},

@@ -42,9 +42,9 @@ module.exports = {
 		if (ivs.length !== 6) return message.channel.send(`${discordConfig.commandCharacter}hiddenpower ${this.usage}`);
 		for (let i = 0; i < ivs.length; i++) {
 			ivs[i] = Tools.toId(ivs[i]);
-			if (isNaN(ivs[i])) return message.channel.send(`${discordConfig.failureEmoji} Unable to coerce "${ivs[i]}" as a number!`);
+			if (isNaN(ivs[i])) return message.channel.send(`${discordFailureEmoji} Unable to coerce "${ivs[i]}" as a number!`);
 			ivs[i] = parseInt(ivs[i]);
-			if (ivs[i] < 0 || ivs[i] > 31) return message.channel.send(`${discordConfig.failureEmoji} ${ivs[i]} must be a number greater than or equal to 0 and less than or equal to 31!`);
+			if (ivs[i] < 0 || ivs[i] > 31) return message.channel.send(`${discordFailureEmoji} ${ivs[i]} must be a number greater than or equal to 0 and less than or equal to 31!`);
 		}
 		const hp = ivs[0];
 		const atk = ivs[1];

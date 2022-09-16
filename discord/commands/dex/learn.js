@@ -31,7 +31,7 @@ module.exports = {
 		let pokemon = dex.getSpecies(args[0]);
 		const moves = [];
 		if (!pokemon || !pokemon.exists) {
-			pokemon = dex.dataSearch(args[0], ["Pokedex", "Movedex"]);
+			pokemon = dex.dataSearch(args[0], ["Pokedex", "Moves"]);
 			if (!pokemon.exists || pokemon[0].searchType === "move") {
 				pokemon = null;
 				if (args.length === 1) {
@@ -108,7 +108,6 @@ module.exports = {
 				const Species = dex.getSpecies(allMons[i]);
 				const monset = new Learnset(Species, dex);
 				if (monset.canHaveMove(move.id, dex.gen, true)) {
-					console.log(dex.data.Pokedex[allMons[i]]);
 					validMons.push(dex.data.Pokedex[allMons[i]].name);
 				}
 			}
@@ -121,10 +120,10 @@ module.exports = {
 				if (search.length === 0) {
 					search = learnset.findMove(move.id, null);
 					if (search.length === 0) {
-						sendMsg.push(`${pokemon.name} cannot obtain ${move.name} in gen${dex.gen}`);
+						sendMsg.push(`${pokemon.name} cannot learn ${move.name} in gen${dex.gen}`);
 						continue;
 					} else {
-						sendMsg.push(`${pokemon.name} can obtain ${move.name} in another generation.`);
+						sendMsg.push(`${pokemon.name} can learn ${move.name} in another generation.`);
 						continue;
 					}
 				}

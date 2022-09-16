@@ -12,18 +12,18 @@ class MessageParser {
 	}
 
 	async init(isReload) {
-		console.log(`${discordText}${isReload ? "Rel" : "L"}oading rules...`);
+		console.log(`${Tools.discordText()}${isReload ? "Rel" : "L"}oading rules...`);
 		await Promise.all([
 			this.loadDirectory(RULES_DIRECTORY, Rules.Rule, isReload),
 		]);
 	}
 
 	loadDirectory(directory, Rule, isReload) {
-		console.log(`${discordText}${isReload ? "Rel" : "L"}oading ${"Message Parser".cyan} rules...`);
+		console.log(`${Tools.discordText()}${isReload ? "Rel" : "L"}oading ${"Message Parser".cyan} rules...`);
 		return new Promise((resolve, reject) => {
 			fs.readdir(directory, (err, files) => {
 				if (err) {
-					reject(`Error reading commands directory: ${err}`);
+					reject(`Error reading rules directory: ${err}`);
 				} else if (!files) {
 					reject(`No files in directory ${directory}`);
 				} else {
@@ -31,15 +31,15 @@ class MessageParser {
 						if (name.endsWith(".js")) {
 							try {
 								name = name.slice(0, -3); // remove extention
-								const rule = new Rule(name, require(directory + "/" + name + ".js"));
+								const rule = new Rule(name, require(`${directory}/${name}.js`));
 								this.rules.push(rule);
-								if (!(isReload)) console.log(`${discordText}${isReload ? "Rel" : "L"}oaded rule ${name.green}`);
+								if (!(isReload)) console.log(`${Tools.discordText()}${isReload ? "Rel" : "L"}oaded rule ${name.green}`);
 							} catch (e) {
-								console.log("Discord: ".yellow + "MessageParser loadDirectory() error: ".brightRed + `${e} while parsing ${name.yellow}${".js".yellow} in ${directory}`);
+								console.log(`${"Discord: ".yellow + "MessageParser loadDirectory() error: ".brightRed}${e} while parsing ${name.yellow}${".js".yellow} in ${directory}`);
 							}
 						}
 					}
-					console.log(`${discordText}${"Message Parser".cyan} rules ${isReload ? "rel" : "l"}oaded!`);
+					console.log(`${Tools.discordText()}${"Message Parser".cyan} rules ${isReload ? "rel" : "l"}oaded!`);
 					resolve();
 				}
 			});
@@ -53,14 +53,16 @@ class MessageParser {
 		throw new Error(`messageParser error: Rule "${name}" not found!`);
 	}
 
-	process(message) {
+	async process(message) {
 		for (let i = 0; i < this.rules.length; i++) {
 			const rule = this.rules[i];
+			if (message.deleted) break;
 			if (rule.servers.length > 0 && !rule.servers.includes(message.guild.id)) continue;
 			if (rule.channels.length > 0 && !rule.channels.includes(message.channel.id)) continue;
 			if (rule.users.length > 0 && !rule.users.includes(message.author.id)) continue;
-			rule.execute(message);
+			message = await rule.execute(message);
 		}
+		return message;
 	}
 }
 
