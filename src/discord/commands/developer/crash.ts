@@ -1,6 +1,7 @@
 import {Permissions} from "discord.js";
-import {UserPermissions} from "../../enums/userPermissions";
+
 import type {ICommand} from "../../../types/commands";
+import {UserPermissions} from "../../enums/userPermissions";
 
 module.exports = {
   desc: "Forcibly crash the bot.",

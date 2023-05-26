@@ -1,6 +1,7 @@
 import {Permissions} from "discord.js";
-import {UserPermissions} from "../../enums/userPermissions";
+
 import type {ICommand} from "../../../types/commands";
+import {UserPermissions} from "../../enums/userPermissions";
 
 module.exports = {
   desc: "Sets the bot prefix.",
@@ -17,10 +18,10 @@ module.exports = {
   usage: "<character or string (optional)>",
   async command(message, args) {
     const id = Utilities.toDatabaseId(message);
-    const db = Storage.getDatabase(id);
+    const db = Databases.getDatabase(id);
     if (args?.[0]) {
       db.prefix = args[0];
-      Storage.exportDatabase(id!);
+      Databases.exportDatabase(id!);
       try {
         await message.reply(
           {

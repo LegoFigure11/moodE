@@ -1,6 +1,7 @@
 import * as path from "path";
 
 import type {Message} from "discord.js";
+
 import type {IMessageUpdateEvent} from "../../types/events";
 
 const FIRST_PRIORITY = 1;
@@ -49,7 +50,6 @@ export class MessageUpdateHandler {
     __messageUpdateHandlerLoaded = true;
     ReadyChecker.emit("loaded");
   }
-
 
   async executeEvents(oldMessage: Message, newMessage: Message): Promise<void> {
     for (let i = FIRST_PRIORITY; i <= LAST_PRIORITY; i++) {

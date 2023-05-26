@@ -1,8 +1,9 @@
-import {Permissions, MessageEmbed, Formatters} from "discord.js";
+import {Generations} from "@pkmn/data";
+import * as dex from "@pkmn/dex";
+import {Formatters, MessageEmbed, Permissions} from "discord.js";
+
 import {getAlias} from "../../../misc/dex-aliases";
 import type {ICommand} from "../../../types/commands";
-import * as dex from "@pkmn/dex";
-import {Generations} from "@pkmn/data";
 
 module.exports = {
   desc: "Gets the information about a Pok\u{00e9}mon Ability.",
@@ -14,26 +15,25 @@ module.exports = {
     args = newArgs;
 
     const gens = new Generations(dex.Dex);
-    const Dex = gens.get(gen as dex.GenerationNum);
-
     args[0] = getAlias(args[0], ["abilities"]).id;
-    let ability = Dex.abilities.get(args[0]);
+
+    let ability;
+    do {
+      const tempDex = gens.get(gen);
+      const tempAbility = tempDex.abilities.get(args[0]);
+      ability = tempAbility;
+    } while (!hadGenSpec && !ability?.exists && --gen > 0);
 
     if (!ability?.exists) {
-      const Gen7Dex = gens.get(7);
-      ability = Gen7Dex.abilities.get(args[0]);
-      if (ability?.exists && !hadGenSpec) {
-        if (gen === 8) gen = 7;
-      } else {
-        return message.channel.send(
-          Utilities.failureEmoji(
+      return message
+        .reply({
+          content: Utilities.failureEmoji(
             message,
-            `Unable to find any Ability matching "${
-              args[0]
-            }" for Generation ${gen}! (Check your spelling?)`
-          )
-        ).catch(e => console.error(e));
-      }
+            `Unable to find any Abilities matching "${args[0]}" for Generation ${gen}! (Check your spelling?)`
+          ),
+          allowedMentions: {repliedUser: false},
+        })
+        .catch((e) => console.error(e));
     }
 
     if (Utilities.checkBotPermissions(message, Permissions.FLAGS.EMBED_LINKS)) {
@@ -41,7 +41,6 @@ module.exports = {
         .setTitle(`[Gen ${gen}] ${ability.name}`)
         .setDescription(`${ability.desc || ability.shortDesc}\n\nIntroduced in Gen ${ability.gen}`)
         .setFooter({text: await Utilities.getFullVersionString()});
-
 
       message.reply({embeds: [embed], allowedMentions: {repliedUser: false}}).catch(console.error);
     } else {

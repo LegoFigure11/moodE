@@ -1,9 +1,10 @@
-import {MessageEmbed, Permissions} from "discord.js";
-import type {ICommand} from "../../../types/commands";
-import {getAlias} from "../../../misc/dex-aliases";
-import * as dex from "@pkmn/dex";
 import {Generations} from "@pkmn/data";
+import * as dex from "@pkmn/dex";
 import {GraphicsGen, Sprites} from "@pkmn/img";
+import {MessageEmbed, Permissions} from "discord.js";
+
+import {getAlias} from "../../../misc/dex-aliases";
+import type {ICommand} from "../../../types/commands";
 
 const spriteGens: {[k: string]: string[]} = {
   "gen1": ["1", "gen1", "g1", "y", "yellow", "i", "geni"],
@@ -22,7 +23,6 @@ const spriteGens: {[k: string]: string[]} = {
     "v", "genv",
   ],
 };
-
 
 function resolveGenOptions(args: string[]): GraphicsGen | undefined {
   let gen;
@@ -52,7 +52,7 @@ module.exports = {
   usage: "<Pok\u{00e9}mon Name>, <game (optional)>",
   async command(message, args) {
     const gens = new Generations(dex.Dex);
-    const Dex = gens.get(8);
+    const Dex = gens.get(9);
     const temp = getAlias(args[0], ["pokemon"]);
     args[0] = temp.id;
     const gmax = temp.gmax;
@@ -62,20 +62,23 @@ module.exports = {
     let specie = Dex.species.get(args[0]);
 
     if (!specie?.exists) {
-      const Gen7Dex = gens.get(7);
-      specie = Gen7Dex.species.get(args[0]);
+      const Gen8Dex = gens.get(8);
+      specie = Gen8Dex.species.get(args[0]);
       if (!specie?.exists) {
-        return message.reply(
-          {
-            content: Utilities.failureEmoji(
-              message,
-              `Unable to find any Pok\u{00e9}mon matching "${
-                args[0]
-              }"! All sprites can be viewed at: https://play.pokemonshowdown.com/sprites`
-            ),
-            allowedMentions: {repliedUser: false},
-          }
-        ).catch(e => console.error(e));
+        const Gen7Dex = gens.get(7);
+        specie = Gen7Dex.species.get(args[0]);
+        if (!specie?.exists) {
+          return message.reply(
+            {
+              content: Utilities.failureEmoji(
+                message,
+                `Unable to find any Pok\u{00e9}mon matching "${args[0]
+                }"! All sprites can be viewed at: https://play.pokemonshowdown.com/sprites`
+              ),
+              allowedMentions: {repliedUser: false},
+            }
+          ).catch(e => console.error(e));
+        }
       }
     }
 

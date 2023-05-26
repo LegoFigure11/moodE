@@ -1,4 +1,5 @@
-import {Permissions, MessageEmbed} from "discord.js";
+import {MessageEmbed, Permissions} from "discord.js";
+
 import type {ICommand} from "../../../types/commands";
 
 module.exports = {

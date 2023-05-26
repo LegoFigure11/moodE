@@ -1,14 +1,15 @@
 import {Permissions} from "discord.js";
+
 import type {ICommand} from "../../../types/commands";
 
 module.exports = {
   desc: "Pays respects.",
   commandPermissions: [Permissions.FLAGS.SEND_MESSAGES],
   command(message) {
-    const db = Storage.getDatabase("f");
+    const db = Databases.getDatabase("f");
     if (!db.global) db.global = 0;
     db.global += 1;
-    Storage.exportDatabase("f");
+    Databases.exportDatabase("f");
     return message.reply(
       {
         content:

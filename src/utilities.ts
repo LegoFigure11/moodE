@@ -1,13 +1,13 @@
+import {exec} from "child_process";
+import * as fs from "fs";
+import * as https from "https";
 import * as path from "path";
 import * as util from "util";
-import * as fs from "fs";
-import * as colors from "colors/safe";
-import * as https from "https";
 
-import {exec} from "child_process";
+import {grey, yellow} from "@colors/colors/safe";
+import type {BoostID, BoostsTable, GenerationNum, Move, Species} from "@pkmn/dex-types";
 import * as Discord from "discord.js";
 
-import type {BoostID, BoostsTable, Move, Species, GenerationNum} from "@pkmn/dex-types";
 import type {DateMention} from "./types/utilities";
 
 const sh = util.promisify(exec);
@@ -15,7 +15,7 @@ const sh = util.promisify(exec);
 const ID_REGEX = /[^a-z0-9-]/g;
 const URL_REGEX = /[^A-Za-z0-9-_.~:/?#[\]@!$&'()*+,;=%\s]/g;
 
-const DEFAULT_DEX_GENERATION = 8;
+const DEFAULT_DEX_GENERATION = 9;
 const GEN_1_ALIASES = [
   "r", "b", "y", "g", "red", "yellow", "blue", "green", "rb", "rby", "rbyg", "gen1", "generation1",
   "1", "g1", "i", "geni",
@@ -47,6 +47,10 @@ const GEN_7_ALIASES = [
 const GEN_8_ALIASES = [
   "sw", "sh", "swsh", "swish", "swoshi", "sword", "shield", "swordshield", "swordandsheild", "gen8",
   "8", "g8", "generation8", "viii", "genviii",
+];
+const GEN_9_ALIASES = [
+  "sv", "scvi", "scarvi", "scarvio", "scarlet", "violet", "scarletviolet", "scarletandviolet", "gen9",
+  "9", "g9", "generation9", "ix", "genix",
 ];
 const PENTAGON_ALIASES = [
   "penta", "pentagon",
@@ -154,7 +158,7 @@ export class Utilities {
    * @returns Returns a timestamp followed by the provided message
    */
   timeStampString(text: string): string {
-    return `${colors.grey(this.timeStamp())} ${text}`;
+    return `${grey(this.timeStamp())} ${text}`;
   }
 
   /**
@@ -163,7 +167,7 @@ export class Utilities {
    * @returns Returns a timestamp followed by "moodE: " and the provided message
    */
   moodeText(text: string): string {
-    return this.timeStampString(`${colors.yellow("moodE: ")}${text}`);
+    return this.timeStampString(`${yellow("moodE: ")}${text}`);
   }
 
   /**
@@ -172,7 +176,7 @@ export class Utilities {
    * @returns Returns a timestamp followed by "Discord: " and the provided message
    */
   discordText(text: string): string {
-    return this.timeStampString(`${colors.yellow("Discord: ")}${text}`);
+    return this.timeStampString(`${yellow("Discord: ")}${text}`);
   }
 
   /**
@@ -553,7 +557,6 @@ export class Utilities {
       date = date.getTime();
     }
 
-
     const seconds = Math.floor((new Date().getTime() - date) / 1000);
     let intervalType;
 
@@ -699,6 +702,9 @@ export class Utilities {
         hadGenSpec = true;
       } else if (GEN_8_ALIASES.includes(arg)) {
         gen = 8;
+        hadGenSpec = true;
+      } else if (GEN_9_ALIASES.includes(arg)) {
+        gen = 9;
         hadGenSpec = true;
       } else if (PENTAGON_ALIASES.includes(arg)) {
         restriction = "Pentagon";

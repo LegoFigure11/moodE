@@ -1,6 +1,7 @@
 import * as path from "path";
 
 import type {Message} from "discord.js";
+
 import type {IEvent} from "../../types/events";
 
 const FIRST_PRIORITY = 1;
@@ -49,7 +50,6 @@ export class MessageDeleteHandler {
     __messageDeleteHandlerLoaded = true;
     ReadyChecker.emit("loaded");
   }
-
 
   async executeEvents(message: Message): Promise<void> {
     for (let i = FIRST_PRIORITY; i <= LAST_PRIORITY; i++) {

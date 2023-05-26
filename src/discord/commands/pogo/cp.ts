@@ -1,8 +1,9 @@
-import {Formatters, Permissions} from "discord.js";
-import type {ICommand} from "../../../types/commands";
-import {getAlias} from "../../../misc/dex-aliases";
-import * as dex from "@pkmn/dex";
 import {Generations} from "@pkmn/data";
+import * as dex from "@pkmn/dex";
+import {Formatters, Permissions} from "discord.js";
+
+import {getAlias} from "../../../misc/dex-aliases";
+import type {ICommand} from "../../../types/commands";
 
 enum LEVEL_MODIFIERS {
   FIFTEEN = 0.51739395,
@@ -26,30 +27,24 @@ module.exports = {
     args = newArgs;
 
     const gens = new Generations(dex.Dex);
-    const Dex = gens.get(gen as dex.GenerationNum);
-
     args[0] = getAlias(args[0], ["pokemon"]).id;
-    let specie = Dex.species.get(args[0]);
+    let specie;
+    do {
+      const tempDex = gens.get(gen);
+      const tempSpecie = tempDex.species.get(args[0]);
+      specie = tempSpecie;
+    } while (!hadGenSpec && !specie?.exists && --gen > 0);
 
     if (!specie?.exists) {
-      const Gen7Dex = gens.get(7);
-      specie = Gen7Dex.species.get(args[0]);
-      if (specie?.exists && !hadGenSpec) {
-        if (gen === 8) gen = 7;
-      } else {
-        return message.reply(
-          {
-            content:
-            Utilities.failureEmoji(
-              message,
-              `Unable to find any Pok\u{00e9}mon matching "${
-                args[0]
-              }" for Generation ${gen}! (Check your spelling?)`
-            ),
-            allowedMentions: {repliedUser: false},
-          }
-        ).catch(e => console.error(e));
-      }
+      return message
+        .reply({
+          content: Utilities.failureEmoji(
+            message,
+            `Unable to find any Pok\u{00e9}mon matching "${args[0]}" for Generation ${gen}! (Check your spelling?)`
+          ),
+          allowedMentions: {repliedUser: false},
+        })
+        .catch((e) => console.error(e));
     }
 
     const [batk, bdef, bhp] = calcPogoBaseStats(specie.baseStats);

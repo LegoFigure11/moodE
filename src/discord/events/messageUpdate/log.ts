@@ -1,8 +1,9 @@
-import {MessageEmbed, TextChannel, Message} from "discord.js";
-import type {IMessageUpdateEvent} from "../../../types/events";
-
-import * as path from "path";
 import * as fs from "fs";
+import * as path from "path";
+
+import {Message, MessageEmbed, TextChannel} from "discord.js";
+
+import type {IMessageUpdateEvent} from "../../../types/events";
 
 const MAX_FIELD_LENGTH = 1024;
 
@@ -11,7 +12,7 @@ module.exports = {
   async process(oldMessage, newMessage): Promise<Message> {
     if (!newMessage.guild) return newMessage;
     if (oldMessage.content === newMessage.content) return newMessage;
-    const db = Storage.getDatabase(Utilities.toDatabaseId(newMessage));
+    const db = Databases.getDatabase(Utilities.toDatabaseId(newMessage));
     const log = db.events?.logger?.logEdits;
     const channel = Utilities.parseChannelId(newMessage, db.events?.logger?.channel) as TextChannel;
     if (!log || !channel) return newMessage;

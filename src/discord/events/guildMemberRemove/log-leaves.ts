@@ -1,11 +1,12 @@
-import type {TextChannel, GuildMember} from "discord.js";
+import type {GuildMember, TextChannel} from "discord.js";
+
 import type {IGuildMemberAddRemoveEvent} from "../../../types/events";
 
 module.exports = {
   priority: 1,
   async process(member): Promise<GuildMember> {
     if (!member.guild) return member;
-    const db = Storage.getDatabase(member.guild.id);
+    const db = Databases.getDatabase(member.guild.id);
     const log = db.events?.guildMemberRemove.logLeaves;
     const channel = Utilities.parseChannelId(
       member.guild, db.events?.guildMemberRemove?.channel

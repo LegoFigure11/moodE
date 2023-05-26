@@ -1,4 +1,5 @@
 import {Permissions} from "discord.js";
+
 import type {ICommand} from "../../../types/commands";
 
 module.exports = {
@@ -71,13 +72,13 @@ module.exports = {
     }
 
     await m.react(`${emoji}`).catch(console.error);
-    const db = Storage.getDatabase(message.guild!.id);
+    const db = Databases.getDatabase(message.guild!.id);
     if (!db.reactionRoles) db.reactionRoles = {};
     if (!db.reactionRoles[`${emoji}-${m.id}`]) {
       db.reactionRoles[`${emoji}-${m.id}`] = {};
     }
     db.reactionRoles[`${emoji}-${m.id}`] = role.id;
-    Storage.exportDatabase(message.guild!.id);
+    Databases.exportDatabase(message.guild!.id);
     return message.reply(
       {
         content:

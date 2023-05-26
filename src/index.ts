@@ -1,11 +1,9 @@
+import {EventEmitter} from "events";
 import * as path from "path";
 
-import {EventEmitter} from "events";
+import type {Message} from "discord.js";
 
-import * as utilities from "./utilities";
-import * as storage from "./storage";
-import * as csrng from "./misc/csrng";
-import * as lcrng from "./misc/lcrng";
+import * as databases from "./databases";
 import * as discordConfig from "./discord/config-example";
 import * as commandHandler from "./discord/handlers/commandHandler";
 import * as guildBanAddHandler from "./discord/handlers/guildBanAddHandler";
@@ -15,16 +13,17 @@ import * as guildMemberRemoveHandler from "./discord/handlers/guildMemberRemoveH
 import * as guildMemberUpdateHandler from "./discord/handlers/guildMemberUpdateHandler";
 import * as messageCreateHandler from "./discord/handlers/messageCreateHandler";
 import * as messageDeleteHandler from "./discord/handlers/messageDeleteHandler";
-import * as messageUpdateHandler from "./discord/handlers/messageUpdateHandler";
 import * as messageReactionAddHandler from "./discord/handlers/messageReactionAddHandler";
 import * as messageReactionRemoveHandler from "./discord/handlers/messageReactionRemoveHandler";
+import * as messageUpdateHandler from "./discord/handlers/messageUpdateHandler";
 import * as pluginsLoader from "./discord/handlers/pluginsLoader";
-
+import * as csrng from "./misc/csrng";
+import * as lcrng from "./misc/lcrng";
 import type {ReloadableModule} from "./types/index";
-import type {Message} from "discord.js";
+import * as utilities from "./utilities";
 
 const moduleOrder: ReloadableModule[] = [
-  "utilities", "config", "storage", "commands", "messagedeletehandler", "messageupdatehandler",
+  "utilities", "config", "databases", "commands", "messagedeletehandler", "messageupdatehandler",
   "guildmemberaddhandler", "messagereactionaddhandler", "messagereactionremovehandler",
   "guildbanaddhandler", "guildmemberremovehandler", "guildbanremovehandler",
   "messagecreatehandler", "pluginsloader", "guildmemberupdatehandler",
@@ -52,7 +51,7 @@ const moduleFilenames: KeyedDict<ReloadableModule, string> = {
   ),
   pluginsloader: path.join(__dirname, "discord", "handlers", "pluginsLoader.js"),
   config: path.join(__dirname, "discord", "config-example.js"),
-  storage: path.join(__dirname, "storage.js"),
+  databases: path.join(__dirname, "databases.js"),
   utilities: path.join(__dirname, "utilities.js"),
   all: "", // Unsused
 };
@@ -73,7 +72,7 @@ module.exports = (): void => {
 
   global.DiscordConfig = discordConfig;
   global.__listen = false;
-  void storage.instantiate();
+  void databases.instantiate();
   void commandHandler.instantiate();
   void guildBanAddHandler.instantiate();
   void guildBanRemoveHandler.instantiate();
@@ -88,7 +87,7 @@ module.exports = (): void => {
   void pluginsLoader.instantiate();
 
   console.log(Utilities.moodeText("Loading Databases..."));
-  void Storage.importDatabases();
+  void Databases.importDatabases();
 
   global.__commandsLoaded = false;
   console.log(Utilities.moodeText("Loading Commands..."));
@@ -182,7 +181,7 @@ module.exports = (): void => {
       if (hasModules[i]) modules.push(moduleOrder[i]);
     }
 
-    if (modules.includes("storage")) Storage.reloadInProgress = true;
+    if (modules.includes("databases")) Databases.reloadInProgress = true;
 
     for (const moduleName of modules) {
       Utilities.uncacheTree(path.resolve(moduleFilenames[moduleName]));
@@ -207,10 +206,10 @@ module.exports = (): void => {
           global.DiscordConfig = require(moduleFilenames[moduleName]) as typeof import(
             "./discord/config-example"
           );
-        } else if (moduleName === "storage") {
+        } else if (moduleName === "databases") {
           // eslint-disable-next-line @typescript-eslint/no-var-requires
-          const newStorage = require(moduleFilenames[moduleName]) as typeof import("./storage");
-          newStorage.instantiate();
+          const newDatabases = require(moduleFilenames[moduleName]) as typeof import("./databases");
+          newDatabases.instantiate();
         } else if (moduleName === "utilities") {
           // eslint-disable-next-line @typescript-eslint/no-var-requires
           const newUtilities = require(moduleFilenames[moduleName]) as typeof import("./utilities");
@@ -298,7 +297,7 @@ module.exports = (): void => {
       console.log(e);
 
       global.__reloadInProgress = false;
-      if (Storage.reloadInProgress) Storage.reloadInProgress = false;
+      if (Databases.reloadInProgress) Databases.reloadInProgress = false;
       m.edit(
         Utilities.failureEmoji(message, `\`ERROR\` \`\`\`XL\n${e.message}\`\`\``)
       ).catch(err => console.error(err));

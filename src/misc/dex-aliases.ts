@@ -1,4 +1,5 @@
 import type {typoCheckerListType} from "../types/typo-checker";
+
 import {TypoChecker} from "./typo-checker";
 
 export const Aliases: KeyedDict<string, {id: string; shiny?: boolean; female?: boolean}> = {

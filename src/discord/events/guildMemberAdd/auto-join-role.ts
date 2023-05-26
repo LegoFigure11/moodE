@@ -1,4 +1,5 @@
-import type {Role, GuildMember} from "discord.js";
+import type {GuildMember, Role} from "discord.js";
+
 import type {IGuildMemberAddRemoveEvent} from "../../../types/events";
 
 module.exports = {
@@ -6,7 +7,7 @@ module.exports = {
   disabled: true,
   async process(member): Promise<GuildMember> {
     if (!member.guild) return member;
-    const db = Storage.getDatabase(member.guild.id);
+    const db = Databases.getDatabase(member.guild.id);
     const roles = [...db.events?.guildMemberAdd.joinRoles as string];
     for (const roleId of roles) {
       const role = Utilities.parseRoleId(member.guild, roleId) as Role;

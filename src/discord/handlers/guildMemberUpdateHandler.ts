@@ -1,6 +1,7 @@
 import * as path from "path";
 
 import type {GuildMember} from "discord.js";
+
 import type {IGuildMemberUpdateEvent} from "../../types/events";
 
 const FIRST_PRIORITY = 1;
@@ -49,7 +50,6 @@ export class GuildMemberUpdateHandler {
     __guildMemberUpdateHandlerLoaded = true;
     ReadyChecker.emit("loaded");
   }
-
 
   async executeEvents(oldMember: GuildMember, newMember: GuildMember): Promise<void> {
     for (let i = FIRST_PRIORITY; i <= LAST_PRIORITY; i++) {

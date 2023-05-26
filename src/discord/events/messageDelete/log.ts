@@ -1,11 +1,12 @@
-import {Permissions, MessageEmbed, TextChannel, Message} from "discord.js";
+import {Message, MessageEmbed, Permissions, TextChannel} from "discord.js";
+
 import type {IEvent} from "../../../types/events";
 
 module.exports = {
   priority: 1,
   async process(message): Promise<Message> {
     if (!message.guild) return message;
-    const db = Storage.getDatabase(Utilities.toDatabaseId(message));
+    const db = Databases.getDatabase(Utilities.toDatabaseId(message));
     const log = db.events?.messageDelete?.logDeletes;
     const channel = Utilities.parseChannelId(
       message, db.events?.messageDelete?.channel

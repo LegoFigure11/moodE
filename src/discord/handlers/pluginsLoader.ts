@@ -2,7 +2,6 @@ import * as path from "path";
 
 import type {IPlugin} from "../../types/plugins";
 
-
 export class PluginsLoader {
   pluginsDirectory: string = path.join(Utilities.discordFolder, "plugins");
   private plugins: Dict<IPlugin> = {};

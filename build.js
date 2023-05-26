@@ -4,7 +4,8 @@ const child_process = require("child_process");
 const fs = require("fs");
 const path = require("path");
 const util = require("util");
-const colors = require("colors/safe");
+
+const colors = require("@colors/colors/safe");
 
 const builtFolder = path.join(__dirname, "built");
 

@@ -1,9 +1,10 @@
-import {Permissions, MessageEmbed, Formatters} from "discord.js";
+import {Generations} from "@pkmn/data";
+import * as dex from "@pkmn/dex";
+import {Formatters, MessageEmbed, Permissions} from "discord.js";
+
+import {getAlias} from "../../../misc/dex-aliases";
 import type {ICommand} from "../../../types/commands";
 import type {ShortStatName} from "../../../types/dex";
-import {getAlias} from "../../../misc/dex-aliases";
-import * as dex from "@pkmn/dex";
-import {Generations} from "@pkmn/data";
 
 const stats: {[k: string]: string[]} = {
   "a": ["a", "atk", "attack"],
@@ -44,7 +45,7 @@ module.exports = {
   usage: "<Pok\u{00e9}mon Nature Name> | <Boosted Stat>, <Reduced Stat>",
   async command(message, args) {
     const gens = new Generations(dex.Dex);
-    const Dex = gens.get(8);
+    const Dex = gens.get(9);
 
     args[0] = getAlias(args[0], ["natures"]).id;
     let nature = Dex.natures.get(args[0]);

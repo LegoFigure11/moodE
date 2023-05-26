@@ -1,4 +1,5 @@
 import {Permissions, TextChannel} from "discord.js";
+
 import type {ICommand} from "../../../types/commands";
 
 module.exports = {
@@ -71,13 +72,13 @@ module.exports = {
     let number = 3;
     if (!isNaN(+args[2])) number = +args[2];
 
-    const db = Storage.getDatabase(message.guild!.id);
+    const db = Databases.getDatabase(message.guild!.id);
     if (!db.starboard) db.starboard = {};
     if (!db.starboard[`${emoji}`]) {
       db.starboard[`${emoji}`] = {};
     }
     db.starboard[`${emoji}`] = {channel: channel.id, count: number, posts: {}};
-    Storage.exportDatabase(message.guild!.id);
+    Databases.exportDatabase(message.guild!.id);
     return message.reply(
       {
         content:

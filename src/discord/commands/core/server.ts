@@ -1,6 +1,7 @@
-import {Permissions, MessageEmbed} from "discord.js";
-import {UserPermissions} from "../../enums/userPermissions";
+import {MessageEmbed, Permissions} from "discord.js";
+
 import type {ICommand} from "../../../types/commands";
+import {UserPermissions} from "../../enums/userPermissions";
 
 const MAX_EMOJIS_TO_DISPLAY = 18;
 

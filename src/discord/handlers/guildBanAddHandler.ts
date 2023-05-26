@@ -1,6 +1,7 @@
 import * as path from "path";
 
 import type {GuildBan} from "discord.js";
+
 import type {IGuildBanEvent} from "../../types/events";
 
 const FIRST_PRIORITY = 1;
@@ -49,7 +50,6 @@ export class GuildBanAddHandler {
     __guildBanAddHandlerLoaded = true;
     ReadyChecker.emit("loaded");
   }
-
 
   async executeEvents(ban: GuildBan): Promise<void> {
     for (let i = FIRST_PRIORITY; i <= LAST_PRIORITY; i++) {

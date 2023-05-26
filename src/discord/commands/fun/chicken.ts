@@ -1,4 +1,5 @@
 import {Permissions} from "discord.js";
+
 import type {ICommand} from "../../../types/commands";
 
 const chickens = [

@@ -1,11 +1,12 @@
+import * as data from "@pkmn/data";
+import * as dex from "@pkmn/dex";
+import * as mods from "@pkmn/mods";
 import * as Discord from "discord.js";
 import {Formatters} from "discord.js";
-import * as dex from "@pkmn/dex";
-import * as data from "@pkmn/data";
 // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-import * as mods from "@pkmn/mods";
-import {UserPermissions} from "../../enums/userPermissions";
+
 import type {ICommand} from "../../../types/commands";
+import {UserPermissions} from "../../enums/userPermissions";
 
 // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
 const gens = new data.Generations(dex.Dex);

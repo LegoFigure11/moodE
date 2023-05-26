@@ -1,9 +1,9 @@
 import * as path from "path";
 
+import {green} from "@colors/colors/safe";
 import {Message, Permissions} from "discord.js";
-import {green} from "colors/safe";
-import type {ICommand} from "../../types/commands";
 
+import type {ICommand} from "../../types/commands";
 import {UserPermissions} from "../enums/userPermissions";
 
 export class CommandHandler {
@@ -72,7 +72,6 @@ export class CommandHandler {
     ReadyChecker.emit("loaded");
   }
 
-
   executeCommand(commandName: string, message: Message, args: string[]): void {
     const command = this.get(commandName);
     if (!command?.command) return;
@@ -117,7 +116,7 @@ export class CommandHandler {
         ).catch(e => console.error(e));
         return;
       }
-      const db = Storage.getDatabase(message.guild!.id);
+      const db = Databases.getDatabase(message.guild!.id);
       // TODO: Fix IDatabase type for commands
       if (db?.commands?.[commandName]?.disabled) {
         message.channel.send(
@@ -135,7 +134,6 @@ export class CommandHandler {
         db?.commands?.[commandName]?.permissions || 0,
         commandPermissions
       );
-
 
       if (commandPermissions > userPermissions) {
         message.channel.send(

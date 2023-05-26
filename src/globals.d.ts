@@ -1,9 +1,6 @@
 import type {EventEmitter as eventEmitterType} from "events";
-import type {Storage as storageType} from "./storage";
-import type {Utilities as utilitiesType} from "./utilities";
-import type {LCRNG as lcrngType} from "./misc/lcrng";
-import type {CSRNG as csrngType} from "./misc/csrng";
-import type * as lcrng from "./misc/lcrng";
+
+import type {Databases as DatabasesType} from "./databases";
 import type * as discordConfig from "./discord/config-example";
 import type {CommandHandler as commandHandlerType} from "./discord/handlers/commandHandler";
 import type {GuildBanAddHandler as guildBanAddHandlerType}
@@ -20,13 +17,17 @@ import type {MessageCreateHandler as messageCreateHandlerType}
   from "./discord/handlers/messageCreateHandler";
 import type {MessageDeleteHandler as messageDeleteHandlerType}
   from "./discord/handlers/messageDeleteHandler";
-import type {MessageUpdateHandler as messageUpdateHandlerType}
-  from "./discord/handlers/messageUpdateHandler";
 import type {MessageReactionAddHandler as messageReactionAddHandlerType}
   from "./discord/handlers/messageReactionAddHandler";
 import type {MessageReactionRemoveHandler as messageReactionRemoveHandlerType}
   from "./discord/handlers/messageReactionRemoveHandler";
+import type {MessageUpdateHandler as messageUpdateHandlerType}
+  from "./discord/handlers/messageUpdateHandler";
 import type {PluginsLoader as pluginsLoaderType} from "./discord/handlers/pluginsLoader";
+import type {CSRNG as csrngType} from "./misc/csrng";
+import type * as lcrng from "./misc/lcrng";
+import type {LCRNG as lcrngType} from "./misc/lcrng";
+import type {Utilities as utilitiesType} from "./utilities";
 
 /* eslint-disable no-var */
 declare global {
@@ -61,7 +62,7 @@ declare global {
   var MessageReactionRemoveHandler: messageReactionRemoveHandlerType;
   var PluginsLoader: pluginsLoaderType;
   var DiscordConfig: Partial<typeof discordConfig>;
-  var Storage: storageType;
+  var Databases: DatabasesType;
   var Utilities: utilitiesType;
   var LCRNG: lcrngType;
   var CSRNG: csrngType;

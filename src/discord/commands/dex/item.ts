@@ -1,8 +1,9 @@
-import {Permissions, MessageEmbed, Formatters} from "discord.js";
-import type {ICommand} from "../../../types/commands";
-import {getAlias} from "../../../misc/dex-aliases";
-import * as dex from "@pkmn/dex";
 import {Generations} from "@pkmn/data";
+import * as dex from "@pkmn/dex";
+import {Formatters, MessageEmbed, Permissions} from "discord.js";
+
+import {getAlias} from "../../../misc/dex-aliases";
+import type {ICommand} from "../../../types/commands";
 
 module.exports = {
   desc: "Gets the information about a Pok\u{00e9}mon Item. Items without competitive" +
@@ -15,26 +16,25 @@ module.exports = {
     args = newArgs;
 
     const gens = new Generations(dex.Dex);
-    const Dex = gens.get(gen as dex.GenerationNum);
-
     args[0] = getAlias(args[0], ["items"]).id;
-    let item = Dex.items.get(args[0]);
+
+    let item;
+    do {
+      const tempDex = gens.get(gen);
+      const tempItem = tempDex.items.get(args[0]);
+      item = tempItem;
+    } while (!hadGenSpec && !item?.exists && --gen > 0);
 
     if (!item?.exists) {
-      const Gen7Dex = gens.get(7);
-      item = Gen7Dex.items.get(args[0]);
-      if (item?.exists && !hadGenSpec) {
-        if (gen === 8) gen = 7;
-      } else {
-        return message.channel.send(
-          Utilities.failureEmoji(
+      return message
+        .reply({
+          content: Utilities.failureEmoji(
             message,
-            `Unable to find any Item matching "${
-              args[0]
-            }" for Generation ${gen}! (Check your spelling?)`
-          )
-        ).catch(e => console.error(e));
-      }
+            `Unable to find any Item matching "${args[0]}" for Generation ${gen}! (Check your spelling?)`
+          ),
+          allowedMentions: {repliedUser: false},
+        })
+        .catch((e) => console.error(e));
     }
 
     if (Utilities.checkBotPermissions(message, Permissions.FLAGS.EMBED_LINKS)) {

@@ -1,8 +1,9 @@
-import {Permissions, Util} from "discord.js";
-import type {ICommand} from "../../../types/commands";
-import * as dex from "@pkmn/dex";
 import {Generations} from "@pkmn/data";
+import * as dex from "@pkmn/dex";
+import {Permissions, Util} from "discord.js";
+
 import {getAlias} from "../../../misc/dex-aliases";
+import type {ICommand} from "../../../types/commands";
 
 module.exports = {
   desc: "Gets learnset information of a Pok\u{00e9}mon.",

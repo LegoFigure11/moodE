@@ -1,7 +1,9 @@
-import * as dex from "@pkmn/dex";
 import {Generations} from "@pkmn/data";
-import {Aliases} from "./dex-aliases";
+import * as dex from "@pkmn/dex";
+
 import type {typoCheckerListType} from "../types/typo-checker";
+
+import {Aliases} from "./dex-aliases";
 
 // Maximum number of substitutions allowed in the fuzzy searching
 // Lower numbers mean stricter searching
@@ -9,7 +11,8 @@ import type {typoCheckerListType} from "../types/typo-checker";
 const MAX_SUBS = 3;
 
 const gens = new Generations(dex.Dex);
-const Dex = gens.get(8);
+const Gen9Dex = gens.get(9);
+const Gen8Dex = gens.get(8);
 const Gen7Dex = gens.get(7);
 
 export class TypoChecker {
@@ -105,43 +108,27 @@ export class TypoChecker {
     const list: Set<string> = new Set();
     const all = lists.includes("all");
     if (lists.includes("pokemon") || all) {
-      for (const mon of Dex.species) {
-        list.add(mon.id);
-      }
-      for (const mon of Gen7Dex.species) {
-        list.add(mon.id);
-      }
-      for (const a of Object.keys(Aliases)) {
-        list.add(a);
-      }
+      for (const mon of Gen9Dex.species) list.add(mon.id);
+      for (const mon of Gen8Dex.species) list.add(mon.id);
+      for (const mon of Gen7Dex.species) list.add(mon.id);
+      for (const a of Object.keys(Aliases)) list.add(a);
     }
     if (lists.includes("moves") || all) {
-      for (const move of Dex.moves) {
-        list.add(move.id);
-      }
-      for (const move of Gen7Dex.moves) {
-        list.add(move.id);
-      }
+      for (const move of Gen9Dex.moves) list.add(move.id);
+      for (const move of Gen8Dex.moves) list.add(move.id);
+      for (const move of Gen7Dex.moves) list.add(move.id);
     }
     if (lists.includes("items") || all) {
-      for (const item of Dex.items) {
-        list.add(item.id);
-      }
+      for (const item of Gen9Dex.items) list.add(item.id);
     }
     if (lists.includes("abilities") || all) {
-      for (const abil of Dex.abilities) {
-        list.add(abil.id);
-      }
+      for (const abil of Gen9Dex.abilities) list.add(abil.id);
     }
     if (lists.includes("natures") || all) {
-      for (const nature of Dex.natures) {
-        list.add(nature.id);
-      }
+      for (const nature of Gen9Dex.natures) list.add(nature.id);
     }
     if (lists.includes("types") || all) {
-      for (const nature of Dex.types) {
-        list.add(nature.id);
-      }
+      for (const type of Gen9Dex.types) list.add(type.id);
     }
     return [...list].sort();
   }

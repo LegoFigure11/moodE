@@ -1,11 +1,12 @@
-import {Permissions, TextChannel, GuildBan} from "discord.js";
+import {GuildBan, Permissions, TextChannel} from "discord.js";
+
 import type {IGuildBanEvent} from "../../../types/events";
 
 module.exports = {
   priority: 1,
   async process(ban): Promise<GuildBan> {
     if (!ban.guild) return ban;
-    const db = Storage.getDatabase(ban.guild.id);
+    const db = Databases.getDatabase(ban.guild.id);
     const log = db.events?.guildBanRemove?.logUnbans;
     const channel = Utilities.parseChannelId(
       ban.guild, db.events?.guildBanRemove?.channel
@@ -21,7 +22,6 @@ module.exports = {
       ).then(audit => audit.entries.first());
       if (entry && entry.createdTimestamp > (Date.now() - 5000)) by = entry.executor;
     }
-
 
     channel.send(
       Utilities.warningEmoji(

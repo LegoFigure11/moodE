@@ -1,10 +1,11 @@
 import type {MessageReaction, User} from "discord.js";
+
 import type {IMessageReactionEvent} from "../../../types/events";
 
 module.exports = {
   priority: 1,
   async process(reaction: MessageReaction, user: User) {
-    const db = Storage.getDatabase(reaction.message.guild!.id);
+    const db = Databases.getDatabase(reaction.message.guild!.id);
     const emoji = `${reaction.emoji}`;
     if (!db.reactionRoles) db.reactionRoles = {};
     if (db.reactionRoles[`${emoji}-${reaction.message.id}`]) {

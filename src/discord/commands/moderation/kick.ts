@@ -1,4 +1,5 @@
-import {Permissions, Message} from "discord.js";
+import {Message, Permissions} from "discord.js";
+
 import type {ICommand} from "../../../types/commands";
 import {UserPermissions} from "../../enums/userPermissions";
 

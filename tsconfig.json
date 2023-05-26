@@ -1,23 +1,24 @@
 {
   "compilerOptions": {
-		"target": "esnext",
-		"strict": true,
-		"incremental": true,
-		"outDir": "built",
-		"noEmitOnError": true,
-		"module": "commonjs",
-		"moduleResolution": "node",
-		"importsNotUsedAsValues": "error",
-    "inlineSourceMap": true,
+    "target": "esnext",
+    "module": "CommonJS",
+    "rootDir": "./src/",
+    "outDir": "./built/",
+    "strict": true,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "experimentalDecorators": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
-		"types": ["node"],
-		"lib": [
-		    "esnext"
-		]
-	},
-	"include": [
-    "moode.js",
-    "build.js",
-		"src/**/*.ts"
-	]
+    "forceConsistentCasingInFileNames": true,
+    "removeComments": true,
+    "typeRoots": ["node_modules/@types"],
+    "inlineSourceMap": true,
+    "baseUrl": "./",
+    "types": ["node"]
+  },
+  "include": ["moode.js", "build.js", "src/**/*.ts"]
 }

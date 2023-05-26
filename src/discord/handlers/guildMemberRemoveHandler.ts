@@ -1,6 +1,7 @@
 import * as path from "path";
 
 import type {GuildMember} from "discord.js";
+
 import type {IGuildMemberAddRemoveEvent} from "../../types/events";
 
 const FIRST_PRIORITY = 1;
@@ -49,7 +50,6 @@ export class GuildMemberRemoveHandler {
     __guildMemberRemoveHandlerLoaded = true;
     ReadyChecker.emit("loaded");
   }
-
 
   async executeEvents(member: GuildMember): Promise<void> {
     for (let i = FIRST_PRIORITY; i <= LAST_PRIORITY; i++) {

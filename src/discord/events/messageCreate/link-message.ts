@@ -1,4 +1,5 @@
-import {Permissions, TextChannel, Message, MessageAttachment} from "discord.js";
+import {Message, MessageAttachment, Permissions, TextChannel} from "discord.js";
+
 import type {IEvent} from "../../../types/events";
 
 const MAX_SIZE = 8388608;

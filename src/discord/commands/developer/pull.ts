@@ -1,9 +1,11 @@
-import {Permissions} from "discord.js";
-import {UserPermissions} from "../../enums/userPermissions";
-import type {ICommand} from "../../../types/commands";
-
 import {exec} from "child_process";
 import {promisify} from "util";
+
+import {Permissions} from "discord.js";
+
+import type {ICommand} from "../../../types/commands";
+import {UserPermissions} from "../../enums/userPermissions";
+
 const sh = promisify(exec);
 
 module.exports = {

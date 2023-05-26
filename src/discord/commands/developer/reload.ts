@@ -1,12 +1,13 @@
 import {Permissions} from "discord.js";
-import {UserPermissions} from "../../enums/userPermissions";
+
 import type {ICommand} from "../../../types/commands";
+import {UserPermissions} from "../../enums/userPermissions";
 
 module.exports = {
   desc: "Live reloads modules",
   commandPermissions: [Permissions.FLAGS.SEND_MESSAGES],
   userPermissions: UserPermissions.DEVELOPER,
-  usage: "<utilities, config, storage, commands, messagedeletehandler, all>",
+  usage: "<utilities, config, Databases, commands, messagedeletehandler, all>",
   aliases: ["hotpatch", "rl", "rocketleague"],
   command(message, args) {
     if (__reloadInProgress) {

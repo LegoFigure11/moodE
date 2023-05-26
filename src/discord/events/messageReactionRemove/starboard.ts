@@ -1,10 +1,11 @@
 import type {MessageReaction, TextChannel} from "discord.js";
+
 import type {IMessageReactionEvent} from "../../../types/events";
 
 module.exports = {
   priority: 50,
   async process(reaction: MessageReaction) {
-    const db = Storage.getDatabase(reaction.message.guild!.id);
+    const db = Databases.getDatabase(reaction.message.guild!.id);
     const emoji = `${reaction.emoji}`;
     if (!db.starboard) return reaction;
     const sb = db.starboard[emoji];
@@ -31,7 +32,7 @@ module.exports = {
             await channel.messages.fetch(sb.posts[reaction.message.id]).then(m => {
               m.delete().catch(console.error);
               delete sb.posts[reaction.message.id];
-              Storage.exportDatabase(reaction.message.id);
+              Databases.exportDatabase(reaction.message.id);
             }).catch(console.error);
           }
         }

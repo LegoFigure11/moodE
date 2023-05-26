@@ -1,4 +1,5 @@
 import {Formatters, Permissions} from "discord.js";
+
 import type {ICommand} from "../../../types/commands";
 
 module.exports = {

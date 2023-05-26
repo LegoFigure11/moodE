@@ -24,7 +24,7 @@ declare namespace NodeJS {
     RNG: import("./misc/lcrng").PokeRNG;
     Utilities: import("./utilities").Utilities;
     DiscordConfig: Partial<typeof import("./discord/config-example")>;
-    Storage: import("./storage").Storage;
+    Databases: import("./databases").Databases;
     GuildBanAddHandler: import("./discord/handlers/guildBanAddHandler").GuildBanAddHandler;
     GuildBanRemoveHandler: import("./discord/handlers/guildBanRemoveHandler").GuildBanRemoveHandler;
     GuildMemberAddHandler: import("./discord/handlers/guildMemberAddHandler").GuildMemberAddHandler;

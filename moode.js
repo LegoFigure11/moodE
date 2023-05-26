@@ -1,7 +1,8 @@
 "use strict";
 
 const path = require("path");
-const colors = require("colors/safe");
+
+const colors = require("@colors/colors/safe");
 
 const dateOptions = {
   year: "numeric",
@@ -21,7 +22,6 @@ function timeStamp() {
 function moodeText(text) {
   return timeStampString(`${colors.yellow("moodE: ")}${text}`);
 }
-
 
 void (async () => {
   require(path.join(__dirname, "build.js"))().then(() => {

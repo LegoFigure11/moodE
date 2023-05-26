@@ -1,9 +1,10 @@
-import {Formatters, MessageEmbed, Permissions} from "discord.js";
-import type {ICommand} from "../../../types/commands";
-import {getAlias} from "../../../misc/dex-aliases";
-import * as dex from "@pkmn/dex";
 import {Generations} from "@pkmn/data";
+import * as dex from "@pkmn/dex";
 import {Sprites} from "@pkmn/img";
+import {Formatters, MessageEmbed, Permissions} from "discord.js";
+
+import {getAlias} from "../../../misc/dex-aliases";
+import type {ICommand} from "../../../types/commands";
 
 module.exports = {
   desc: "Gets the information about a Pok\u{00e9}mon Species.",
@@ -15,30 +16,24 @@ module.exports = {
     args = newArgs;
 
     const gens = new Generations(dex.Dex);
-    const Dex = gens.get(gen as dex.GenerationNum);
-
     args[0] = getAlias(args[0], ["pokemon"]).id;
-    let specie = Dex.species.get(args[0]);
+    let specie;
+    do {
+      const tempDex = gens.get(gen);
+      const tempSpecie = tempDex.species.get(args[0]);
+      specie = tempSpecie;
+    } while (!hadGenSpec && !specie?.exists && --gen > 0);
 
     if (!specie?.exists) {
-      const Gen7Dex = gens.get(7);
-      specie = Gen7Dex.species.get(args[0]);
-      if (specie?.exists && !hadGenSpec) {
-        if (gen === 8) gen = 7;
-      } else {
-        return message.reply(
-          {
-            content:
-          Utilities.failureEmoji(
+      return message
+        .reply({
+          content: Utilities.failureEmoji(
             message,
-            `Unable to find any Pok\u{00e9}mon matching "${
-              args[0]
-            }" for Generation ${gen}! (Check your spelling?)`
+            `Unable to find any Pok\u{00e9}mon matching "${args[0]}" for Generation ${gen}! (Check your spelling?)`
           ),
-            allowedMentions: {repliedUser: false},
-          }
-        ).catch(e => console.error(e));
-      }
+          allowedMentions: {repliedUser: false},
+        })
+        .catch((e) => console.error(e));
     }
 
     const bs = specie.baseStats;
@@ -122,7 +117,6 @@ module.exports = {
     }
     if (specie.tier) extraInfo.push(`Tier: ${specie.tier}`);
     extraInfo.push(`Introduced in Gen ${specie.gen}`);
-
 
     if (Utilities.checkBotPermissions(message, Permissions.FLAGS.EMBED_LINKS)) {
       const embed = new MessageEmbed()

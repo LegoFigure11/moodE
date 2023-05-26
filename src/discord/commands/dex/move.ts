@@ -1,8 +1,9 @@
-import {Formatters, MessageEmbed, Permissions} from "discord.js";
-import type {ICommand} from "../../../types/commands";
-import * as dex from "@pkmn/dex";
 import {Generations} from "@pkmn/data";
+import * as dex from "@pkmn/dex";
+import {Formatters, MessageEmbed, Permissions} from "discord.js";
+
 import {getAlias} from "../../../misc/dex-aliases";
+import type {ICommand} from "../../../types/commands";
 
 module.exports = {
   desc: "Gets the information about a Pok\u{00e9}mon Move.",
@@ -14,29 +15,27 @@ module.exports = {
     args = newArgs;
 
     const gens = new Generations(dex.Dex);
-    const Dex = gens.get(gen as dex.GenerationNum);
-
     args[0] = getAlias(args[0], ["moves"]).id;
-    let move = Dex.moves.get(args[0]);
+
+    let move;
+    do {
+      const tempDex = gens.get(gen);
+      const tempMove = tempDex.moves.get(args[0]);
+      move = tempMove;
+    } while (!hadGenSpec && !move?.exists && --gen > 0);
 
     if (!move?.exists) {
-      const Gen7Dex = gens.get(7);
-      move = Gen7Dex.moves.get(args[0]);
-      if (move?.exists && !hadGenSpec) {
-        if (gen === 8) gen = 7;
-      } else {
-        return message.reply(
-          {
-            content: Utilities.failureEmoji(
-              message,
-              `Unable to find any Move matching "${
-                args[0]
-              }" for Generation ${gen}! (Check your spelling?)`
-            ),
-            allowedMentions: {repliedUser: false},
-          }
-        ).catch(e => console.error(e));
-      }
+      return message
+        .reply({
+          content: Utilities.failureEmoji(
+            message,
+            `Unable to find any move matching "${
+              args[0]
+            }" for Generation ${gen}! (Check your spelling?)`
+          ),
+          allowedMentions: {repliedUser: false},
+        })
+        .catch((e) => console.error(e));
     }
 
     const isMaxOrZ = (gen >= 8 && move.maxMove) || (gen >= 7 && move.zMove);

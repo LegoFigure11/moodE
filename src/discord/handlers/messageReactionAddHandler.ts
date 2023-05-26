@@ -1,6 +1,7 @@
 import * as path from "path";
 
 import type {MessageReaction, User} from "discord.js";
+
 import type {IMessageReactionEvent} from "../../types/events";
 
 const FIRST_PRIORITY = 1;
@@ -49,7 +50,6 @@ export class MessageReactionAddHandler {
     __messageReactionAddHandlerLoaded = true;
     ReadyChecker.emit("loaded");
   }
-
 
   async executeEvents(reaction: MessageReaction, user: User): Promise<void> {
     for (let i = FIRST_PRIORITY; i <= LAST_PRIORITY; i++) {

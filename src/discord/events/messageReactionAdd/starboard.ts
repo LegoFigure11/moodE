@@ -1,10 +1,11 @@
-import {MessageReaction, TextChannel, MessageEmbed} from "discord.js";
+import {MessageEmbed, MessageReaction, TextChannel} from "discord.js";
+
 import type {IMessageReactionEvent} from "../../../types/events";
 
 module.exports = {
   priority: 50,
   async process(reaction: MessageReaction) {
-    const db = Storage.getDatabase(reaction.message.guild!.id);
+    const db = Databases.getDatabase(reaction.message.guild!.id);
     const emoji = `${reaction.emoji}`;
     if (!db.starboard) return reaction;
     const sb = db.starboard[emoji];
@@ -57,7 +58,7 @@ module.exports = {
                 }
               ).catch(console.error);
               sb.posts[reaction.message.id] = m.id;
-              Storage.exportDatabase(reaction.message.guild!.id);
+              Databases.exportDatabase(reaction.message.guild!.id);
             }).catch(console.error);
           }
         }
